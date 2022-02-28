@@ -19,16 +19,11 @@ package com.batyuta.challenge.lottoland.test;
 
 import com.batyuta.challenge.lottoland.StatusEnum;
 import com.batyuta.challenge.lottoland.ThingEnum;
-import junit.framework.TestCase;
-import lombok.Data;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.stream.Stream;
 
 import static com.batyuta.challenge.lottoland.StatusEnum.EQUALS;
 import static com.batyuta.challenge.lottoland.StatusEnum.GREAT;
@@ -36,108 +31,69 @@ import static com.batyuta.challenge.lottoland.StatusEnum.LESS;
 import static com.batyuta.challenge.lottoland.ThingEnum.PAPER;
 import static com.batyuta.challenge.lottoland.ThingEnum.ROCK;
 import static com.batyuta.challenge.lottoland.ThingEnum.SCISSORS;
+import static org.springframework.test.util.AssertionErrors.assertEquals;
+import static org.springframework.test.util.AssertionErrors.assertNotNull;
 
 /**
  * The test class for the {@link ThingEnum} class.
  *
  * @author Aleksei Batiuta
  */
-@RunWith(Parameterized.class)
-public class ThingEnumTest extends TestCase {
-    /**
-     * The test data.
-     */
-    private final TestData testData;
-
-    /**
-     * Default constructor.
-     *
-     * @param testDataValue test data
-     */
-    public ThingEnumTest(final TestData testDataValue) {
-        this.testData = testDataValue;
-    }
-
+public class ThingEnumTest {
     /**
      * Test data generator.
      *
      * @return test data
      */
-    @Parameterized.Parameters(name = "{index}: {0}")
-    public static Collection<TestData> testData() {
-        List<TestData> data = new ArrayList<>();
-        data.add(new TestData(ROCK, null, GREAT));
-        data.add(new TestData(ROCK, ROCK, EQUALS));
-        data.add(new TestData(ROCK, PAPER, LESS));
-        data.add(new TestData(ROCK, SCISSORS, GREAT));
-
-        data.add(new TestData(PAPER, null, GREAT));
-        data.add(new TestData(PAPER, ROCK, GREAT));
-        data.add(new TestData(PAPER, PAPER, EQUALS));
-        data.add(new TestData(PAPER, SCISSORS, LESS));
-
-        data.add(new TestData(SCISSORS, null, GREAT));
-        data.add(new TestData(SCISSORS, ROCK, LESS));
-        data.add(new TestData(SCISSORS, PAPER, GREAT));
-        data.add(new TestData(SCISSORS, SCISSORS, EQUALS));
-        return data;
+    public static Stream<? extends Arguments> testData() {
+        return Stream.of(
+                Arguments.of(ROCK, null, GREAT),
+                Arguments.of(ROCK, ROCK, EQUALS),
+                Arguments.of(ROCK, PAPER, LESS),
+                Arguments.of(ROCK, SCISSORS, GREAT),
+                Arguments.of(PAPER, null, GREAT),
+                Arguments.of(PAPER, ROCK, GREAT),
+                Arguments.of(PAPER, PAPER, EQUALS),
+                Arguments.of(PAPER, SCISSORS, LESS),
+                Arguments.of(SCISSORS, null, GREAT),
+                Arguments.of(SCISSORS, ROCK, LESS),
+                Arguments.of(SCISSORS, PAPER, GREAT),
+                Arguments.of(SCISSORS, SCISSORS, EQUALS)
+        );
     }
 
     /**
      * The test method.
+     *
+     * @param firstThing the first test data
+     * @param secondThing the second test data
+     * @param expected expected result
      */
-    @Test
-    public void test() {
-        StatusEnum expected = testData.getExpected();
-        ThingEnum firstThing = testData.getFirst();
-        ThingEnum secondThing = testData.getSecond();
+    @ParameterizedTest(
+            name = "{index}: first={0}, second={1}, expected={2}"
+    )
+    @MethodSource("testData")
+    public void test(
+            final ThingEnum firstThing,
+            final ThingEnum secondThing,
+            final StatusEnum expected) {
 
-        Assert.assertNotNull(
+        assertNotNull(
                 "The first argument can't be as null",
                 firstThing
         );
-        Assert.assertNotNull("Result can't be as null", expected);
+        assertNotNull("Result can't be as null", expected);
 
         StatusEnum actual = StatusEnum.valueOf(
                 firstThing.compareToEnum(secondThing)
         );
-        Assert.assertEquals(
-                testData.toString(),
+        assertEquals(
+                String.format(
+                        "Test case was failed: {first = %s, second = %s}",
+                        firstThing, secondThing
+                ),
                 expected,
                 actual
         );
-    }
-
-    /**
-     * The test data class.
-     */
-    @Data
-    private static class TestData {
-        /**
-         * The first test value.
-         */
-        private ThingEnum first;
-        /**
-         * The second test value.
-         */
-        private ThingEnum second;
-        /**
-         * The expected test result.
-         */
-        private StatusEnum expected;
-
-        /**
-         * Default constructor.
-         *
-         * @param firstData      the first test data value
-         * @param secondData     the second test data value
-         * @param expectedResult expected test result
-         */
-        TestData(final ThingEnum firstData, final ThingEnum secondData,
-                 final StatusEnum expectedResult) {
-            this.first = firstData;
-            this.second = secondData;
-            this.expected = expectedResult;
-        }
     }
 }

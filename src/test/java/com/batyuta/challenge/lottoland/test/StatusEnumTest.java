@@ -18,106 +18,84 @@
 package com.batyuta.challenge.lottoland.test;
 
 import com.batyuta.challenge.lottoland.StatusEnum;
-import junit.framework.TestCase;
-import lombok.Data;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.stream.Stream;
+
+import static org.springframework.test.util.AssertionErrors.assertEquals;
+import static org.springframework.test.util.AssertionErrors.assertNotNull;
 
 /**
  * Test class for verify the {@code StatusEnum}.
  *
  * @author Aleksei Batyuta aleksei.batiuta@gmail.com
  */
-@RunWith(Parameterized.class)
-public class StatusEnumTest extends TestCase {
-    /**
-     * Maximal test data value.
-     */
-    public static final int TEST_STATUS_MAXIMAL = 5;
-    /**
-     * Minimal test data value.
-     */
-    public static final int TEST_STATUS_MINIMAL = -5;
-    /**
-     * Test data values.
-     */
-    private final TestData testData;
+public class StatusEnumTest {
+        /**
+         * Invalid positive test data value.
+         */
+        public static final int TEST_STATUS_INVALID_POSITIVE = 2;
+        /**
+         * Invalid negative test data value.
+         */
+        public static final int TEST_STATUS_INVALID_NEGATIVE = -2;
 
     /**
-     * Parameterized default constructor.
-     *
-     * @param testDataValue test data
-     */
-    public StatusEnumTest(final TestData testDataValue) {
-        this.testData = testDataValue;
-    }
-
-    /**
-     * The test data array.
+     * Test data generator.
      *
      * @return test data
      */
-    @Parameterized.Parameters(name = "{index}: {0}")
-    public static Collection<TestData> testData() {
-        List<TestData> data = new ArrayList<>();
-        data.add(new TestData(StatusEnum.Const.GREAT, StatusEnum.GREAT));
-        data.add(new TestData(StatusEnum.Const.EQUALS, StatusEnum.EQUALS));
-        data.add(new TestData(StatusEnum.Const.LESS, StatusEnum.LESS));
-        for (int i = TEST_STATUS_MINIMAL; i < TEST_STATUS_MAXIMAL; i++) {
-            if (i > StatusEnum.Const.GREAT || i < StatusEnum.Const.LESS) {
-                data.add(new TestData(i, new IllegalArgumentException()));
-            }
-        }
-        return data;
+    public static Stream<? extends Arguments> testData() {
+        return Stream.of(
+                Arguments.of(StatusEnum.Const.GREAT, StatusEnum.GREAT),
+                Arguments.of(StatusEnum.Const.EQUALS, StatusEnum.EQUALS),
+                Arguments.of(StatusEnum.Const.LESS, StatusEnum.LESS),
+                Arguments.of(
+                        TEST_STATUS_INVALID_NEGATIVE,
+                        new IllegalArgumentException()
+                ),
+                Arguments.of(
+                        TEST_STATUS_INVALID_POSITIVE,
+                        new IllegalArgumentException()
+                )
+        );
     }
 
     /**
      * The test method.
+     *
+     * @param data     the test data
+     * @param expected expected result
      */
-    @Test
-    public void test() {
-        int data = testData.getData();
-        Object expected = testData.getExpected();
+    @ParameterizedTest(
+            name = "{index}: data={0}, expected={1}"
+    )
+    @MethodSource("testData")
+    public void test(
+            final int data,
+            final Object expected) {
         try {
             StatusEnum actual = StatusEnum.valueOf(data);
-            Assert.assertEquals(
-                    testData.toString(),
+            assertEquals(
+                    String.format(
+                            "Test case was failed: {data = %s}",
+                            data
+                    ),
                     expected,
                     actual
             );
         } catch (IllegalArgumentException actual) {
-            Assert.assertNotNull(testData.toString(), expected);
-            Assert.assertEquals(
-                    testData.toString(),
+            assertNotNull(String.format(
+                    "Expected result is null: {data = %s}",
+                    data
+            ), expected);
+            assertEquals(
+                    "Unexpected result!",
                     expected.getClass(),
                     actual.getClass()
             );
-        }
-    }
-
-    @Data
-    private static class TestData {
-        /**
-         * Test value.
-         */
-        private final int data;
-
-        /**
-         * Expected value.
-         */
-        private final Object expected;
-
-        TestData(final int testData, final Object expectedData) {
-            this.data = testData;
-            this.expected = expectedData;
-
-            Assert.assertNotNull("Result can't be as null", expectedData);
         }
     }
 }

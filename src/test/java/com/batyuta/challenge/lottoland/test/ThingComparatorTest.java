@@ -20,16 +20,11 @@ package com.batyuta.challenge.lottoland.test;
 import com.batyuta.challenge.lottoland.StatusEnum;
 import com.batyuta.challenge.lottoland.ThingComparator;
 import com.batyuta.challenge.lottoland.ThingEnum;
-import junit.framework.TestCase;
-import lombok.Data;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.stream.Stream;
 
 import static com.batyuta.challenge.lottoland.StatusEnum.EQUALS;
 import static com.batyuta.challenge.lottoland.StatusEnum.GREAT;
@@ -37,105 +32,70 @@ import static com.batyuta.challenge.lottoland.StatusEnum.LESS;
 import static com.batyuta.challenge.lottoland.ThingEnum.PAPER;
 import static com.batyuta.challenge.lottoland.ThingEnum.ROCK;
 import static com.batyuta.challenge.lottoland.ThingEnum.SCISSORS;
+import static org.springframework.test.util.AssertionErrors.assertEquals;
 
 /**
  * Test class for verify the {@link ThingComparator}.
  *
  * @author Aleksei Batyuta aleksei.batiuta@gmail.com
  */
-@RunWith(Parameterized.class)
-public class ThingComparatorTest extends TestCase {
+public class ThingComparatorTest {
     /**
      * Comparator instance.
      */
     private final ThingComparator comparator = new ThingComparator();
-    /**
-     * Test data.
-     */
-    private final TestData testData;
-
-    /**
-     * Default constructor.
-     *
-     * @param testDataValue test data
-     */
-    public ThingComparatorTest(final TestData testDataValue) {
-        this.testData = testDataValue;
-    }
 
     /**
      * Test data generator.
      *
      * @return test data
      */
-    @Parameterized.Parameters(name = "{index}: {0}")
-    public static Collection<TestData> testData() {
-        List<TestData> data = new ArrayList<>();
-        data.add(new TestData(ROCK, null, GREAT));
-        data.add(new TestData(ROCK, ROCK, EQUALS));
-        data.add(new TestData(ROCK, PAPER, LESS));
-        data.add(new TestData(ROCK, SCISSORS, GREAT));
-
-        data.add(new TestData(PAPER, null, GREAT));
-        data.add(new TestData(PAPER, ROCK, GREAT));
-        data.add(new TestData(PAPER, PAPER, EQUALS));
-        data.add(new TestData(PAPER, SCISSORS, LESS));
-
-        data.add(new TestData(SCISSORS, null, GREAT));
-        data.add(new TestData(SCISSORS, ROCK, LESS));
-        data.add(new TestData(SCISSORS, PAPER, GREAT));
-        data.add(new TestData(SCISSORS, SCISSORS, EQUALS));
-
-        data.add(new TestData(null, null, EQUALS));
-        data.add(new TestData(null, ROCK, LESS));
-        data.add(new TestData(null, PAPER, LESS));
-        data.add(new TestData(null, SCISSORS, LESS));
-        return data;
+    public static Stream<? extends Arguments> testData() {
+        return Stream.of(
+                Arguments.of(ROCK, null, GREAT),
+                Arguments.of(ROCK, ROCK, EQUALS),
+                Arguments.of(ROCK, PAPER, LESS),
+                Arguments.of(ROCK, SCISSORS, GREAT),
+                Arguments.of(PAPER, null, GREAT),
+                Arguments.of(PAPER, ROCK, GREAT),
+                Arguments.of(PAPER, PAPER, EQUALS),
+                Arguments.of(PAPER, SCISSORS, LESS),
+                Arguments.of(SCISSORS, null, GREAT),
+                Arguments.of(SCISSORS, ROCK, LESS),
+                Arguments.of(SCISSORS, PAPER, GREAT),
+                Arguments.of(SCISSORS, SCISSORS, EQUALS),
+                Arguments.of(null, null, EQUALS),
+                Arguments.of(null, ROCK, LESS),
+                Arguments.of(null, PAPER, LESS),
+                Arguments.of(null, SCISSORS, LESS)
+        );
     }
 
     /**
      * The test method.
+     *
+     * @param firstThing the first test data
+     * @param secondThing the second test data
+     * @param expected expected result
      */
-    @Test
-    public void test() {
-        StatusEnum expected = testData.getExpected();
-        ThingEnum firstThing = testData.getFirst();
-        ThingEnum secondThing = testData.getSecond();
+    @ParameterizedTest(
+            name = "{index}: first={0}, second={1}, expected={2}"
+    )
+    @MethodSource("testData")
+    public void test(
+            final ThingEnum firstThing,
+            final ThingEnum secondThing,
+            final StatusEnum expected) {
         StatusEnum actual = StatusEnum.valueOf(
                 comparator.compare(firstThing, secondThing)
         );
-        Assert.assertEquals(
-                testData.toString(),
+        assertEquals(
+                String.format(
+                        "Test case was failed: {first = %s, second = %s}",
+                        firstThing, secondThing
+                ),
                 expected,
                 actual
         );
-    }
-
-    /**
-     * The test data class.
-     */
-    @Data
-    private static class TestData {
-        /**
-         * The first value of test data.
-         */
-        private final ThingEnum first;
-        /**
-         * The second value of test data.
-         */
-        private final ThingEnum second;
-        /**
-         * The expected value of test result.
-         */
-        private StatusEnum expected;
-
-        TestData(final ThingEnum firstData, final ThingEnum secondData,
-                 final StatusEnum expectedValue) {
-            this.first = firstData;
-            this.second = secondData;
-            this.expected = expectedValue;
-
-            Assert.assertNotNull("Result can't be as null", expected);
-        }
     }
 }
