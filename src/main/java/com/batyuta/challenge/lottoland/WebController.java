@@ -17,48 +17,99 @@
 
 package com.batyuta.challenge.lottoland;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import com.batyuta.challenge.lottoland.vo.UserVO;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
-import java.util.concurrent.atomic.AtomicLong;
+import javax.validation.Valid;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * The main WEB controller.
  */
-@RestController
+@Controller
 public class WebController {
-    /**
-     * Message template.
-     */
-    private static final String MESSAGE_TEMPLATE = "Hello, %s!";
-    /**
-     * Request counter.
-     */
-    private final AtomicLong counter = new AtomicLong();
 
     /**
-     * The root path processor.
-     *
-     * @return response
+     * This is a user db.
      */
-    @GetMapping("/")
-    public String index() {
-        return "Greetings from Spring Boot!";
+    private List<UserVO> userVOS = Arrays.asList(
+            new UserVO("ana@yahoo.com"),
+            new UserVO("bob@yahoo.com"),
+            new UserVO("john@yahoo.com"),
+            new UserVO("mary@yahoo.com")
+    );
+
+    /**
+     * Saves user.
+     *
+     * @param userVO user VO
+     * @param result result
+     * @param model  model
+     * @return status
+     */
+    @PostMapping("/user")
+    @ResponseBody
+    public ResponseEntity<Object> saveUser(
+            final @Valid UserVO userVO,
+            final BindingResult result,
+            final Model model
+    ) {
+        if (result.hasErrors()) {
+            final List<String> errors = result.getAllErrors().stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .collect(Collectors.toList());
+
+            return new ResponseEntity<>(errors, HttpStatus.OK);
+        } else {
+            if (userVOS.stream()
+                    .anyMatch(it -> userVO.getEmail().equals(it.getEmail()))) {
+                return new ResponseEntity<>(
+                        Collections.singletonList("Email already exists!"),
+                        HttpStatus.CONFLICT
+                );
+            } else {
+                userVOS.add(userVO);
+                return new ResponseEntity<>(HttpStatus.CREATED);
+            }
+        }
     }
 
     /**
-     * The greeting request.
-     *
-     * @param name name
-     * @return greeting
+     * Gets list of users.
+     * @return user list model and view
      */
-    @GetMapping("/greeting")
-    public Greeting greeting(final
-            @RequestParam(value = "name", defaultValue = "World") String name) {
-        return new Greeting(
-                counter.incrementAndGet(),
-                String.format(MESSAGE_TEMPLATE, name)
-        );
+    @RequestMapping(value = "/users", method = RequestMethod.GET)
+    public ModelAndView users() {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("users", userVOS);
+        map.put("title", "User List");
+        map.put("body", "users");
+        return new ModelAndView("main", map);
+    }
+
+    /**
+     * Gets greetings.
+     * @return greetings model and view
+     */
+    @RequestMapping(value = "/welcome", method = RequestMethod.GET)
+    public ModelAndView welcome() {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("title", "Welcome");
+        map.put("body", "welcome");
+        return new ModelAndView("main", map);
     }
 }

@@ -33,14 +33,14 @@ import static org.springframework.test.util.AssertionErrors.assertNotNull;
  * @author Aleksei Batyuta aleksei.batiuta@gmail.com
  */
 public class StatusEnumTest {
-        /**
-         * Invalid positive test data value.
-         */
-        public static final int TEST_STATUS_INVALID_POSITIVE = 2;
-        /**
-         * Invalid negative test data value.
-         */
-        public static final int TEST_STATUS_INVALID_NEGATIVE = -2;
+    /**
+     * Invalid positive test data value.
+     */
+    public static final int TEST_STATUS_INVALID_POSITIVE = 2;
+    /**
+     * Invalid negative test data value.
+     */
+    public static final int TEST_STATUS_INVALID_NEGATIVE = -2;
 
     /**
      * Test data generator.

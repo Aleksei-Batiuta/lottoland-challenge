@@ -65,9 +65,9 @@ public class ThingEnumTest {
     /**
      * The test method.
      *
-     * @param firstThing the first test data
+     * @param firstThing  the first test data
      * @param secondThing the second test data
-     * @param expected expected result
+     * @param expected    expected result
      */
     @ParameterizedTest(
             name = "{index}: first={0}, second={1}, expected={2}"

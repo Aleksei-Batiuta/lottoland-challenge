@@ -1,5 +1,4 @@
-<?xml version="1.0"?>
-<!--
+<%--
   ~ Copyright 2022 the original author or authors.
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,18 +13,7 @@
   ~ either express or implied.
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
-  -->
-
-<!DOCTYPE suppressions PUBLIC
-        "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN"
-        "https://checkstyle.org/dtds/suppressions_1_2.dtd">
-<suppressions>
-    <!--
-    Spring Boot Application files get detected as utility classes
-    and checkstyle wants them to have a private constructor,
-    but a constructor is required to run the application.
-    By convention application classes end with *Application
-    -->
-    <suppress checks="HideUtilityClassConstructor" files=".*Application.java"/>
-    <suppress checks="HiddenField" files=".*VO.java"/>
-</suppressions>
+  --%>
+<div xmlns:jsp="http://java.sun.com/JSP/Page">
+    <p>Welcome Apache Tiles!</p>
+</div>

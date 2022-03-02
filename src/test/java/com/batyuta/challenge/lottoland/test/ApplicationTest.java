@@ -25,7 +25,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -44,23 +43,21 @@ public class ApplicationTest {
 
     /**
      * Test greeting w/o parameters.
+     *
      * @throws Exception if error appears
      */
     @Test
     public void noParamGreetingShouldReturnDefaultMessage() throws Exception {
 
         this.mockMvc
-                .perform(get("/greeting"))
+                .perform(get("/users"))
                 .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(
-                        jsonPath("$.content")
-                                .value("Hello, World!")
-                );
+                .andExpect(status().isOk());
     }
 
     /**
      * Test greeting with <i>name</i> parameter.
+     *
      * @throws Exception if error appears
      */
     @Test
@@ -68,14 +65,55 @@ public class ApplicationTest {
 
         this.mockMvc
                 .perform(
-                        get("/greeting")
-                                .param("name", "Spring Community")
+                        get("/welcome")
                 )
                 .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(
-                        jsonPath("$.content")
-                                .value("Hello, Spring Community!")
-                );
+                .andExpect(status().isOk());
+    }
+
+    /**
+     * Test main.css.
+     *
+     * @throws Exception if error appears
+     */
+    @Test
+    public void cssTest() throws Exception {
+
+        this.mockMvc
+                .perform(
+                        get("/css/main.css")
+                )
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+    /**
+     *
+     * Test lottoland.png.
+     *
+     * @throws Exception if error appears
+     */
+    @Test
+    public void logoTest() throws Exception {
+
+        this.mockMvc
+                .perform(
+                        get("/images/lottoland.png")
+                )
+                .andExpect(status().isOk());
+    }
+
+    /**
+     * Test favicon.ico.
+     *
+     * @throws Exception if error appears
+     */
+    @Test
+    public void faviconTest() throws Exception {
+
+        this.mockMvc
+                .perform(
+                        get("/favicon.ico")
+                )
+                .andExpect(status().isOk());
     }
 }
