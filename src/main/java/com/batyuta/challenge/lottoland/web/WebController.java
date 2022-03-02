@@ -15,9 +15,13 @@
  * limitations under the License.
  */
 
-package com.batyuta.challenge.lottoland;
+package com.batyuta.challenge.lottoland.web;
 
+import com.batyuta.challenge.lottoland.exception.ApplicationException;
+import com.batyuta.challenge.lottoland.service.ApplicationService;
+import com.batyuta.challenge.lottoland.service.UserLightweightService;
 import com.batyuta.challenge.lottoland.vo.UserVO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,8 +35,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,16 +44,27 @@ import java.util.stream.Collectors;
  */
 @Controller
 public class WebController {
+    /**
+     * Application Main Service.
+     */
+    private final ApplicationService applicationService;
+    /**
+     * User Service.
+     */
+    private final UserLightweightService userService;
 
     /**
-     * This is a user db.
+     * Default constructor.
+     *
+     * @param service   application service
+     * @param lwService user lightweight service
      */
-    private List<UserVO> userVOS = Arrays.asList(
-            new UserVO("ana@yahoo.com"),
-            new UserVO("bob@yahoo.com"),
-            new UserVO("john@yahoo.com"),
-            new UserVO("mary@yahoo.com")
-    );
+    @Autowired
+    public WebController(final ApplicationService service,
+                         final UserLightweightService lwService) {
+        this.applicationService = service;
+        this.userService = lwService;
+    }
 
     /**
      * Saves user.
@@ -75,41 +88,50 @@ public class WebController {
 
             return new ResponseEntity<>(errors, HttpStatus.OK);
         } else {
-            if (userVOS.stream()
-                    .anyMatch(it -> userVO.getEmail().equals(it.getEmail()))) {
-                return new ResponseEntity<>(
-                        Collections.singletonList("Email already exists!"),
-                        HttpStatus.CONFLICT
-                );
-            } else {
-                userVOS.add(userVO);
-                return new ResponseEntity<>(HttpStatus.CREATED);
-            }
+            applicationService.saveUser(userService.toEntity(userVO));
+            return new ResponseEntity<>(HttpStatus.CREATED);
         }
     }
 
     /**
      * Gets list of users.
+     *
      * @return user list model and view
      */
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     public ModelAndView users() {
         HashMap<String, Object> map = new HashMap<>();
-        map.put("users", userVOS);
-        map.put("title", "User List");
+        map.put(
+                "users",
+                userService.getViews(
+                        applicationService.getAllUsers()
+                )
+        );
+        map.put("title", "title.users");
         map.put("body", "users");
         return new ModelAndView("main", map);
     }
 
     /**
      * Gets greetings.
+     *
      * @return greetings model and view
      */
     @RequestMapping(value = "/welcome", method = RequestMethod.GET)
     public ModelAndView welcome() {
         HashMap<String, Object> map = new HashMap<>();
-        map.put("title", "Welcome");
+        map.put("title", "title.welcome");
         map.put("body", "welcome");
         return new ModelAndView("main", map);
+    }
+
+    /**
+     * Gets greetings.
+     *
+     * @return greetings model and view
+     */
+    @RequestMapping(value = "/exception", method = RequestMethod.GET)
+    public ModelAndView exception() {
+        throw new ApplicationException("error.unknown");
     }
 }

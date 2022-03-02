@@ -1,4 +1,6 @@
-<%@ taglib prefix="frm" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <%--
   ~ Copyright 2022 the original author or authors.
   ~
@@ -16,5 +18,19 @@
   ~ limitations under the License.
   --%>
 <div xmlns:jsp="http://java.sun.com/JSP/Page">
-    <p><frm:message key="label.welcome"/></p>
+    <div class="alert"></div>
+    <div>
+        <c:choose>
+            <c:when test="${empty param.messages}">
+                <p><fmt:message key="error.unknown">
+                    <fmt:param value=""/>
+                </fmt:message></p>
+            </c:when>
+            <c:otherwise>
+                <c:forEach var="message" items="${param.messages}">
+                    <p>${message}</p>
+                </c:forEach>
+            </c:otherwise>
+        </c:choose>
+    </div>
 </div>

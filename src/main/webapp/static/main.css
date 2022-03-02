@@ -15,30 +15,35 @@
  * limitations under the License.
  */
 
-package com.batyuta.challenge.lottoland.vo;
+.footer {
+    position: absolute;
+    bottom: 0;
+}
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+table {
+    border-collapse: collapse;
+}
 
-/**
- * User VO.
- */
-@Data
-@NoArgsConstructor
-public class UserVO extends BaseVO {
-    /**
-     * User e-mail.
-     */
-    private String email;
+td, th {
+    border: 1px solid #999;
+    padding: 0.5rem;
+    text-align: left;
+}
 
-    /**
-     * Default constructor.
-     *
-     * @param userId    user ID
-     * @param userEmail e-mail address
-     */
-    public UserVO(final int userId, final String userEmail) {
-        super(userId);
-        this.email = userEmail;
-    }
+.alert {
+    width: 24px;
+    height: 24px;
+    background-image: url("warning.svg");
+    background-repeat: no-repeat no-repeat;
+    background-position: center center;
+    background-size: cover;
+}
+
+.logo {
+    background-image: url("challenge.svg"), url("lottoland.png");
+    background-repeat: no-repeat no-repeat;
+    background-position: center center;
+    background-size: 150px;
+    width: 150px;
+    height: 60px;
 }

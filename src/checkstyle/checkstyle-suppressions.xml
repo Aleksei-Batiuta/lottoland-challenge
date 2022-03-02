@@ -28,4 +28,7 @@
     -->
     <suppress checks="HideUtilityClassConstructor" files=".*Application.java"/>
     <suppress checks="HiddenField" files=".*VO.java"/>
+    <suppress checks="HiddenField" files="WebExceptionHandler.java"/>
+    <suppress checks="HiddenField" files=".*Entity.java"/>
+    <suppress checks="HiddenField" files=".*DAO.java"/>
 </suppressions>

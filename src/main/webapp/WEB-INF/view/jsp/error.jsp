@@ -1,4 +1,8 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="frm" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <%--
   ~ Copyright 2022 the original author or authors.
   ~
@@ -15,6 +19,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   --%>
-<div xmlns:jsp="http://java.sun.com/JSP/Page">
-    <p><frm:message key="label.welcome"/></p>
-</div>
+<jsp:include page="main.jsp">
+    <jsp:param name="body" value="exception"/>
+    <jsp:param name="title" value="title.error"/>
+</jsp:include>

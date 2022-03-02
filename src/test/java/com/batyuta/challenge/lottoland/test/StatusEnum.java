@@ -17,7 +17,7 @@
 
 package com.batyuta.challenge.lottoland.test;
 
-import com.batyuta.challenge.lottoland.ThingEnum;
+import com.batyuta.challenge.lottoland.model.ThingEnum;
 import lombok.Getter;
 
 /**

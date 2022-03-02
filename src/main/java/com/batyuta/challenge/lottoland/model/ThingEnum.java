@@ -15,11 +15,11 @@
  * limitations under the License.
  */
 
-package com.batyuta.challenge.lottoland;
+package com.batyuta.challenge.lottoland.model;
 
-import static com.batyuta.challenge.lottoland.ThingEnum.Const.EQUALS;
-import static com.batyuta.challenge.lottoland.ThingEnum.Const.GREAT;
-import static com.batyuta.challenge.lottoland.ThingEnum.Const.LESS;
+import static com.batyuta.challenge.lottoland.model.ThingEnum.Const.EQUALS;
+import static com.batyuta.challenge.lottoland.model.ThingEnum.Const.GREAT;
+import static com.batyuta.challenge.lottoland.model.ThingEnum.Const.LESS;
 
 /**
  * Enum of things.

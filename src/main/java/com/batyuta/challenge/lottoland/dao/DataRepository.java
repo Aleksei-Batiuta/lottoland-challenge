@@ -15,30 +15,23 @@
  * limitations under the License.
  */
 
-package com.batyuta.challenge.lottoland.vo;
+package com.batyuta.challenge.lottoland.dao;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.batyuta.challenge.lottoland.model.UserEntity;
+import lombok.Getter;
+import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * User VO.
+ * Data repository class.
  */
-@Data
-@NoArgsConstructor
-public class UserVO extends BaseVO {
+@Component
+@Getter
+public class DataRepository {
     /**
-     * User e-mail.
+     * This is a user db.
      */
-    private String email;
-
-    /**
-     * Default constructor.
-     *
-     * @param userId    user ID
-     * @param userEmail e-mail address
-     */
-    public UserVO(final int userId, final String userEmail) {
-        super(userId);
-        this.email = userEmail;
-    }
+    private final List<UserEntity> userList = new ArrayList<>();
 }

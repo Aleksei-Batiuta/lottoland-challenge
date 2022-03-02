@@ -18,27 +18,30 @@
 package com.batyuta.challenge.lottoland.vo;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
- * User VO.
+ * Base View class.
  */
 @Data
-@NoArgsConstructor
-public class UserVO extends BaseVO {
+public abstract class BaseVO {
     /**
-     * User e-mail.
+     * View ID.
      */
-    private String email;
+    private int id;
+
+    /**
+     * Default no arguments Constructor.
+     */
+    public BaseVO() {
+        this(-1);
+    }
 
     /**
      * Default constructor.
      *
-     * @param userId    user ID
-     * @param userEmail e-mail address
+     * @param id view ID
      */
-    public UserVO(final int userId, final String userEmail) {
-        super(userId);
-        this.email = userEmail;
+    public BaseVO(final int id) {
+        this.id = id;
     }
 }

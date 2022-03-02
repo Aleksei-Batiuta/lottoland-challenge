@@ -81,13 +81,13 @@ public class ApplicationTest {
 
         this.mockMvc
                 .perform(
-                        get("/css/main.css")
+                        get("/main.css")
                 )
                 .andDo(print())
                 .andExpect(status().isOk());
     }
+
     /**
-     *
      * Test lottoland.png.
      *
      * @throws Exception if error appears
@@ -97,7 +97,7 @@ public class ApplicationTest {
 
         this.mockMvc
                 .perform(
-                        get("/images/lottoland.png")
+                        get("/lottoland.png")
                 )
                 .andExpect(status().isOk());
     }

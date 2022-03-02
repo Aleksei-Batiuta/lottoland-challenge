@@ -15,6 +15,15 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   --%>
-<div xmlns:jsp="http://java.sun.com/JSP/Page">
-    <p><frm:message key="label.welcome"/></p>
-</div>
+
+<ul>
+    <li>
+        <a href="${pageContext.request.contextPath}/welcome"><frm:message key="title.welcome"/></a>
+    </li>
+    <li>
+        <a href="${pageContext.request.contextPath}/users"><frm:message key="title.users"/></a>
+    </li>
+    <li>
+        <a href="${pageContext.request.contextPath}/exception"><frm:message key="title.error"/></a>
+    </li>
+</ul>

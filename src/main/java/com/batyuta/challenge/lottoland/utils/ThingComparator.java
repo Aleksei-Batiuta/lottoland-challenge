@@ -15,12 +15,14 @@
  * limitations under the License.
  */
 
-package com.batyuta.challenge.lottoland;
+package com.batyuta.challenge.lottoland.utils;
+
+import com.batyuta.challenge.lottoland.model.ThingEnum;
 
 import java.util.Comparator;
 
-import static com.batyuta.challenge.lottoland.ThingEnum.Const.EQUALS;
-import static com.batyuta.challenge.lottoland.ThingEnum.Const.LESS;
+import static com.batyuta.challenge.lottoland.model.ThingEnum.Const.EQUALS;
+import static com.batyuta.challenge.lottoland.model.ThingEnum.Const.LESS;
 
 /**
  * Things comparator.

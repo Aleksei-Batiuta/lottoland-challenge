@@ -15,30 +15,10 @@
  * limitations under the License.
  */
 
-package com.batyuta.challenge.lottoland.vo;
-
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 /**
- * User VO.
+ * The classes in this package implements
+ * the Application Exception classes.
+ *
+ * @author Aleksei Batuita
  */
-@Data
-@NoArgsConstructor
-public class UserVO extends BaseVO {
-    /**
-     * User e-mail.
-     */
-    private String email;
-
-    /**
-     * Default constructor.
-     *
-     * @param userId    user ID
-     * @param userEmail e-mail address
-     */
-    public UserVO(final int userId, final String userEmail) {
-        super(userId);
-        this.email = userEmail;
-    }
-}
+package com.batyuta.challenge.lottoland.exception;

@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="frm" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <%--
   ~ Copyright 2022 the original author or authors.
@@ -19,12 +20,12 @@
 <div xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:jsp="http://java.sun.com/JSP/Page">
     <c:choose>
         <c:when test="${empty users}">
-            Table is empty.
+            <frm:message key="label.table.empty"/>
         </c:when>
         <c:otherwise>
             <table>
                 <tr>
-                    <th>E-Mail</th>
+                    <th><frm:message key="label.email"/></th>
                 </tr>
                 <c:forEach var="user" items="${users}">
                     <tr>

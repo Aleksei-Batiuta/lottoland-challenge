@@ -62,7 +62,6 @@
         </profile>
     </profiles>
     <dependencies>
-
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
@@ -100,6 +99,11 @@
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>javax.persistence</groupId>
+            <artifactId>javax.persistence-api</artifactId>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
@@ -128,6 +132,10 @@
             </resource>
             <resource>
                 <directory>src/main/webapp</directory>
+            </resource>
+            <resource>
+                <directory>src/main/resources/messages</directory>
+                <filtering>true</filtering>
             </resource>
         </resources>
         <plugins>

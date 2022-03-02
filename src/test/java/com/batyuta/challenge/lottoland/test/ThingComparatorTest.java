@@ -17,20 +17,20 @@
 
 package com.batyuta.challenge.lottoland.test;
 
-import com.batyuta.challenge.lottoland.ThingComparator;
-import com.batyuta.challenge.lottoland.ThingEnum;
+import com.batyuta.challenge.lottoland.model.ThingEnum;
+import com.batyuta.challenge.lottoland.utils.ThingComparator;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
+import static com.batyuta.challenge.lottoland.model.ThingEnum.PAPER;
+import static com.batyuta.challenge.lottoland.model.ThingEnum.ROCK;
+import static com.batyuta.challenge.lottoland.model.ThingEnum.SCISSORS;
 import static com.batyuta.challenge.lottoland.test.StatusEnum.EQUALS;
 import static com.batyuta.challenge.lottoland.test.StatusEnum.GREAT;
 import static com.batyuta.challenge.lottoland.test.StatusEnum.LESS;
-import static com.batyuta.challenge.lottoland.ThingEnum.PAPER;
-import static com.batyuta.challenge.lottoland.ThingEnum.ROCK;
-import static com.batyuta.challenge.lottoland.ThingEnum.SCISSORS;
 import static org.springframework.test.util.AssertionErrors.assertEquals;
 
 /**

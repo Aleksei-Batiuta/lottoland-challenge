@@ -15,30 +15,28 @@
  * limitations under the License.
  */
 
-package com.batyuta.challenge.lottoland.vo;
+package com.batyuta.challenge.lottoland.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Entity;
+
 /**
- * User VO.
+ * User entity.
  */
+@Entity
 @Data
 @NoArgsConstructor
-public class UserVO extends BaseVO {
+public class UserEntity extends NamedEntity {
     /**
-     * User e-mail.
-     */
-    private String email;
-
-    /**
-     * Default constructor.
+     * Default Constructor.
      *
-     * @param userId    user ID
-     * @param userEmail e-mail address
+     * @param userId   user ID
+     * @param userName username
      */
-    public UserVO(final int userId, final String userEmail) {
-        super(userId);
-        this.email = userEmail;
+    public UserEntity(final int userId,
+                      final String userName) {
+        super(userId, userName);
     }
 }

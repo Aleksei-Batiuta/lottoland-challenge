@@ -15,17 +15,10 @@
  * limitations under the License.
  */
 
-.footer {
-    position: absolute;
-    bottom: 0;
-}
-
-table {
-    border-collapse: collapse;
-}
-
-td, th {
-    border: 1px solid #999;
-    padding: 0.5rem;
-    text-align: left;
-}
+/**
+ * The classes in this package implements
+ * the helpers.
+ *
+ * @author Aleksei Batuita
+ */
+package com.batyuta.challenge.lottoland.utils;
