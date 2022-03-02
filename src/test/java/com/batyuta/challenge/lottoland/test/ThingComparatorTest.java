@@ -17,7 +17,6 @@
 
 package com.batyuta.challenge.lottoland.test;
 
-import com.batyuta.challenge.lottoland.StatusEnum;
 import com.batyuta.challenge.lottoland.ThingComparator;
 import com.batyuta.challenge.lottoland.ThingEnum;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -26,9 +25,9 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
-import static com.batyuta.challenge.lottoland.StatusEnum.EQUALS;
-import static com.batyuta.challenge.lottoland.StatusEnum.GREAT;
-import static com.batyuta.challenge.lottoland.StatusEnum.LESS;
+import static com.batyuta.challenge.lottoland.test.StatusEnum.EQUALS;
+import static com.batyuta.challenge.lottoland.test.StatusEnum.GREAT;
+import static com.batyuta.challenge.lottoland.test.StatusEnum.LESS;
 import static com.batyuta.challenge.lottoland.ThingEnum.PAPER;
 import static com.batyuta.challenge.lottoland.ThingEnum.ROCK;
 import static com.batyuta.challenge.lottoland.ThingEnum.SCISSORS;

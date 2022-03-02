@@ -17,9 +17,9 @@
 
 package com.batyuta.challenge.lottoland;
 
-import static com.batyuta.challenge.lottoland.StatusEnum.Const.EQUALS;
-import static com.batyuta.challenge.lottoland.StatusEnum.Const.GREAT;
-import static com.batyuta.challenge.lottoland.StatusEnum.Const.LESS;
+import static com.batyuta.challenge.lottoland.ThingEnum.Const.EQUALS;
+import static com.batyuta.challenge.lottoland.ThingEnum.Const.GREAT;
+import static com.batyuta.challenge.lottoland.ThingEnum.Const.LESS;
 
 /**
  * Enum of things.
@@ -98,12 +98,30 @@ public enum ThingEnum {
      * Compare two things.
      *
      * @param o object to compare with current
-     * @return {@link StatusEnum.Const#EQUALS} if equals,
-     * {@link StatusEnum.Const#LESS} if less and
-     * {@link StatusEnum.Const#GREAT} if this is great of compared value
+     * @return {@link Const#EQUALS} if equals,
+     * {@link Const#LESS} if less and
+     * {@link Const#GREAT} if this is great of compared value
      */
     public int compareToEnum(final ThingEnum o) {
         // it should be implemented for each value
         throw new UnsupportedOperationException();
+    }
+
+    /**
+     * The constant helper.
+     */
+    public static class Const {
+        /**
+         * a great value.
+         */
+        public static final int GREAT = 1;
+        /**
+         * a equals value.
+         */
+        public static final int EQUALS = 0;
+        /**
+         * a less value.
+         */
+        public static final int LESS = -1;
     }
 }

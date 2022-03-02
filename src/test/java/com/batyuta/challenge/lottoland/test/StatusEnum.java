@@ -15,12 +15,14 @@
  * limitations under the License.
  */
 
-package com.batyuta.challenge.lottoland;
+package com.batyuta.challenge.lottoland.test;
 
+import com.batyuta.challenge.lottoland.ThingEnum;
 import lombok.Getter;
 
 /**
- * The status enums.
+ * The status enums. It's used for visualization of
+ * comparing test cases
  *
  * @author Aleksei Batyuta aleksei.batiuta@gmail.com
  */
@@ -29,15 +31,15 @@ public enum StatusEnum {
     /**
      * the great flag.
      */
-    GREAT(Const.GREAT),
+    GREAT(ThingEnum.Const.GREAT),
     /**
      * the equals flag.
      */
-    EQUALS(Const.EQUALS),
+    EQUALS(ThingEnum.Const.EQUALS),
     /**
      * the less flag.
      */
-    LESS(Const.LESS);
+    LESS(ThingEnum.Const.LESS);
 
     /**
      * the flag value.
@@ -62,32 +64,14 @@ public enum StatusEnum {
      */
     public static StatusEnum valueOf(final int status) {
         switch (status) {
-            case Const.GREAT:
+            case ThingEnum.Const.GREAT:
                 return GREAT;
-            case Const.EQUALS:
+            case ThingEnum.Const.EQUALS:
                 return EQUALS;
-            case Const.LESS:
+            case ThingEnum.Const.LESS:
                 return LESS;
             default:
                 throw new IllegalArgumentException();
         }
-    }
-
-    /**
-     * The constant helper.
-     */
-    public static class Const {
-        /**
-         * a great value.
-         */
-        public static final int GREAT = 1;
-        /**
-         * a equals value.
-         */
-        public static final int EQUALS = 0;
-        /**
-         * a less value.
-         */
-        public static final int LESS = -1;
     }
 }

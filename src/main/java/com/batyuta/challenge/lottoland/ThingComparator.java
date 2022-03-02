@@ -19,8 +19,8 @@ package com.batyuta.challenge.lottoland;
 
 import java.util.Comparator;
 
-import static com.batyuta.challenge.lottoland.StatusEnum.Const.EQUALS;
-import static com.batyuta.challenge.lottoland.StatusEnum.Const.LESS;
+import static com.batyuta.challenge.lottoland.ThingEnum.Const.EQUALS;
+import static com.batyuta.challenge.lottoland.ThingEnum.Const.LESS;
 
 /**
  * Things comparator.
@@ -34,9 +34,9 @@ public class ThingComparator implements Comparator<ThingEnum> {
      *
      * @param o1 the first thing
      * @param o2 the second thing
-     * @return {@link StatusEnum.Const#EQUALS} if equals,
-     * {@link StatusEnum.Const#LESS} if less and
-     * {@link StatusEnum.Const#GREAT} if this is great of compared value
+     * @return {@link ThingEnum.Const#EQUALS} if equals,
+     * {@link ThingEnum.Const#LESS} if less and
+     * {@link ThingEnum.Const#GREAT} if this is great of compared value
      */
     @Override
     public int compare(final ThingEnum o1, final ThingEnum o2) {
