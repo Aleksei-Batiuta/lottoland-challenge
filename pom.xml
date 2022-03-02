@@ -43,10 +43,24 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <java.version>1.8</java.version>
         <maven.test.failure.ignore>true</maven.test.failure.ignore>
-<!--        <maven.test.skip>true</maven.test.skip>
-        <checkstyle.skip>true</checkstyle.skip>-->
     </properties>
-
+    <profiles>
+        <profile>
+            <!-- Runs all plugins such as checkstyle, unit tests and etc -->
+            <id>prod</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <!-- Skips checkstyle and unit tests -->
+            <id>dev</id>
+            <properties>
+                <maven.test.skip>true</maven.test.skip>
+                <checkstyle.skip>true</checkstyle.skip>
+            </properties>
+        </profile>
+    </profiles>
     <dependencies>
 
         <dependency>
