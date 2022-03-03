@@ -17,7 +17,8 @@
 
 package com.batyuta.challenge.lottoland.test;
 
-import com.batyuta.challenge.lottoland.model.ThingEnum;
+import com.batyuta.challenge.lottoland.enums.StatusEnum;
+import com.batyuta.challenge.lottoland.enums.ThingEnum;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -49,9 +50,9 @@ public class StatusEnumTest {
      */
     public static Stream<? extends Arguments> testData() {
         return Stream.of(
-                Arguments.of(ThingEnum.Const.GREAT, StatusEnum.GREAT),
-                Arguments.of(ThingEnum.Const.EQUALS, StatusEnum.EQUALS),
-                Arguments.of(ThingEnum.Const.LESS, StatusEnum.LESS),
+                Arguments.of(ThingEnum.Const.GREAT, StatusEnum.WIN),
+                Arguments.of(ThingEnum.Const.EQUALS, StatusEnum.DRAW),
+                Arguments.of(ThingEnum.Const.LESS, StatusEnum.LOS),
                 Arguments.of(
                         TEST_STATUS_INVALID_NEGATIVE,
                         new IllegalArgumentException()

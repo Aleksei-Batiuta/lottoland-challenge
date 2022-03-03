@@ -17,7 +17,8 @@
 
 package com.batyuta.challenge.lottoland.test;
 
-import com.batyuta.challenge.lottoland.model.ThingEnum;
+import com.batyuta.challenge.lottoland.enums.StatusEnum;
+import com.batyuta.challenge.lottoland.enums.ThingEnum;
 import com.batyuta.challenge.lottoland.utils.ThingComparator;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -25,12 +26,12 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
-import static com.batyuta.challenge.lottoland.model.ThingEnum.PAPER;
-import static com.batyuta.challenge.lottoland.model.ThingEnum.ROCK;
-import static com.batyuta.challenge.lottoland.model.ThingEnum.SCISSORS;
-import static com.batyuta.challenge.lottoland.test.StatusEnum.EQUALS;
-import static com.batyuta.challenge.lottoland.test.StatusEnum.GREAT;
-import static com.batyuta.challenge.lottoland.test.StatusEnum.LESS;
+import static com.batyuta.challenge.lottoland.enums.StatusEnum.DRAW;
+import static com.batyuta.challenge.lottoland.enums.StatusEnum.LOS;
+import static com.batyuta.challenge.lottoland.enums.StatusEnum.WIN;
+import static com.batyuta.challenge.lottoland.enums.ThingEnum.PAPER;
+import static com.batyuta.challenge.lottoland.enums.ThingEnum.ROCK;
+import static com.batyuta.challenge.lottoland.enums.ThingEnum.SCISSORS;
 import static org.springframework.test.util.AssertionErrors.assertEquals;
 
 /**
@@ -51,22 +52,22 @@ public class ThingComparatorTest {
      */
     public static Stream<? extends Arguments> testData() {
         return Stream.of(
-                Arguments.of(ROCK, null, GREAT),
-                Arguments.of(ROCK, ROCK, EQUALS),
-                Arguments.of(ROCK, PAPER, LESS),
-                Arguments.of(ROCK, SCISSORS, GREAT),
-                Arguments.of(PAPER, null, GREAT),
-                Arguments.of(PAPER, ROCK, GREAT),
-                Arguments.of(PAPER, PAPER, EQUALS),
-                Arguments.of(PAPER, SCISSORS, LESS),
-                Arguments.of(SCISSORS, null, GREAT),
-                Arguments.of(SCISSORS, ROCK, LESS),
-                Arguments.of(SCISSORS, PAPER, GREAT),
-                Arguments.of(SCISSORS, SCISSORS, EQUALS),
-                Arguments.of(null, null, EQUALS),
-                Arguments.of(null, ROCK, LESS),
-                Arguments.of(null, PAPER, LESS),
-                Arguments.of(null, SCISSORS, LESS)
+                Arguments.of(ROCK, null, WIN),
+                Arguments.of(ROCK, ROCK, DRAW),
+                Arguments.of(ROCK, PAPER, LOS),
+                Arguments.of(ROCK, SCISSORS, WIN),
+                Arguments.of(PAPER, null, WIN),
+                Arguments.of(PAPER, ROCK, WIN),
+                Arguments.of(PAPER, PAPER, DRAW),
+                Arguments.of(PAPER, SCISSORS, LOS),
+                Arguments.of(SCISSORS, null, WIN),
+                Arguments.of(SCISSORS, ROCK, LOS),
+                Arguments.of(SCISSORS, PAPER, WIN),
+                Arguments.of(SCISSORS, SCISSORS, DRAW),
+                Arguments.of(null, null, DRAW),
+                Arguments.of(null, ROCK, LOS),
+                Arguments.of(null, PAPER, LOS),
+                Arguments.of(null, SCISSORS, LOS)
         );
     }
 

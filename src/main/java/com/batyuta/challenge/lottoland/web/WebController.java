@@ -18,8 +18,12 @@
 package com.batyuta.challenge.lottoland.web;
 
 import com.batyuta.challenge.lottoland.exception.ApplicationException;
+import com.batyuta.challenge.lottoland.model.RoundEntity;
+import com.batyuta.challenge.lottoland.model.UserEntity;
 import com.batyuta.challenge.lottoland.service.ApplicationService;
+import com.batyuta.challenge.lottoland.service.RoundLightweightService;
 import com.batyuta.challenge.lottoland.service.UserLightweightService;
+import com.batyuta.challenge.lottoland.vo.RoundVO;
 import com.batyuta.challenge.lottoland.vo.UserVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -34,7 +38,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -52,18 +58,32 @@ public class WebController {
      * User Service.
      */
     private final UserLightweightService userService;
+    /**
+     * Round Service.
+     */
+    private final RoundLightweightService roundService;
+    /**
+     * HTTP Request.
+     */
+    private final HttpServletRequest request;
 
     /**
      * Default constructor.
      *
-     * @param service   application service
-     * @param lwService user lightweight service
+     * @param service     application service
+     * @param uService    user lightweight service
+     * @param rService    round lightweight service
+     * @param httpRequest HTTP Servlet Request
      */
     @Autowired
     public WebController(final ApplicationService service,
-                         final UserLightweightService lwService) {
+                         final UserLightweightService uService,
+                         final RoundLightweightService rService,
+                         final HttpServletRequest httpRequest) {
         this.applicationService = service;
-        this.userService = lwService;
+        this.userService = uService;
+        this.roundService = rService;
+        this.request = httpRequest;
     }
 
     /**
@@ -117,12 +137,70 @@ public class WebController {
      *
      * @return greetings model and view
      */
-    @RequestMapping(value = "/welcome", method = RequestMethod.GET)
-    public ModelAndView welcome() {
+    @RequestMapping(value = "/game", method = RequestMethod.GET)
+    public ModelAndView game() {
+        UserVO userVO = getOrCreateUserVO();
+
+        return getGameModelAndView(userVO);
+    }
+
+    /**
+     * new Round.
+     *
+     * @return game model and view
+     */
+    @RequestMapping(value = "/new", method = RequestMethod.POST)
+    public ModelAndView newRound() {
+        UserVO userVO = getOrCreateUserVO();
+        RoundEntity round = applicationService.newRoundByUserId(userVO.getId());
+
+        return getGameModelAndView(userVO);
+    }
+
+    /**
+     * new Round.
+     *
+     * @return game model and view
+     */
+    @RequestMapping(value = "/reset", method = RequestMethod.POST)
+    public ModelAndView resetGame() {
+        UserVO userVO = getOrCreateUserVO();
+        applicationService.deleteAllRoundsByUserId(userVO.getId());
+
+        return getGameModelAndView(userVO);
+    }
+
+    private ModelAndView getGameModelAndView(final UserVO userVO) {
+        Collection<RoundVO> rounds = roundService.getViews(
+                applicationService.getRoundsByUserId(userVO.getId())
+        );
+        int totalRounds = applicationService.getTotalRounds();
+        int firstRounds = applicationService.getFirstRounds();
+        int secondRounds = applicationService.getSecondRounds();
+        int totalDraws = applicationService.getDraws();
+
         HashMap<String, Object> map = new HashMap<>();
-        map.put("title", "title.welcome");
-        map.put("body", "welcome");
+        map.put("title", "title.game");
+        map.put("body", "game");
+        map.put("round", rounds.size());
+        map.put("rounds", rounds);
+        map.put("totalrounds", totalRounds);
+        map.put("firstrounds", firstRounds);
+        map.put("secondrounds", secondRounds);
+        map.put("totaldraws", totalDraws);
         return new ModelAndView("main", map);
+    }
+
+    private UserVO getOrCreateUserVO() {
+        UserVO userVO = (UserVO) this.request.getSession().getAttribute("user");
+
+        UserEntity userEntity = applicationService.getOrCreateUser(
+                userService.toEntity(userVO)
+        );
+        userVO = userService.toView(userEntity);
+
+        this.request.getSession().setAttribute("user", userVO);
+        return userVO;
     }
 
     /**

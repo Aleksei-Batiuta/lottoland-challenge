@@ -17,11 +17,16 @@
 
 package com.batyuta.challenge.lottoland.service;
 
+import com.batyuta.challenge.lottoland.enums.StatusEnum;
+import com.batyuta.challenge.lottoland.enums.ThingEnum;
+import com.batyuta.challenge.lottoland.model.RoundEntity;
 import com.batyuta.challenge.lottoland.model.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
+import java.util.Random;
+import java.util.UUID;
 
 /**
  * The General Application Service.
@@ -29,18 +34,41 @@ import java.util.Collection;
 @Component
 public class ApplicationService {
     /**
+     * Random instance.
+     */
+    private static final Random RANDOM = new Random();
+    /**
      * User DAO Service.
      */
     private final UserService userService;
+    /**
+     * Rounds DAO Service.
+     */
+    private final RoundService roundService;
 
     /**
      * Default constructor.
      *
-     * @param service user DAO service
+     * @param service  user DAO service
+     * @param rService round DAO service
      */
     @Autowired
-    public ApplicationService(final UserService service) {
+    public ApplicationService(final UserService service,
+                              final RoundService rService) {
         this.userService = service;
+        this.roundService = rService;
+    }
+
+    /**
+     * Gets random integer.
+     *
+     * @param min minimal value
+     * @param max maximal value
+     * @return number
+     */
+    private static int getRandomNumberUsingNextInt(final int min,
+                                                   final int max) {
+        return RANDOM.nextInt(max - min + 1) + min;
     }
 
     /**
@@ -57,9 +85,160 @@ public class ApplicationService {
      * Saves user.
      *
      * @param user user
+     * @return updated user entity
      * @see UserService#save(UserEntity)
      */
-    public void saveUser(final UserEntity user) {
-        userService.save(user);
+    public UserEntity saveUser(final UserEntity user) {
+        return userService.save(user);
+    }
+
+    /**
+     * Gets user by user ID.
+     *
+     * @param userId user ID
+     * @return user
+     * @throws com.batyuta.challenge.lottoland.exception.DaoException
+     * if user was not found
+     */
+    public UserEntity getUserById(final int userId) {
+        return userService.getUserById(userId);
+    }
+
+    /**
+     * Creates a new or gets existed {@link UserEntity}
+     * from repository.
+     *
+     * @param user user entity
+     * @return new or existed user
+     */
+    public UserEntity getOrCreateUser(final UserEntity user) {
+        UserEntity userEntity;
+        if (user == null || user.isNew()) {
+            userEntity = saveUser(
+                    new UserEntity(
+                            UserEntity.NEW_ENTITY_ID,
+                            UUID.randomUUID().toString()
+                    )
+            );
+        } else {
+            userEntity = getUserById(user.getId());
+        }
+        return userEntity;
+    }
+
+    /**
+     * Gets rounds by user ID.
+     *
+     * @param userId user ID
+     * @return rounds
+     */
+    public Collection<RoundEntity> getRoundsByUserId(final int userId) {
+        return roundService.getRoundsByUserId(userId);
+    }
+
+    /**
+     * Saves round.
+     *
+     * @param round round
+     * @return saved round
+     */
+    public RoundEntity saveRound(final RoundEntity round) {
+        return roundService.save(round);
+    }
+
+    /**
+     * Deletes all rounds by user ID.
+     *
+     * @param userId user ID
+     */
+    public void deleteAllRoundsByUserId(final int userId) {
+        roundService.deleteAllRoundsByUserId(userId);
+    }
+
+    /**
+     * Generates a new round and saves it.
+     *
+     * @param userId user ID
+     * @return generated round
+     */
+    public RoundEntity newRoundByUserId(final int userId) {
+        ThingEnum player1;
+        ThingEnum player2;
+        if (getRandomNumberUsingNextInt(0, 1) == 1) {
+            player1 = getRandom();
+            player2 = ThingEnum.ROCK;
+        } else {
+            player1 = ThingEnum.ROCK;
+            player2 = getRandom();
+
+        }
+
+        return saveRound(
+                new RoundEntity(
+                        RoundEntity.NEW_ENTITY_ID,
+                        userId,
+                        player1,
+                        player2,
+                        StatusEnum.valueOf(
+                                player1.compareToEnum(player2)
+                        )
+                )
+        );
+    }
+
+    /**
+     * Gets random Thing.
+     *
+     * @return random thing
+     */
+    private ThingEnum getRandom() {
+        ThingEnum[] values = ThingEnum.values();
+        return values[getRandomNumberUsingNextInt(0, values.length - 1)];
+    }
+
+    /**
+     * Gets total played rounds.
+     *
+     * @return number of rounds
+     */
+    public int getTotalRounds() {
+        return roundService.getTotalRounds();
+    }
+
+    /**
+     * Gets total wins.
+     *
+     * @return number of rounds
+     */
+    public int getFirstRounds() {
+        return getTotalRounds(StatusEnum.WIN);
+    }
+
+    /**
+     * Gets total loses.
+     *
+     * @return number of rounds
+     */
+    public int getSecondRounds() {
+        return getTotalRounds(StatusEnum.LOS);
+    }
+
+    /**
+     * Gets total draws.
+     *
+     * @return number of rounds
+     */
+    public int getDraws() {
+        return getTotalRounds(StatusEnum.DRAW);
+    }
+
+    /**
+     * Gets total played rounds by round status.
+     *
+     * @param status round status
+     * @return number of rounds
+     */
+    private int getTotalRounds(final StatusEnum status) {
+        return roundService.getTotalRounds(status);
     }
 }

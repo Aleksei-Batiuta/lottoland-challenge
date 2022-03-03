@@ -20,7 +20,6 @@ package com.batyuta.challenge.lottoland.dao;
 import com.batyuta.challenge.lottoland.model.BaseEntity;
 
 import java.util.Collection;
-import java.util.Optional;
 
 /**
  * Interface for the CRUD DAO.
@@ -31,11 +30,12 @@ public interface CrudDAO<T extends BaseEntity> {
 
     /**
      * Gets entity by ID.
+     * todo: check to list size
      *
      * @param id entity ID
      * @return entity instance
      */
-    Optional<T> get(int id);
+    T get(int id);
 
     /**
      * Gets all entities.
@@ -51,16 +51,17 @@ public interface CrudDAO<T extends BaseEntity> {
      * Saves a new entity.
      *
      * @param t entity
-     * @return entity ID.
+     * @return entity
      */
-    int create(T t);
+    T create(T t);
 
     /**
      * Updates entity.
      *
      * @param t entity
+     * @return updated entity
      */
-    void update(T t);
+    T update(T t);
 
     /**
      * Deletes entity.

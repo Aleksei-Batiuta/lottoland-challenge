@@ -65,7 +65,7 @@ public class ApplicationTest {
 
         this.mockMvc
                 .perform(
-                        get("/welcome")
+                        get("/game")
                 )
                 .andDo(print())
                 .andExpect(status().isOk());

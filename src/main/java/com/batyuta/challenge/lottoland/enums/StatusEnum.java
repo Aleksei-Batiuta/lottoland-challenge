@@ -15,9 +15,8 @@
  * limitations under the License.
  */
 
-package com.batyuta.challenge.lottoland.test;
+package com.batyuta.challenge.lottoland.enums;
 
-import com.batyuta.challenge.lottoland.model.ThingEnum;
 import lombok.Getter;
 
 /**
@@ -27,32 +26,38 @@ import lombok.Getter;
  * @author Aleksei Batyuta aleksei.batiuta@gmail.com
  */
 @Getter
-public enum StatusEnum {
+public enum StatusEnum implements I18n {
     /**
-     * the great flag.
+     * Player won the round.
      */
-    GREAT(ThingEnum.Const.GREAT),
+    WIN(ThingEnum.Const.GREAT, "label.player.1.wins"),
     /**
-     * the equals flag.
+     * Players played a draw round.
      */
-    EQUALS(ThingEnum.Const.EQUALS),
+    DRAW(ThingEnum.Const.EQUALS, "label.players.draw"),
     /**
-     * the less flag.
+     * Player lost the round.
      */
-    LESS(ThingEnum.Const.LESS);
+    LOS(ThingEnum.Const.LESS, "label.player.2.wins");
 
     /**
      * the flag value.
      */
     private final int status;
+    /**
+     * i18n message key.
+     */
+    private final String messageKey;
 
     /**
      * Default constructor.
      *
      * @param statusValue status value.
+     * @param key i18n message key.
      */
-    StatusEnum(final int statusValue) {
+    StatusEnum(final int statusValue, final String key) {
         this.status = statusValue;
+        this.messageKey = key;
     }
 
     /**
@@ -65,13 +70,18 @@ public enum StatusEnum {
     public static StatusEnum valueOf(final int status) {
         switch (status) {
             case ThingEnum.Const.GREAT:
-                return GREAT;
+                return WIN;
             case ThingEnum.Const.EQUALS:
-                return EQUALS;
+                return DRAW;
             case ThingEnum.Const.LESS:
-                return LESS;
+                return LOS;
             default:
                 throw new IllegalArgumentException();
         }
+    }
+
+    @Override
+    public String getMessageKey() {
+        return this.messageKey;
     }
 }

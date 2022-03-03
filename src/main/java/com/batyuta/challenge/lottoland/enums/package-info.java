@@ -15,30 +15,9 @@
  * limitations under the License.
  */
 
-package com.batyuta.challenge.lottoland.dao;
-
-import com.batyuta.challenge.lottoland.model.RoundEntity;
-import com.batyuta.challenge.lottoland.model.UserEntity;
-import lombok.Getter;
-import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
-
 /**
- * Data repository class.
+ * This is {@link java.lang.Enum} implementation package.
+ *
+ * @author Aleksei Batuita
  */
-@Component
-@Getter
-public class DataRepository {
-
-    /**
-     * This is a user table.
-     */
-    private final List<UserEntity> users = new ArrayList<>();
-
-    /**
-     * This is a round table.
-     */
-    private final List<RoundEntity> rounds = new ArrayList<>();
-}
+package com.batyuta.challenge.lottoland.enums;

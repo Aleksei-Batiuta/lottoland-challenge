@@ -16,8 +16,17 @@
  */
 
 .footer {
-    position: absolute;
-    bottom: 0;
+}
+
+.scroll-container {
+    width: 50%;
+    height: 250px;
+    padding: 3px;
+}
+
+.scroll-content {
+    height: 224px;
+    overflow: auto;
 }
 
 table {

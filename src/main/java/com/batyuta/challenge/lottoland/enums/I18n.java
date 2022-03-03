@@ -15,30 +15,31 @@
  * limitations under the License.
  */
 
-package com.batyuta.challenge.lottoland.dao;
+package com.batyuta.challenge.lottoland.enums;
 
-import com.batyuta.challenge.lottoland.model.RoundEntity;
-import com.batyuta.challenge.lottoland.model.UserEntity;
-import lombok.Getter;
-import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
+import java.util.ResourceBundle;
 
 /**
- * Data repository class.
+ * Interface uses for message localization
+ * by key.
  */
-@Component
-@Getter
-public class DataRepository {
+public interface I18n {
+    /**
+     * Gets i18n message key.
+     *
+     * @return i18n message key
+     */
+    String getMessageKey();
 
     /**
-     * This is a user table.
+     * Localization for standalone runs.
+     *
+     * @return Localized name
      */
-    private final List<UserEntity> users = new ArrayList<>();
-
-    /**
-     * This is a round table.
-     */
-    private final List<RoundEntity> rounds = new ArrayList<>();
+    @Deprecated
+    default String getLocalized() {
+        return ResourceBundle
+                .getBundle("classpath:/messages/messages")
+                .getString(getMessageKey());
+    }
 }

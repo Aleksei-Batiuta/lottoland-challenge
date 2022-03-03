@@ -15,22 +15,22 @@
  * limitations under the License.
  */
 
-package com.batyuta.challenge.lottoland.model;
+package com.batyuta.challenge.lottoland.enums;
 
-import static com.batyuta.challenge.lottoland.model.ThingEnum.Const.EQUALS;
-import static com.batyuta.challenge.lottoland.model.ThingEnum.Const.GREAT;
-import static com.batyuta.challenge.lottoland.model.ThingEnum.Const.LESS;
+import static com.batyuta.challenge.lottoland.enums.ThingEnum.Const.EQUALS;
+import static com.batyuta.challenge.lottoland.enums.ThingEnum.Const.GREAT;
+import static com.batyuta.challenge.lottoland.enums.ThingEnum.Const.LESS;
 
 /**
  * Enum of things.
  *
  * @author Aleksei Batyuta aleksei.batiuta@gmail.com
  */
-public enum ThingEnum {
+public enum ThingEnum implements I18n {
     /**
      * A rock.
      */
-    ROCK {
+    ROCK("label.rock") {
         @SuppressWarnings("Duplicates")
         @Override
         public int compareToEnum(final ThingEnum o2) {
@@ -52,7 +52,7 @@ public enum ThingEnum {
     /**
      * A scissors.
      */
-    SCISSORS {
+    SCISSORS("label.scissors") {
         @SuppressWarnings("Duplicates")
         @Override
         public int compareToEnum(final ThingEnum o2) {
@@ -72,9 +72,9 @@ public enum ThingEnum {
         }
     },
     /**
-     * A papaper.
+     * A paper.
      */
-    PAPER {
+    PAPER("label.paper") {
         @SuppressWarnings("Duplicates")
         @Override
         public int compareToEnum(final ThingEnum o2) {
@@ -93,6 +93,24 @@ public enum ThingEnum {
             }
         }
     };
+    /**
+     * i18n message key.
+     */
+    private final String messageKey;
+
+    /**
+     * Default Constructor.
+     *
+     * @param key i18n message key.
+     */
+    ThingEnum(final String key) {
+        this.messageKey = key;
+    }
+
+    @Override
+    public String getMessageKey() {
+        return messageKey;
+    }
 
     /**
      * Compare two things.

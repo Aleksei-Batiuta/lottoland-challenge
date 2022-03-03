@@ -58,14 +58,29 @@ public class UserService {
      * Saves user.
      *
      * @param user user
+     * @return saved user
      * @see UserDAO#create(UserEntity)
      * @see UserDAO#update(UserEntity)
      */
-    public void save(final UserEntity user) {
+    public UserEntity save(final UserEntity user) {
+        UserEntity userEntity;
         if (user.isNew()) {
-            userDAO.create(user);
+            userEntity = userDAO.create(user);
         } else {
-            userDAO.update(user);
+            userEntity = userDAO.update(user);
         }
+        return userEntity;
+    }
+
+    /**
+     * Gets user by user ID.
+     *
+     * @param userId user ID
+     * @return user
+     * @throws com.batyuta.challenge.lottoland.exception.DaoException
+     * if user was not found
+     */
+    public UserEntity getUserById(final int userId) {
+        return userDAO.get(userId);
     }
 }

@@ -17,12 +17,12 @@
 
 package com.batyuta.challenge.lottoland.utils;
 
-import com.batyuta.challenge.lottoland.model.ThingEnum;
+import com.batyuta.challenge.lottoland.enums.ThingEnum;
 
 import java.util.Comparator;
 
-import static com.batyuta.challenge.lottoland.model.ThingEnum.Const.EQUALS;
-import static com.batyuta.challenge.lottoland.model.ThingEnum.Const.LESS;
+import static com.batyuta.challenge.lottoland.enums.ThingEnum.Const.EQUALS;
+import static com.batyuta.challenge.lottoland.enums.ThingEnum.Const.LESS;
 
 /**
  * Things comparator.

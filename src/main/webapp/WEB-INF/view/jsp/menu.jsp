@@ -18,7 +18,7 @@
 
 <ul>
     <li>
-        <a href="${pageContext.request.contextPath}/welcome"><frm:message key="title.welcome"/></a>
+        <a href="${pageContext.request.contextPath}/game"><frm:message key="title.game"/></a>
     </li>
     <li>
         <a href="${pageContext.request.contextPath}/users"><frm:message key="title.users"/></a>

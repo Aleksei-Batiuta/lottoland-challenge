@@ -27,7 +27,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -61,8 +60,8 @@ public final class UserDAO implements CrudDAO<UserEntity> {
     }
 
     @Override
-    public int create(final UserEntity user) {
-        List<UserEntity> userList = repository.getUserList();
+    public UserEntity create(final UserEntity user) {
+        List<UserEntity> userList = repository.getUsers();
         if (userList.stream()
                 .anyMatch(
                         it -> user.getName().equals(it.getName())
@@ -76,23 +75,24 @@ public final class UserDAO implements CrudDAO<UserEntity> {
             userList.add(user);
             int index = userList.size() - 1;
             user.setId(index);
-            return index;
+            return user;
         }
     }
 
     @Override
-    public void update(final UserEntity user) {
-        repository.getUserList().set(user.getId(), user);
+    public UserEntity update(final UserEntity user) {
+        repository.getUsers().set(user.getId(), user);
+        return user;
     }
 
     @Override
-    public Optional<UserEntity> get(final int id) {
-        return Optional.ofNullable(repository.getUserList().get(id));
+    public UserEntity get(final int id) {
+        return repository.getUsers().get(id);
     }
 
     @Override
     public Collection<UserEntity> getAll() {
-        return repository.getUserList().stream()
+        return repository.getUsers().stream()
                 .filter(Objects::nonNull)
                 .collect(
                         Collectors.collectingAndThen(
@@ -104,6 +104,6 @@ public final class UserDAO implements CrudDAO<UserEntity> {
 
     @Override
     public void delete(final UserEntity user) {
-        repository.getUserList().set(user.getId(), null);
+        repository.getUsers().set(user.getId(), null);
     }
 }
