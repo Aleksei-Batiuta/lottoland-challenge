@@ -18,7 +18,7 @@
 package com.batyuta.challenge.lottoland.vo;
 
 import com.batyuta.challenge.lottoland.enums.StatusEnum;
-import com.batyuta.challenge.lottoland.enums.ThingEnum;
+import com.batyuta.challenge.lottoland.enums.SignEnum;
 import lombok.Data;
 
 /**
@@ -33,11 +33,11 @@ public class RoundVO extends BaseVO {
     /**
      * Choice of first player.
      */
-    private ThingEnum player1;
+    private SignEnum player1;
     /**
      * Choice of second player.
      */
-    private ThingEnum player2;
+    private SignEnum player2;
     /**
      * Result of round for the first player.
      */
@@ -52,8 +52,8 @@ public class RoundVO extends BaseVO {
      * @param statusEnum  status
      */
     public RoundVO(final int user,
-                   final ThingEnum player1Enum,
-                   final ThingEnum player2Enum,
+                   final SignEnum player1Enum,
+                   final SignEnum player2Enum,
                    final StatusEnum statusEnum) {
         this.userId = user;
         this.player1 = player1Enum;

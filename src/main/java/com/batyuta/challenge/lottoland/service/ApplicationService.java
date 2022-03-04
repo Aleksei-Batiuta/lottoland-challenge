@@ -18,7 +18,7 @@
 package com.batyuta.challenge.lottoland.service;
 
 import com.batyuta.challenge.lottoland.enums.StatusEnum;
-import com.batyuta.challenge.lottoland.enums.ThingEnum;
+import com.batyuta.challenge.lottoland.enums.SignEnum;
 import com.batyuta.challenge.lottoland.model.RoundEntity;
 import com.batyuta.challenge.lottoland.model.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -162,13 +162,13 @@ public class ApplicationService {
      * @return generated round
      */
     public RoundEntity newRoundByUserId(final int userId) {
-        ThingEnum player1;
-        ThingEnum player2;
+        SignEnum player1;
+        SignEnum player2;
         if (getRandomNumberUsingNextInt(0, 1) == 1) {
             player1 = getRandom();
-            player2 = ThingEnum.ROCK;
+            player2 = SignEnum.ROCK;
         } else {
-            player1 = ThingEnum.ROCK;
+            player1 = SignEnum.ROCK;
             player2 = getRandom();
 
         }
@@ -191,8 +191,8 @@ public class ApplicationService {
      *
      * @return random thing
      */
-    private ThingEnum getRandom() {
-        ThingEnum[] values = ThingEnum.values();
+    private SignEnum getRandom() {
+        SignEnum[] values = SignEnum.values();
         return values[getRandomNumberUsingNextInt(0, values.length - 1)];
     }
 
@@ -220,7 +220,7 @@ public class ApplicationService {
      * @return number of rounds
      */
     public int getSecondRounds() {
-        return getTotalRounds(StatusEnum.LOS);
+        return getTotalRounds(StatusEnum.LOSS);
     }
 
     /**

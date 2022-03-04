@@ -17,41 +17,41 @@
 
 package com.batyuta.challenge.lottoland.utils;
 
-import com.batyuta.challenge.lottoland.enums.ThingEnum;
+import com.batyuta.challenge.lottoland.enums.SignEnum;
 
 import java.util.Comparator;
 
-import static com.batyuta.challenge.lottoland.enums.ThingEnum.Const.EQUALS;
-import static com.batyuta.challenge.lottoland.enums.ThingEnum.Const.LESS;
+import static com.batyuta.challenge.lottoland.enums.SignEnum.Const.DRAW;
+import static com.batyuta.challenge.lottoland.enums.SignEnum.Const.LOSS;
 
 /**
  * Things comparator.
  *
  * @author Aleksei Batiuta
  */
-public class ThingComparator implements Comparator<ThingEnum> {
+public class ThingComparator implements Comparator<SignEnum> {
 
     /**
      * Compares two things.
      *
      * @param o1 the first thing
      * @param o2 the second thing
-     * @return {@link ThingEnum.Const#EQUALS} if equals,
-     * {@link ThingEnum.Const#LESS} if less and
-     * {@link ThingEnum.Const#GREAT} if this is great of compared value
+     * @return {@link SignEnum.Const#DRAW} if equals,
+     * {@link SignEnum.Const#LOSS} if less and
+     * {@link SignEnum.Const#WIN} if this is great of compared value
      */
     @Override
-    public int compare(final ThingEnum o1, final ThingEnum o2) {
+    public int compare(final SignEnum o1, final SignEnum o2) {
         if (o1 != null) {
             // the first is NOT null
             return o1.compareToEnum(o2);
         } else {
             if (o2 == null) {
                 // both are null
-                return EQUALS;
+                return DRAW;
             } else {
                 // the first is null but the second in NOT null
-                return LESS;
+                return LOSS;
             }
         }
     }

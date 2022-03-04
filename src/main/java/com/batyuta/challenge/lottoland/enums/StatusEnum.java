@@ -30,15 +30,15 @@ public enum StatusEnum implements I18n {
     /**
      * Player won the round.
      */
-    WIN(ThingEnum.Const.GREAT, "label.player.1.wins"),
+    WIN(SignEnum.Const.WIN, "label.player.1.wins"),
     /**
      * Players played a draw round.
      */
-    DRAW(ThingEnum.Const.EQUALS, "label.players.draw"),
+    DRAW(SignEnum.Const.DRAW, "label.players.draw"),
     /**
      * Player lost the round.
      */
-    LOS(ThingEnum.Const.LESS, "label.player.2.wins");
+    LOSS(SignEnum.Const.LOSS, "label.player.2.wins");
 
     /**
      * the flag value.
@@ -69,12 +69,12 @@ public enum StatusEnum implements I18n {
      */
     public static StatusEnum valueOf(final int status) {
         switch (status) {
-            case ThingEnum.Const.GREAT:
+            case SignEnum.Const.WIN:
                 return WIN;
-            case ThingEnum.Const.EQUALS:
+            case SignEnum.Const.DRAW:
                 return DRAW;
-            case ThingEnum.Const.LESS:
-                return LOS;
+            case SignEnum.Const.LOSS:
+                return LOSS;
             default:
                 throw new IllegalArgumentException();
         }

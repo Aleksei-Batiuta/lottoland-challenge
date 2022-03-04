@@ -18,7 +18,7 @@
 package com.batyuta.challenge.lottoland.test;
 
 import com.batyuta.challenge.lottoland.enums.StatusEnum;
-import com.batyuta.challenge.lottoland.enums.ThingEnum;
+import com.batyuta.challenge.lottoland.enums.SignEnum;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -26,20 +26,20 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.stream.Stream;
 
 import static com.batyuta.challenge.lottoland.enums.StatusEnum.DRAW;
-import static com.batyuta.challenge.lottoland.enums.StatusEnum.LOS;
+import static com.batyuta.challenge.lottoland.enums.StatusEnum.LOSS;
 import static com.batyuta.challenge.lottoland.enums.StatusEnum.WIN;
-import static com.batyuta.challenge.lottoland.enums.ThingEnum.PAPER;
-import static com.batyuta.challenge.lottoland.enums.ThingEnum.ROCK;
-import static com.batyuta.challenge.lottoland.enums.ThingEnum.SCISSORS;
+import static com.batyuta.challenge.lottoland.enums.SignEnum.PAPER;
+import static com.batyuta.challenge.lottoland.enums.SignEnum.ROCK;
+import static com.batyuta.challenge.lottoland.enums.SignEnum.SCISSORS;
 import static org.springframework.test.util.AssertionErrors.assertEquals;
 import static org.springframework.test.util.AssertionErrors.assertNotNull;
 
 /**
- * The test class for the {@link ThingEnum} class.
+ * The test class for the {@link SignEnum} class.
  *
  * @author Aleksei Batiuta
  */
-public class ThingEnumTest {
+public class SignEnumTest {
     /**
      * Test data generator.
      *
@@ -49,14 +49,14 @@ public class ThingEnumTest {
         return Stream.of(
                 Arguments.of(ROCK, null, WIN),
                 Arguments.of(ROCK, ROCK, DRAW),
-                Arguments.of(ROCK, PAPER, LOS),
+                Arguments.of(ROCK, PAPER, LOSS),
                 Arguments.of(ROCK, SCISSORS, WIN),
                 Arguments.of(PAPER, null, WIN),
                 Arguments.of(PAPER, ROCK, WIN),
                 Arguments.of(PAPER, PAPER, DRAW),
-                Arguments.of(PAPER, SCISSORS, LOS),
+                Arguments.of(PAPER, SCISSORS, LOSS),
                 Arguments.of(SCISSORS, null, WIN),
-                Arguments.of(SCISSORS, ROCK, LOS),
+                Arguments.of(SCISSORS, ROCK, LOSS),
                 Arguments.of(SCISSORS, PAPER, WIN),
                 Arguments.of(SCISSORS, SCISSORS, DRAW)
         );
@@ -74,8 +74,8 @@ public class ThingEnumTest {
     )
     @MethodSource("testData")
     public void test(
-            final ThingEnum firstThing,
-            final ThingEnum secondThing,
+            final SignEnum firstThing,
+            final SignEnum secondThing,
             final StatusEnum expected) {
 
         assertNotNull(

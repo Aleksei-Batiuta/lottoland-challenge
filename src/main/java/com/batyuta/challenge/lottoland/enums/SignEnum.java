@@ -17,33 +17,33 @@
 
 package com.batyuta.challenge.lottoland.enums;
 
-import static com.batyuta.challenge.lottoland.enums.ThingEnum.Const.EQUALS;
-import static com.batyuta.challenge.lottoland.enums.ThingEnum.Const.GREAT;
-import static com.batyuta.challenge.lottoland.enums.ThingEnum.Const.LESS;
+import static com.batyuta.challenge.lottoland.enums.SignEnum.Const.DRAW;
+import static com.batyuta.challenge.lottoland.enums.SignEnum.Const.WIN;
+import static com.batyuta.challenge.lottoland.enums.SignEnum.Const.LOSS;
 
 /**
  * Enum of things.
  *
  * @author Aleksei Batyuta aleksei.batiuta@gmail.com
  */
-public enum ThingEnum implements I18n {
+public enum SignEnum implements I18n {
     /**
      * A rock.
      */
     ROCK("label.rock") {
         @SuppressWarnings("Duplicates")
         @Override
-        public int compareToEnum(final ThingEnum o2) {
+        public int compareToEnum(final SignEnum o2) {
             if (o2 == null) {
-                return GREAT;
+                return WIN;
             }
             switch (o2) {
                 case ROCK:
-                    return EQUALS;
+                    return DRAW;
                 case SCISSORS:
-                    return GREAT;
+                    return WIN;
                 case PAPER:
-                    return LESS;
+                    return LOSS;
                 default:
                     throw new IllegalArgumentException();
             }
@@ -55,17 +55,17 @@ public enum ThingEnum implements I18n {
     SCISSORS("label.scissors") {
         @SuppressWarnings("Duplicates")
         @Override
-        public int compareToEnum(final ThingEnum o2) {
+        public int compareToEnum(final SignEnum o2) {
             if (o2 == null) {
-                return GREAT;
+                return WIN;
             }
             switch (o2) {
                 case ROCK:
-                    return LESS;
+                    return LOSS;
                 case SCISSORS:
-                    return EQUALS;
+                    return DRAW;
                 case PAPER:
-                    return GREAT;
+                    return WIN;
                 default:
                     throw new IllegalArgumentException();
             }
@@ -77,17 +77,17 @@ public enum ThingEnum implements I18n {
     PAPER("label.paper") {
         @SuppressWarnings("Duplicates")
         @Override
-        public int compareToEnum(final ThingEnum o2) {
+        public int compareToEnum(final SignEnum o2) {
             if (o2 == null) {
-                return GREAT;
+                return WIN;
             }
             switch (o2) {
                 case ROCK:
-                    return GREAT;
+                    return WIN;
                 case SCISSORS:
-                    return LESS;
+                    return LOSS;
                 case PAPER:
-                    return EQUALS;
+                    return DRAW;
                 default:
                     throw new IllegalArgumentException();
             }
@@ -103,7 +103,7 @@ public enum ThingEnum implements I18n {
      *
      * @param key i18n message key.
      */
-    ThingEnum(final String key) {
+    SignEnum(final String key) {
         this.messageKey = key;
     }
 
@@ -116,11 +116,11 @@ public enum ThingEnum implements I18n {
      * Compare two things.
      *
      * @param o object to compare with current
-     * @return {@link Const#EQUALS} if equals,
-     * {@link Const#LESS} if less and
-     * {@link Const#GREAT} if this is great of compared value
+     * @return {@link Const#DRAW} if equals,
+     * {@link Const#LOSS} if less and
+     * {@link Const#WIN} if this is great of compared value
      */
-    public int compareToEnum(final ThingEnum o) {
+    public int compareToEnum(final SignEnum o) {
         // it should be implemented for each value
         throw new UnsupportedOperationException();
     }
@@ -132,14 +132,14 @@ public enum ThingEnum implements I18n {
         /**
          * a great value.
          */
-        public static final int GREAT = 1;
+        public static final int WIN = 1;
         /**
          * a equals value.
          */
-        public static final int EQUALS = 0;
+        public static final int DRAW = 0;
         /**
          * a less value.
          */
-        public static final int LESS = -1;
+        public static final int LOSS = -1;
     }
 }

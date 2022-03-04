@@ -18,7 +18,7 @@
 package com.batyuta.challenge.lottoland.model;
 
 import com.batyuta.challenge.lottoland.enums.StatusEnum;
-import com.batyuta.challenge.lottoland.enums.ThingEnum;
+import com.batyuta.challenge.lottoland.enums.SignEnum;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -38,11 +38,11 @@ public class RoundEntity extends BaseEntity {
     /**
      * Choice of first player.
      */
-    private ThingEnum player1;
+    private SignEnum player1;
     /**
      * Choice of second player.
      */
-    private ThingEnum player2;
+    private SignEnum player2;
     /**
      * Result of round for the first player.
      */
@@ -63,8 +63,8 @@ public class RoundEntity extends BaseEntity {
      */
     public RoundEntity(final Integer roundId,
                        final int user,
-                       final ThingEnum player1Enum,
-                       final ThingEnum player2Enum,
+                       final SignEnum player1Enum,
+                       final SignEnum player2Enum,
                        final StatusEnum statusEnum) {
         super(roundId);
         this.userid = user;
