@@ -17,6 +17,7 @@
 
 package com.batyuta.challenge.lottoland.dao;
 
+import com.batyuta.challenge.lottoland.exception.DaoException;
 import com.batyuta.challenge.lottoland.model.BaseEntity;
 
 import java.util.Collection;
@@ -30,22 +31,29 @@ public interface CrudDAO<T extends BaseEntity> {
 
     /**
      * Gets entity by ID.
-     * todo: check to list size
      *
      * @param id entity ID
      * @return entity instance
      */
-    T get(int id);
+    default T get(int id) {
+        throw new DaoException(
+                "error.unsupported.operation",
+                new UnsupportedOperationException()
+        );
+    }
 
     /**
      * Gets all entities.
      *
      * @return all entities
-     * @deprecated it should be removed in the feature,
-     * the paginator should be used instead of this method
+     * todo: the paginator should be used instead of this method
      */
-    @Deprecated
-    Collection<T> getAll();
+    default Collection<T> getAll() {
+        throw new DaoException(
+                "error.unsupported.operation",
+                new UnsupportedOperationException()
+        );
+    }
 
     /**
      * Saves a new entity.
@@ -53,7 +61,12 @@ public interface CrudDAO<T extends BaseEntity> {
      * @param t entity
      * @return entity
      */
-    T create(T t);
+    default T create(T t) {
+        throw new DaoException(
+                "error.unsupported.operation",
+                new UnsupportedOperationException()
+        );
+    }
 
     /**
      * Updates entity.
@@ -61,13 +74,23 @@ public interface CrudDAO<T extends BaseEntity> {
      * @param t entity
      * @return updated entity
      */
-    T update(T t);
+    default T update(T t) {
+        throw new DaoException(
+                "error.unsupported.operation",
+                new UnsupportedOperationException()
+        );
+    }
 
     /**
      * Deletes entity.
      *
      * @param t entity
      */
-    void delete(T t);
+    default void delete(T t) {
+        throw new DaoException(
+                "error.unsupported.operation",
+                new UnsupportedOperationException()
+        );
+    }
 }
 

@@ -31,4 +31,7 @@
     <suppress checks="HiddenField" files="WebExceptionHandler.java"/>
     <suppress checks="HiddenField" files=".*Entity.java"/>
     <suppress checks="HiddenField" files=".*DAO.java"/>
+    <suppress checks="AvoidNestedBlocks" files=".*.java"/>
+    <suppress checks="FinalParameters" files=".*.java"/>
+    <suppress checks="MagicNumber" files=".*Test.java"/>
 </suppressions>

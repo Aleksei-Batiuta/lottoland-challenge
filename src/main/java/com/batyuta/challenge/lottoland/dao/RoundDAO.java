@@ -19,6 +19,8 @@ package com.batyuta.challenge.lottoland.dao;
 
 import com.batyuta.challenge.lottoland.enums.StatusEnum;
 import com.batyuta.challenge.lottoland.model.RoundEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -33,6 +35,10 @@ import java.util.stream.Collectors;
  */
 @Component
 public final class RoundDAO implements CrudDAO<RoundEntity> {
+    /**
+     * Logger.
+     */
+    private final Logger log = LoggerFactory.getLogger(RoundDAO.class);
     /**
      * Data Repository.
      */
@@ -50,38 +56,31 @@ public final class RoundDAO implements CrudDAO<RoundEntity> {
 
     @Override
     public RoundEntity create(final RoundEntity round) {
-        List<RoundEntity> rounds = repository.getRounds();
-        rounds.add(round);
-        int index = rounds.size() - 1;
-        round.setId(index);
-        return round;
-    }
-
-    @Override
-    public RoundEntity update(final RoundEntity user) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public RoundEntity get(final int id) {
-        return repository.getRounds().get(id);
+        try {
+            Collection<RoundEntity> rounds = repository.getRounds();
+            rounds.add(round);
+            return round;
+        } finally {
+            log.info("create: Round {} has been saved", round);
+        }
     }
 
     @Override
     public Collection<RoundEntity> getAll() {
-        return repository.getRounds().stream()
-                .filter(Objects::nonNull)
-                .collect(
-                        Collectors.collectingAndThen(
-                                Collectors.toList(),
-                                Collections::unmodifiableList
-                        )
-                );
-    }
-
-    @Override
-    public void delete(final RoundEntity round) {
-        repository.getRounds().set(round.getId(), null);
+        List<RoundEntity> rounds = null;
+        try {
+            rounds = repository.getRounds().stream()
+                    .filter(Objects::nonNull)
+                    .collect(
+                            Collectors.collectingAndThen(
+                                    Collectors.toList(),
+                                    Collections::unmodifiableList
+                            )
+                    );
+            return rounds;
+        } finally {
+            log("getAll", rounds);
+        }
     }
 
     /**
@@ -92,15 +91,21 @@ public final class RoundDAO implements CrudDAO<RoundEntity> {
      */
     public Collection<RoundEntity> getRoundsByUserId(
             final int userId) {
-        List<RoundEntity> list = repository.getRounds().stream()
-                .filter(Objects::nonNull)
-                .filter(
-                        roundEntity ->
-                                !roundEntity.isDeleted()
-                                        && roundEntity.getUserid() == userId)
-                .collect(Collectors.toList());
-        Collections.reverse(list);
-        return Collections.unmodifiableList(list);
+        List<RoundEntity> rounds = null;
+        try {
+            List<RoundEntity> list = repository.getRounds().stream()
+                    .filter(Objects::nonNull)
+                    .filter(
+                            round ->
+                                    !round.isDeleted()
+                                            && round.getUserid() == userId)
+                    .collect(Collectors.toList());
+            Collections.reverse(list);
+            rounds = Collections.unmodifiableList(list);
+            return rounds;
+        } finally {
+            log("getRoundsByUserId: userId = " + userId, rounds);
+        }
     }
 
     /**
@@ -109,8 +114,17 @@ public final class RoundDAO implements CrudDAO<RoundEntity> {
      * @param userId user ID
      */
     public void deleteAllByUserId(final int userId) {
-        getRoundsByUserId(userId)
-                .forEach(roundEntity -> roundEntity.setDeleted(true));
+        Collection<RoundEntity> rounds = null;
+        try {
+            rounds = getRoundsByUserId(userId);
+            rounds.forEach(
+                    roundEntity ->
+// todo: it should be as concurrency safe operation
+                            roundEntity.setDeleted(true)
+            );
+        } finally {
+            log("deleteAllByUserId: userId = " + userId, rounds);
+        }
     }
 
     /**
@@ -119,13 +133,19 @@ public final class RoundDAO implements CrudDAO<RoundEntity> {
      * @param status status of rounds
      * @return number of total played rounds
      */
-    public Collection<RoundEntity> getRoundsByStatus(
+    public Collection<RoundEntity> getAllRoundsByStatus(
             final StatusEnum status) {
-        List<RoundEntity> list = repository.getRounds().stream()
-                .filter(Objects::nonNull)
-                .filter(roundEntity -> roundEntity.getStatus() == status)
-                .collect(Collectors.toList());
-        return Collections.unmodifiableList(list);
+        List<RoundEntity> rounds = null;
+        try {
+            List<RoundEntity> list = repository.getRounds().stream()
+                    .filter(Objects::nonNull)
+                    .filter(roundEntity -> roundEntity.getStatus() == status)
+                    .collect(Collectors.toList());
+            rounds = Collections.unmodifiableList(list);
+            return rounds;
+        } finally {
+            log("getRoundsByStatus: status = " + status, rounds);
+        }
     }
 
     /**
@@ -144,6 +164,29 @@ public final class RoundDAO implements CrudDAO<RoundEntity> {
      * @return number of total played rounds
      */
     public int getTotalRoundsByStatus(final StatusEnum status) {
-        return getRoundsByStatus(status).size();
+        return getAllRoundsByStatus(status).size();
+    }
+
+
+    private void log(String methodName, Collection<RoundEntity> rounds) {
+        if (rounds == null || rounds.isEmpty()) {
+            if (log.isTraceEnabled()) {
+                log.trace("{}: No Round Entities in repo!", methodName);
+            } else {
+                log.info("{}", methodName);
+            }
+        } else {
+            if (log.isTraceEnabled()) {
+                log.trace(
+                        "{}: [\n{}\n]",
+                        methodName,
+                        rounds.stream()
+                                .map(Object::toString)
+                                .collect(Collectors.joining(",\n"))
+                );
+            } else {
+                log.info("{}: count = {}", methodName, rounds.size());
+            }
+        }
     }
 }

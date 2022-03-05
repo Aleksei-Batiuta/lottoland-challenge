@@ -26,24 +26,14 @@ import com.batyuta.challenge.lottoland.service.UserLightweightService;
 import com.batyuta.challenge.lottoland.vo.RoundVO;
 import com.batyuta.challenge.lottoland.vo.UserVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.DefaultMessageSourceResolvable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * The main WEB controller.
@@ -84,52 +74,6 @@ public class WebController {
         this.userService = uService;
         this.roundService = rService;
         this.request = httpRequest;
-    }
-
-    /**
-     * Saves user.
-     *
-     * @param userVO user VO
-     * @param result result
-     * @param model  model
-     * @return status
-     */
-    @PostMapping("/user")
-    @ResponseBody
-    public ResponseEntity<Object> saveUser(
-            final @Valid UserVO userVO,
-            final BindingResult result,
-            final Model model
-    ) {
-        if (result.hasErrors()) {
-            final List<String> errors = result.getAllErrors().stream()
-                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                    .collect(Collectors.toList());
-
-            return new ResponseEntity<>(errors, HttpStatus.OK);
-        } else {
-            applicationService.saveUser(userService.toEntity(userVO));
-            return new ResponseEntity<>(HttpStatus.CREATED);
-        }
-    }
-
-    /**
-     * Gets list of users.
-     *
-     * @return user list model and view
-     */
-    @RequestMapping(value = "/users", method = RequestMethod.GET)
-    public ModelAndView users() {
-        HashMap<String, Object> map = new HashMap<>();
-        map.put(
-                "users",
-                userService.getViews(
-                        applicationService.getAllUsers()
-                )
-        );
-        map.put("title", "title.users");
-        map.put("body", "users");
-        return new ModelAndView("main", map);
     }
 
     /**

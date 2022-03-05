@@ -53,7 +53,7 @@ public enum StatusEnum implements I18n {
      * Default constructor.
      *
      * @param statusValue status value.
-     * @param key i18n message key.
+     * @param key         i18n message key.
      */
     StatusEnum(final int statusValue, final String key) {
         this.status = statusValue;

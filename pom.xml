@@ -60,6 +60,13 @@
                 <checkstyle.skip>true</checkstyle.skip>
             </properties>
         </profile>
+        <profile>
+            <!-- Skips checkstyle for dev test -->
+            <id>dev-test</id>
+            <properties>
+                <checkstyle.skip>true</checkstyle.skip>
+            </properties>
+        </profile>
     </profiles>
     <dependencies>
         <dependency>
@@ -190,6 +197,13 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <compilerArgument>-Xlint:deprecation</compilerArgument>
+                </configuration>
             </plugin>
         </plugins>
         <pluginManagement>

@@ -22,8 +22,9 @@ import com.batyuta.challenge.lottoland.model.UserEntity;
 import lombok.Getter;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Data repository class.
@@ -31,14 +32,35 @@ import java.util.List;
 @Component
 @Getter
 public class DataRepository {
-
+    /**
+     * This is a user table index.
+     */
+    private final AtomicInteger userIndex = new AtomicInteger(0);
+    /**
+     * This is a round table index.
+     */
+    private final AtomicInteger roundIndex = new AtomicInteger(0);
     /**
      * This is a user table.
      */
-    private final List<UserEntity> users = new ArrayList<>();
+    private final Collection<UserEntity> users =
+            new LinkedBlockingQueue<UserEntity>() {
+                @Override
+                public boolean add(UserEntity o) {
+                    o.setId(userIndex.incrementAndGet());
+                    return super.add(o);
+                }
+            };
 
     /**
      * This is a round table.
      */
-    private final List<RoundEntity> rounds = new ArrayList<>();
+    private final Collection<RoundEntity> rounds =
+            new LinkedBlockingQueue<RoundEntity>() {
+                @Override
+                public boolean add(RoundEntity o) {
+                    o.setId(roundIndex.incrementAndGet());
+                    return super.add(o);
+                }
+            };
 }

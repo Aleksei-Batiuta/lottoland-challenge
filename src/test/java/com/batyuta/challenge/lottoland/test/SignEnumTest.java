@@ -17,20 +17,20 @@
 
 package com.batyuta.challenge.lottoland.test;
 
-import com.batyuta.challenge.lottoland.enums.StatusEnum;
 import com.batyuta.challenge.lottoland.enums.SignEnum;
+import com.batyuta.challenge.lottoland.enums.StatusEnum;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
-import static com.batyuta.challenge.lottoland.enums.StatusEnum.DRAW;
-import static com.batyuta.challenge.lottoland.enums.StatusEnum.LOSS;
-import static com.batyuta.challenge.lottoland.enums.StatusEnum.WIN;
 import static com.batyuta.challenge.lottoland.enums.SignEnum.PAPER;
 import static com.batyuta.challenge.lottoland.enums.SignEnum.ROCK;
 import static com.batyuta.challenge.lottoland.enums.SignEnum.SCISSORS;
+import static com.batyuta.challenge.lottoland.enums.StatusEnum.DRAW;
+import static com.batyuta.challenge.lottoland.enums.StatusEnum.LOSS;
+import static com.batyuta.challenge.lottoland.enums.StatusEnum.WIN;
 import static org.springframework.test.util.AssertionErrors.assertEquals;
 import static org.springframework.test.util.AssertionErrors.assertNotNull;
 

@@ -77,8 +77,6 @@ public class UserService {
      *
      * @param userId user ID
      * @return user
-     * @throws com.batyuta.challenge.lottoland.exception.DaoException
-     * if user was not found
      */
     public UserEntity getUserById(final int userId) {
         return userDAO.get(userId);

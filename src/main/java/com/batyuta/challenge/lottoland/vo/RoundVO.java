@@ -17,8 +17,8 @@
 
 package com.batyuta.challenge.lottoland.vo;
 
-import com.batyuta.challenge.lottoland.enums.StatusEnum;
 import com.batyuta.challenge.lottoland.enums.SignEnum;
+import com.batyuta.challenge.lottoland.enums.StatusEnum;
 import lombok.Data;
 
 /**

@@ -42,20 +42,6 @@ public class ApplicationTest {
     private MockMvc mockMvc;
 
     /**
-     * Test greeting w/o parameters.
-     *
-     * @throws Exception if error appears
-     */
-    @Test
-    public void noParamGreetingShouldReturnDefaultMessage() throws Exception {
-
-        this.mockMvc
-                .perform(get("/users"))
-                .andDo(print())
-                .andExpect(status().isOk());
-    }
-
-    /**
      * Test greeting with <i>name</i> parameter.
      *
      * @throws Exception if error appears

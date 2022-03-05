@@ -17,8 +17,8 @@
 
 package com.batyuta.challenge.lottoland.service;
 
-import com.batyuta.challenge.lottoland.enums.StatusEnum;
 import com.batyuta.challenge.lottoland.enums.SignEnum;
+import com.batyuta.challenge.lottoland.enums.StatusEnum;
 import com.batyuta.challenge.lottoland.model.RoundEntity;
 import com.batyuta.challenge.lottoland.model.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,8 +97,6 @@ public class ApplicationService {
      *
      * @param userId user ID
      * @return user
-     * @throws com.batyuta.challenge.lottoland.exception.DaoException
-     * if user was not found
      */
     public UserEntity getUserById(final int userId) {
         return userService.getUserById(userId);
@@ -175,7 +173,6 @@ public class ApplicationService {
 
         return saveRound(
                 new RoundEntity(
-                        RoundEntity.NEW_ENTITY_ID,
                         userId,
                         player1,
                         player2,

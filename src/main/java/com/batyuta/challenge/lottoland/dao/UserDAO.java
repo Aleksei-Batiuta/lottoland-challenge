@@ -22,12 +22,7 @@ import com.batyuta.challenge.lottoland.model.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * User DAO class.
@@ -47,63 +42,35 @@ public final class UserDAO implements CrudDAO<UserEntity> {
     @Autowired
     public UserDAO(final DataRepository repository) {
         this.repository = repository;
-
-        // Initial Test data
-        for (String name : Arrays.asList(
-                "ana@yahoo.com",
-                "bob@yahoo.com",
-                "john@yahoo.com",
-                "mary@yahoo.com"
-        )) {
-            create(new UserEntity(UserEntity.NEW_ENTITY_ID, name));
-        }
     }
 
     @Override
     public UserEntity create(final UserEntity user) {
-        List<UserEntity> userList = repository.getUsers();
+        Collection<UserEntity> userList = repository.getUsers();
         if (userList.stream()
                 .anyMatch(
                         it -> user.getName().equals(it.getName())
                 )
         ) {
             throw new DaoException(
-                    "dao.error.email.duplicate",
+                    "error.dao.user.duplicate",
                     user.getName()
             );
         } else {
             userList.add(user);
-            int index = userList.size() - 1;
-            user.setId(index);
             return user;
         }
     }
 
     @Override
-    public UserEntity update(final UserEntity user) {
-        repository.getUsers().set(user.getId(), user);
-        return user;
-    }
-
-    @Override
     public UserEntity get(final int id) {
-        return repository.getUsers().get(id);
-    }
-
-    @Override
-    public Collection<UserEntity> getAll() {
-        return repository.getUsers().stream()
-                .filter(Objects::nonNull)
-                .collect(
-                        Collectors.collectingAndThen(
-                                Collectors.toList(),
-                                Collections::unmodifiableList
-                        )
-                );
-    }
-
-    @Override
-    public void delete(final UserEntity user) {
-        repository.getUsers().set(user.getId(), null);
+        try {
+            return repository.getUsers().stream()
+                    .filter(u -> u.getId() == id)
+                    .findFirst()
+                    .orElse(null);
+        } catch (Exception e) {
+            throw new DaoException("error.dao.user.not.found", id, e);
+        }
     }
 }

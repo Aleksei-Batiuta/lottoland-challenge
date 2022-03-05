@@ -18,8 +18,8 @@
 package com.batyuta.challenge.lottoland.enums;
 
 import static com.batyuta.challenge.lottoland.enums.SignEnum.Const.DRAW;
-import static com.batyuta.challenge.lottoland.enums.SignEnum.Const.WIN;
 import static com.batyuta.challenge.lottoland.enums.SignEnum.Const.LOSS;
+import static com.batyuta.challenge.lottoland.enums.SignEnum.Const.WIN;
 
 /**
  * Enum of things.

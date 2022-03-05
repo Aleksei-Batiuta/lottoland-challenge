@@ -17,8 +17,8 @@
 
 package com.batyuta.challenge.lottoland.model;
 
-import com.batyuta.challenge.lottoland.enums.StatusEnum;
 import com.batyuta.challenge.lottoland.enums.SignEnum;
+import com.batyuta.challenge.lottoland.enums.StatusEnum;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -51,6 +51,27 @@ public class RoundEntity extends BaseEntity {
      * Deleted flag.
      */
     private boolean deleted = false;
+
+    /**
+     * Default Constructor.
+     *
+     * @param user        user ID
+     * @param player1Enum choice of player 1
+     * @param player2Enum choice of player 2
+     * @param statusEnum  status
+     */
+    public RoundEntity(final int user,
+                       final SignEnum player1Enum,
+                       final SignEnum player2Enum,
+                       final StatusEnum statusEnum) {
+        this(
+                NEW_ENTITY_ID,
+                user,
+                player1Enum,
+                player2Enum,
+                statusEnum
+        );
+    }
 
     /**
      * Default Constructor.
