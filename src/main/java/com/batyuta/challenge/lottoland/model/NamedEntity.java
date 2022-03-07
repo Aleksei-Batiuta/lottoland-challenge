@@ -17,22 +17,23 @@
 
 package com.batyuta.challenge.lottoland.model;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import javax.persistence.MappedSuperclass;
 
 /**
  * Named entity base class.
  */
 @MappedSuperclass
-@Data
-@NoArgsConstructor
 public abstract class NamedEntity extends BaseEntity {
     /**
      * Name field.
      */
     private String name;
+
+    /**
+     * Default no-arguments constructor.
+     */
+    public NamedEntity() {
+    }
 
     /**
      * Default constructor.
@@ -44,5 +45,14 @@ public abstract class NamedEntity extends BaseEntity {
                           final String name) {
         super(id);
         this.name = name;
+    }
+
+    /**
+     * Getter of entity name.
+     *
+     * @return entity name
+     */
+    public String getName() {
+        return name;
     }
 }

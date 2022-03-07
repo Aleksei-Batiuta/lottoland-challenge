@@ -19,8 +19,6 @@ package com.batyuta.challenge.lottoland.model;
 
 import com.batyuta.challenge.lottoland.enums.SignEnum;
 import com.batyuta.challenge.lottoland.enums.StatusEnum;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 
@@ -28,8 +26,6 @@ import javax.persistence.Entity;
  * Round entity.
  */
 @Entity
-@Data
-@NoArgsConstructor
 public class RoundEntity extends BaseEntity {
     /**
      * User ID.
@@ -51,6 +47,12 @@ public class RoundEntity extends BaseEntity {
      * Deleted flag.
      */
     private boolean deleted = false;
+
+    /**
+     * Default no-arguments constructor.
+     */
+    public RoundEntity() {
+    }
 
     /**
      * Default Constructor.
@@ -92,5 +94,59 @@ public class RoundEntity extends BaseEntity {
         this.player1 = player1Enum;
         this.player2 = player2Enum;
         this.status = statusEnum;
+    }
+
+    /**
+     * Getter of user ID.
+     *
+     * @return user ID
+     */
+    public int getUserid() {
+        return userid;
+    }
+
+    /**
+     * Getter of first player choice.
+     *
+     * @return first player choice
+     */
+    public SignEnum getPlayer1() {
+        return player1;
+    }
+
+    /**
+     * Getter of second player choice.
+     *
+     * @return second player choice
+     */
+    public SignEnum getPlayer2() {
+        return player2;
+    }
+
+    /**
+     * Getter of round result.
+     *
+     * @return round result
+     */
+    public StatusEnum getStatus() {
+        return status;
+    }
+
+    /**
+     * Getter of round delete flag.
+     *
+     * @return delete flag
+     */
+    public boolean isDeleted() {
+        return read(() -> deleted);
+    }
+
+    /**
+     * Setter of round delete flag.
+     *
+     * @param isDeleted delete flag
+     */
+    public void setDeleted(boolean isDeleted) {
+        write(() -> this.deleted = isDeleted);
     }
 }

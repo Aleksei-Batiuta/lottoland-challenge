@@ -17,7 +17,7 @@
 
 package com.batyuta.challenge.lottoland.model;
 
-import lombok.Data;
+import com.batyuta.challenge.lottoland.concurrency.LockedData;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -29,8 +29,7 @@ import java.io.Serializable;
  * Base Entity class.
  */
 @MappedSuperclass
-@Data
-public abstract class BaseEntity implements Serializable {
+public abstract class BaseEntity extends LockedData implements Serializable {
     /**
      * New Entity ID.
      */
@@ -55,7 +54,7 @@ public abstract class BaseEntity implements Serializable {
      * @param id entity ID.
      */
     protected BaseEntity(final Integer id) {
-        this.id = id;
+        this.setId(id);
     }
 
     /**
@@ -68,4 +67,21 @@ public abstract class BaseEntity implements Serializable {
         return this.id == NEW_ENTITY_ID;
     }
 
+    /**
+     * Getter of entity ID.
+     *
+     * @return entity ID
+     */
+    public int getId() {
+        return read(() -> this.id);
+    }
+
+    /**
+     * Getter of entity ID.
+     *
+     * @param id entity ID
+     */
+    public void setId(int id) {
+        write(() -> this.id = id);
+    }
 }

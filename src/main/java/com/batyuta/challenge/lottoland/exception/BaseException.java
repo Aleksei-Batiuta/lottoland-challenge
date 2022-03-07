@@ -17,14 +17,12 @@
 
 package com.batyuta.challenge.lottoland.exception;
 
-import lombok.Getter;
 import org.springframework.core.NestedRuntimeException;
 
 /**
  * Base Application Exception class. It should be used
  * for business logic errors.
  */
-@Getter
 public abstract class BaseException extends NestedRuntimeException {
     /**
      * Argument which can be used in format.
@@ -57,5 +55,14 @@ public abstract class BaseException extends NestedRuntimeException {
                 arguments == null || arguments.length == 0
                         ? new Object[]{""}
                         : arguments;
+    }
+
+    /**
+     * Getter of exception message arguments.
+     *
+     * @return arguments
+     */
+    public Object[] getArgs() {
+        return args;
     }
 }

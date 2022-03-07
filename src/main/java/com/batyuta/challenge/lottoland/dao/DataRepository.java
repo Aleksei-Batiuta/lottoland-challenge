@@ -17,21 +17,27 @@
 
 package com.batyuta.challenge.lottoland.dao;
 
+import com.batyuta.challenge.lottoland.concurrency.LockedData;
+import com.batyuta.challenge.lottoland.enums.StatusEnum;
+import com.batyuta.challenge.lottoland.model.BaseEntity;
 import com.batyuta.challenge.lottoland.model.RoundEntity;
 import com.batyuta.challenge.lottoland.model.UserEntity;
-import lombok.Getter;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Data repository class.
  */
 @Component
-@Getter
-public class DataRepository {
+public final class DataRepository extends LockedData {
     /**
      * This is a user table index.
      */
@@ -43,24 +49,132 @@ public class DataRepository {
     /**
      * This is a user table.
      */
-    private final Collection<UserEntity> users =
-            new LinkedBlockingQueue<UserEntity>() {
-                @Override
-                public boolean add(UserEntity o) {
-                    o.setId(userIndex.incrementAndGet());
-                    return super.add(o);
-                }
-            };
+    private final Collection<UserEntity> users = new ArrayList<>();
 
     /**
      * This is a round table.
      */
-    private final Collection<RoundEntity> rounds =
-            new LinkedBlockingQueue<RoundEntity>() {
-                @Override
-                public boolean add(RoundEntity o) {
-                    o.setId(roundIndex.incrementAndGet());
-                    return super.add(o);
+    private final Collection<RoundEntity> rounds = new ArrayList<>();
+
+    /**
+     * Gets rounds.
+     *
+     * @param userId            user ID
+     * @param isDeleted         deleted flag
+     * @param status            round status
+     * @param isDescendingOrder order
+     * @return rounds
+     */
+    public Collection<RoundEntity> getRounds(Integer userId, Boolean isDeleted,
+                                             StatusEnum status,
+                                             boolean isDescendingOrder) {
+        return read(
+                () -> {
+                    Stream<RoundEntity> roundsStream = rounds.stream()
+                            .filter(Objects::nonNull);
+                    if (userId != null) {
+                        roundsStream = roundsStream
+                                .filter(round -> round.getUserid() == userId);
+                    }
+                    if (isDeleted != null) {
+                        roundsStream = roundsStream
+                                .filter(
+                                        round ->
+                                                round.isDeleted() == isDeleted
+                                );
+                    }
+                    if (status != null) {
+                        roundsStream = roundsStream
+                                .filter(round -> round.getStatus() == status);
+                    }
+                    List<RoundEntity> roundsList =
+                            roundsStream.collect(Collectors.toList());
+                    if (isDescendingOrder) {
+                        Collections.reverse(roundsList);
+                    }
+                    return Collections.unmodifiableList(roundsList);
                 }
-            };
+        );
+    }
+
+    /**
+     * Deletes rounds.
+     *
+     * @param userId user ID
+     * @param status round status
+     * @return count of deleted rounds
+     */
+    public Integer deleteRounds(Integer userId, StatusEnum status) {
+        return write(
+                () -> {
+                    Collection<RoundEntity> roundsList = getRounds(
+                            userId,
+                            false,
+                            status,
+                            false
+                    );
+                    roundsList.forEach(this::markRoundAsDeleted);
+                    return roundsList.size();
+                }
+        );
+    }
+
+    private void markRoundAsDeleted(RoundEntity round) {
+        round.setDeleted(true);
+    }
+
+    private void setId(BaseEntity entity, int id) {
+        entity.setId(id);
+    }
+
+    /**
+     * Creates round.
+     *
+     * @param round round
+     * @return created round
+     */
+    public RoundEntity createRound(RoundEntity round) {
+        return write(
+                () -> {
+                    setId(round, roundIndex.incrementAndGet());
+                    if (rounds.add(round)) {
+                        return round;
+                    }
+                    throw new IllegalArgumentException();
+                }
+        );
+    }
+
+    /**
+     * Creates User.
+     *
+     * @param user user
+     * @return created user
+     */
+    public UserEntity createUser(UserEntity user) {
+        return write(
+                () -> {
+                    setId(user, userIndex.incrementAndGet());
+                    if (users.add(user)) {
+                        return user;
+                    }
+                    throw new IllegalArgumentException();
+                }
+        );
+    }
+
+    /**
+     * Gets user by ID.
+     *
+     * @param userId user ID
+     * @return user
+     */
+    public UserEntity getUser(int userId) {
+        return read(
+                () -> users.stream()
+                        .filter(user -> user.getId() == userId)
+                        .findFirst()
+                        .orElse(null)
+        );
+    }
 }

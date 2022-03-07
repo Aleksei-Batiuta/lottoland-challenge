@@ -25,9 +25,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -55,28 +52,40 @@ public final class RoundDAO implements CrudDAO<RoundEntity> {
     }
 
     @Override
-    public RoundEntity create(final RoundEntity round) {
+    public RoundEntity create(RoundEntity round) {
         try {
-            Collection<RoundEntity> rounds = repository.getRounds();
-            rounds.add(round);
+            round = repository.createRound(round);
             return round;
         } finally {
-            log.info("create: Round {} has been saved", round);
+            log.info("create: Round {} has been created", round);
+        }
+    }
+
+    /**
+     * Deletes all rounds by user ID.
+     *
+     * @param userId user ID
+     * @return count of deleted rounds
+     */
+    public int deleteAllByUserId(final int userId) {
+        int rounds = 0;
+        try {
+            rounds = repository.deleteRounds(userId, null);
+            return rounds;
+        } finally {
+            log.info(
+                    "deleteAllByUserId: user = {}; count = {}",
+                    userId,
+                    rounds
+            );
         }
     }
 
     @Override
     public Collection<RoundEntity> getAll() {
-        List<RoundEntity> rounds = null;
+        Collection<RoundEntity> rounds = null;
         try {
-            rounds = repository.getRounds().stream()
-                    .filter(Objects::nonNull)
-                    .collect(
-                            Collectors.collectingAndThen(
-                                    Collectors.toList(),
-                                    Collections::unmodifiableList
-                            )
-                    );
+            rounds = repository.getRounds(null, null, null, false);
             return rounds;
         } finally {
             log("getAll", rounds);
@@ -89,62 +98,13 @@ public final class RoundDAO implements CrudDAO<RoundEntity> {
      * @param userId user ID
      * @return rounds
      */
-    public Collection<RoundEntity> getRoundsByUserId(
-            final int userId) {
-        List<RoundEntity> rounds = null;
+    public Collection<RoundEntity> getRoundsByUserId(final int userId) {
+        Collection<RoundEntity> rounds = null;
         try {
-            List<RoundEntity> list = repository.getRounds().stream()
-                    .filter(Objects::nonNull)
-                    .filter(
-                            round ->
-                                    !round.isDeleted()
-                                            && round.getUserid() == userId)
-                    .collect(Collectors.toList());
-            Collections.reverse(list);
-            rounds = Collections.unmodifiableList(list);
+            rounds = repository.getRounds(userId, false, null, true);
             return rounds;
         } finally {
             log("getRoundsByUserId: userId = " + userId, rounds);
-        }
-    }
-
-    /**
-     * Deletes all rounds by user ID.
-     *
-     * @param userId user ID
-     */
-    public void deleteAllByUserId(final int userId) {
-        Collection<RoundEntity> rounds = null;
-        try {
-            rounds = getRoundsByUserId(userId);
-            rounds.forEach(
-                    roundEntity ->
-// todo: it should be as concurrency safe operation
-                            roundEntity.setDeleted(true)
-            );
-        } finally {
-            log("deleteAllByUserId: userId = " + userId, rounds);
-        }
-    }
-
-    /**
-     * Gets total played rounds by status.
-     *
-     * @param status status of rounds
-     * @return number of total played rounds
-     */
-    public Collection<RoundEntity> getAllRoundsByStatus(
-            final StatusEnum status) {
-        List<RoundEntity> rounds = null;
-        try {
-            List<RoundEntity> list = repository.getRounds().stream()
-                    .filter(Objects::nonNull)
-                    .filter(roundEntity -> roundEntity.getStatus() == status)
-                    .collect(Collectors.toList());
-            rounds = Collections.unmodifiableList(list);
-            return rounds;
-        } finally {
-            log("getRoundsByStatus: status = " + status, rounds);
         }
     }
 
@@ -167,6 +127,22 @@ public final class RoundDAO implements CrudDAO<RoundEntity> {
         return getAllRoundsByStatus(status).size();
     }
 
+    /**
+     * Gets total played rounds by status.
+     *
+     * @param status status of rounds
+     * @return number of total played rounds
+     */
+    public Collection<RoundEntity> getAllRoundsByStatus(
+            final StatusEnum status) {
+        Collection<RoundEntity> rounds = null;
+        try {
+            rounds = repository.getRounds(null, null, status, false);
+            return rounds;
+        } finally {
+            log("getRoundsByStatus: status = " + status, rounds);
+        }
+    }
 
     private void log(String methodName, Collection<RoundEntity> rounds) {
         if (rounds == null || rounds.isEmpty()) {

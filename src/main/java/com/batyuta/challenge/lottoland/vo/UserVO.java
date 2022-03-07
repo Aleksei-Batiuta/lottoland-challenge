@@ -17,19 +17,14 @@
 
 package com.batyuta.challenge.lottoland.vo;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 /**
  * User VO.
  */
-@Data
-@NoArgsConstructor
 public class UserVO extends BaseVO {
     /**
      * User e-mail.
      */
-    private String email;
+    private final String email;
 
     /**
      * Default constructor.
@@ -40,5 +35,14 @@ public class UserVO extends BaseVO {
     public UserVO(final int userId, final String userEmail) {
         super(userId);
         this.email = userEmail;
+    }
+
+    /**
+     * Getter of user e-mail.
+     *
+     * @return e-mail
+     */
+    public String getEmail() {
+        return email;
     }
 }

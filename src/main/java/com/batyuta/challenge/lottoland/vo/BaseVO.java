@@ -17,20 +17,17 @@
 
 package com.batyuta.challenge.lottoland.vo;
 
-import lombok.Data;
-
 /**
  * Base View class.
  */
-@Data
 public abstract class BaseVO {
     /**
      * View ID.
      */
-    private int id;
+    private final int id;
 
     /**
-     * Default no arguments Constructor.
+     * Default no-arguments Constructor.
      */
     public BaseVO() {
         this(-1);
@@ -43,5 +40,14 @@ public abstract class BaseVO {
      */
     public BaseVO(final int id) {
         this.id = id;
+    }
+
+    /**
+     * Getter of VO ID.
+     *
+     * @return ID
+     */
+    public int getId() {
+        return id;
     }
 }

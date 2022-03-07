@@ -19,16 +19,20 @@ package com.batyuta.challenge.lottoland.dao;
 
 import com.batyuta.challenge.lottoland.exception.DaoException;
 import com.batyuta.challenge.lottoland.model.UserEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.Collection;
 
 /**
  * User DAO class.
  */
 @Component
 public final class UserDAO implements CrudDAO<UserEntity> {
+    /**
+     * Logger.
+     */
+    private final Logger log = LoggerFactory.getLogger(UserDAO.class);
     /**
      * Data Repository.
      */
@@ -45,32 +49,21 @@ public final class UserDAO implements CrudDAO<UserEntity> {
     }
 
     @Override
-    public UserEntity create(final UserEntity user) {
-        Collection<UserEntity> userList = repository.getUsers();
-        if (userList.stream()
-                .anyMatch(
-                        it -> user.getName().equals(it.getName())
-                )
-        ) {
-            throw new DaoException(
-                    "error.dao.user.duplicate",
-                    user.getName()
-            );
-        } else {
-            userList.add(user);
+    public UserEntity create(UserEntity user) {
+        try {
+            user = repository.createUser(user);
             return user;
+        } finally {
+            log.info("create: User {} has been created", user);
         }
     }
 
     @Override
-    public UserEntity get(final int id) {
+    public UserEntity get(final int userId) {
         try {
-            return repository.getUsers().stream()
-                    .filter(u -> u.getId() == id)
-                    .findFirst()
-                    .orElse(null);
+            return repository.getUser(userId);
         } catch (Exception e) {
-            throw new DaoException("error.dao.user.not.found", id, e);
+            throw new DaoException("error.dao.user.not.found", userId, e);
         }
     }
 }

@@ -17,15 +17,12 @@
 
 package com.batyuta.challenge.lottoland.enums;
 
-import lombok.Getter;
-
 /**
  * The status enums. It's used for visualization of
  * comparing test cases
  *
  * @author Aleksei Batyuta aleksei.batiuta@gmail.com
  */
-@Getter
 public enum StatusEnum implements I18n {
     /**
      * Player won the round.
@@ -83,5 +80,14 @@ public enum StatusEnum implements I18n {
     @Override
     public String getMessageKey() {
         return this.messageKey;
+    }
+
+    /**
+     * Getter of status value.
+     *
+     * @return value
+     */
+    public int getStatus() {
+        return status;
     }
 }

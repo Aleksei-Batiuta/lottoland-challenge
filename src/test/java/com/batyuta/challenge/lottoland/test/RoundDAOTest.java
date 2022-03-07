@@ -413,22 +413,23 @@ public final class RoundDAOTest {
                     roundsByStatus,
                     () -> "Unexpected result: status = " + statusEnum
             );
+            int expected;
             if (statusEnum == null) {
-                assertTrue(
-                        roundsByStatus.isEmpty(),
-                        "Empty data: status = null"
-                );
+                expected = roundCountByStatus.values().stream()
+                        .map(AtomicInteger::get)
+                        .reduce(0, Integer::sum);
             } else {
-                assertFalse(
-                        roundsByStatus.isEmpty(),
-                        () -> "Empty data: status = " + statusEnum
-                );
-                assertEquals(
-                        roundCountByStatus.get(statusEnum).get(),
-                        roundsByStatus.size(),
-                        () -> "Unexpected count for " + statusEnum
-                );
+                expected = roundCountByStatus.get(statusEnum).get();
             }
+            assertFalse(
+                    roundsByStatus.isEmpty(),
+                    () -> "Empty data: status = " + statusEnum
+            );
+            assertEquals(
+                    expected,
+                    roundsByStatus.size(),
+                    () -> "Unexpected count for " + statusEnum
+            );
         }
 
         @Test
@@ -456,7 +457,9 @@ public final class RoundDAOTest {
                     roundDao.getTotalRoundsByStatus(statusEnum);
             int expected;
             if (statusEnum == null) {
-                expected = 0;
+                expected = roundCountByStatus.values().stream()
+                        .map(AtomicInteger::get)
+                        .reduce(0, Integer::sum);
             } else {
                 expected = roundCountByStatus.get(statusEnum).get();
             }
