@@ -21,6 +21,7 @@ import com.batyuta.challenge.lottoland.enums.SignEnum;
 import com.batyuta.challenge.lottoland.enums.StatusEnum;
 
 import javax.persistence.Entity;
+import java.text.MessageFormat;
 
 /**
  * Round entity.
@@ -148,5 +149,19 @@ public class RoundEntity extends BaseEntity {
      */
     public void setDeleted(boolean isDeleted) {
         write(() -> this.deleted = isDeleted);
+    }
+
+    /**
+     * Returns a string representation of the object.
+     *
+     * @return string
+     */
+    @Override
+    public String toString() {
+        return MessageFormat.format(
+                "RoundEntity'{'id={0}, userid={1}, player1={2}, player2={3}, "
+                        + "status={4}, deleted={5}'}'",
+                getId(), userid, player1, player2, status, deleted
+        );
     }
 }

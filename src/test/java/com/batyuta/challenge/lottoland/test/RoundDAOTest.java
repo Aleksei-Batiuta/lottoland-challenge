@@ -58,10 +58,9 @@ import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.parallel.ExecutionMode.CONCURRENT;
 
 /**
- * Round's DAO test class.
+ * Round DAO test class.
  */
 @TestClassOrder(ClassOrderer.OrderAnnotation.class)
-@DisplayName("Test cases of Round's DAO")
 public final class RoundDAOTest {
     /**
      * The first test user ID.
@@ -91,7 +90,7 @@ public final class RoundDAOTest {
     @TestMethodOrder(MethodOrderer.DisplayName.class)
     @Order(1)
     @SpringBootTest
-    @DisplayName("The Round's DAO Functional test cases")
+    @DisplayName("Test Cases of Round DAO Functional Test")
     public class FunctionalTest {
         /**
          * How many rounds will be created for each user.
@@ -477,7 +476,7 @@ public final class RoundDAOTest {
     @Nested
     @Order(2)
     @SpringBootTest
-    @DisplayName("Test Round DAO Concurrency")
+    @DisplayName("Test Cases of Round DAO Concurrency Test")
     public class ConcurrencyTest {
         /**
          * Counts of retry to broke system.
