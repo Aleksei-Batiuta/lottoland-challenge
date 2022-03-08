@@ -17,8 +17,10 @@
 
 package com.batyuta.challenge.lottoland.test;
 
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
+@Order(7)
 class UserDAOTest {
 
     @Test

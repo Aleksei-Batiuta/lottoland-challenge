@@ -60,6 +60,7 @@ import static org.junit.jupiter.api.parallel.ExecutionMode.CONCURRENT;
 /**
  * Round DAO test class.
  */
+@Order(1)
 @TestClassOrder(ClassOrderer.OrderAnnotation.class)
 public final class RoundDAOTest {
     /**
