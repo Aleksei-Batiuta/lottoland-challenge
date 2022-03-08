@@ -6,3 +6,6 @@ The Test Challenge from Lottoland
 3. Run Maven command with _tests_ but without _checkstyle_: `mvn clean spring-boot:run -Pdev-test`
 4. Run Maven command without _tests_ and _checkstyle_: `mvn clean spring-boot:run -Pdev`
 > *Test Server starts on _8080_ port!*
+# Test Cases
+1. Open 'http://localhost:8080/' to view the rounds' statistics, 'Play Round' and 'Restart Game'
+2. Open 'Statistics' page by click to coresponding menu item and verify the data for all users
