@@ -95,7 +95,7 @@ public final class RoundDAOTest {
         /**
          * How many rounds will be created for each user.
          */
-        public static final int ROUNDS_FOR_EACH_USER = 20;
+        public static final int ROUNDS_FOR_EACH_USER = 5;
         /**
          * This is constant and only two users played in test cases.
          */
@@ -480,8 +480,9 @@ public final class RoundDAOTest {
     public class ConcurrencyTest {
         /**
          * Counts of retry to broke system.
+         * todo: maybe it should be reviewed to use one test method
          */
-        public static final int REPEAT_COUNT = 1_000;
+        public static final int REPEAT_COUNT = 1;
 
         /**
          * Round DAO.

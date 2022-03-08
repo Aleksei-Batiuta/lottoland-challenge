@@ -23,7 +23,9 @@ import com.batyuta.challenge.lottoland.model.UserEntity;
 import com.batyuta.challenge.lottoland.service.ApplicationService;
 import com.batyuta.challenge.lottoland.service.RoundLightweightService;
 import com.batyuta.challenge.lottoland.service.UserLightweightService;
+import com.batyuta.challenge.lottoland.vo.PageVO;
 import com.batyuta.challenge.lottoland.vo.RoundVO;
+import com.batyuta.challenge.lottoland.vo.StatisticsVO;
 import com.batyuta.challenge.lottoland.vo.UserVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -52,98 +54,116 @@ public class WebController {
      * Round Service.
      */
     private final RoundLightweightService roundService;
-    /**
-     * HTTP Request.
-     */
-    private final HttpServletRequest request;
 
     /**
      * Default constructor.
      *
-     * @param service     application service
-     * @param uService    user lightweight service
-     * @param rService    round lightweight service
-     * @param httpRequest HTTP Servlet Request
+     * @param service  application service
+     * @param uService user lightweight service
+     * @param rService round lightweight service
      */
     @Autowired
     public WebController(final ApplicationService service,
                          final UserLightweightService uService,
-                         final RoundLightweightService rService,
-                         final HttpServletRequest httpRequest) {
+                         final RoundLightweightService rService) {
         this.applicationService = service;
         this.userService = uService;
         this.roundService = rService;
-        this.request = httpRequest;
     }
 
     /**
      * Gets greetings.
      *
+     * @param httpRequest HTTP Servlet Request
      * @return greetings model and view
      */
-    @RequestMapping(value = "/game", method = RequestMethod.GET)
-    public ModelAndView game() {
-        UserVO userVO = getOrCreateUserVO();
-
-        return getGameModelAndView(userVO);
-    }
-
-    /**
-     * new Round.
-     *
-     * @return game model and view
-     */
-    @RequestMapping(value = "/new", method = RequestMethod.POST)
-    public ModelAndView newRound() {
-        UserVO userVO = getOrCreateUserVO();
-        RoundEntity round = applicationService.newRoundByUserId(userVO.getId());
-
-        return getGameModelAndView(userVO);
-    }
-
-    /**
-     * new Round.
-     *
-     * @return game model and view
-     */
-    @RequestMapping(value = "/reset", method = RequestMethod.POST)
-    public ModelAndView resetGame() {
-        UserVO userVO = getOrCreateUserVO();
-        applicationService.deleteAllRoundsByUserId(userVO.getId());
-
-        return getGameModelAndView(userVO);
-    }
-
-    private ModelAndView getGameModelAndView(final UserVO userVO) {
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public ModelAndView game(HttpServletRequest httpRequest) {
+        UserVO userVO = getOrCreateUserVO(httpRequest);
         Collection<RoundVO> rounds = roundService.getViews(
                 applicationService.getRoundsByUserId(userVO.getId())
         );
+
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("page", new PageVO<>(
+                "title.game",
+                "game",
+                rounds
+        ));
+
+        return new ModelAndView("main", map);
+    }
+
+    /**
+     * new Round.
+     *
+     * @param httpRequest HTTP Servlet Request
+     * @return game model and view
+     */
+    @RequestMapping(value = "/new", method = RequestMethod.POST)
+    public String newRound(HttpServletRequest httpRequest) {
+        UserVO userVO = getOrCreateUserVO(httpRequest);
+        RoundEntity round = applicationService.newRoundByUserId(userVO.getId());
+        return "redirect:/";
+    }
+
+    /**
+     * Requests to e new Round.
+     *
+     * @param httpRequest HTTP Servlet Request
+     * @return game model and view
+     */
+    @RequestMapping(value = "/reset", method = RequestMethod.POST)
+    public String resetGame(HttpServletRequest httpRequest) {
+        UserVO userVO = getOrCreateUserVO(httpRequest);
+        applicationService.deleteAllRoundsByUserId(userVO.getId());
+
+        return "redirect:/";
+    }
+
+    /**
+     * Gets Statistics data.
+     *
+     * @param httpRequest HTTP Servlet Request
+     * @return game model and view
+     */
+    @RequestMapping(value = "/statistics", method = RequestMethod.GET)
+    public ModelAndView statistics(HttpServletRequest httpRequest) {
+        UserVO userVO = getOrCreateUserVO(httpRequest);
         int totalRounds = applicationService.getTotalRounds();
         int firstRounds = applicationService.getFirstRounds();
         int secondRounds = applicationService.getSecondRounds();
         int totalDraws = applicationService.getDraws();
 
         HashMap<String, Object> map = new HashMap<>();
-        map.put("title", "title.game");
-        map.put("body", "game");
-        map.put("round", rounds.size());
-        map.put("rounds", rounds);
-        map.put("totalrounds", totalRounds);
-        map.put("firstrounds", firstRounds);
-        map.put("secondrounds", secondRounds);
-        map.put("totaldraws", totalDraws);
+        map.put("page", new PageVO<>(
+                "title.statistics",
+                "statistics",
+                new StatisticsVO(
+                        totalRounds,
+                        firstRounds,
+                        secondRounds,
+                        totalDraws
+                )
+        ));
         return new ModelAndView("main", map);
     }
 
-    private UserVO getOrCreateUserVO() {
-        UserVO userVO = (UserVO) this.request.getSession().getAttribute("user");
+    /**
+     * User Authorization.
+     *
+     * @param httpRequest HTTP Servlet Request
+     * @return current user VO
+     */
+    private UserVO getOrCreateUserVO(HttpServletRequest httpRequest) {
+        UserVO userVO = (UserVO) httpRequest.getSession().getAttribute("user");
 
         UserEntity userEntity = applicationService.getOrCreateUser(
                 userService.toEntity(userVO)
         );
         userVO = userService.toView(userEntity);
 
-        this.request.getSession().setAttribute("user", userVO);
+        httpRequest.getSession().setAttribute("user", userVO);
         return userVO;
     }
 
@@ -152,8 +172,11 @@ public class WebController {
      *
      * @return greetings model and view
      */
-    @RequestMapping(value = "/exception", method = RequestMethod.GET)
+    @RequestMapping(value = "/error", method = RequestMethod.GET)
     public ModelAndView exception() {
-        throw new ApplicationException("error.unknown");
+        throw new ApplicationException(
+                "error.unsupported.operation",
+                "This is a test error page"
+        );
     }
 }

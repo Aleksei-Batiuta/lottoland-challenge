@@ -83,9 +83,9 @@ public abstract class LockedData {
     /**
      * The base locked operation.
      *
-     * @param readOrWriteLock    lock type
-     * @param command command
-     * @param <T>     returned type
+     * @param readOrWriteLock lock type
+     * @param command         command
+     * @param <T>             returned type
      * @return object
      */
     private <T> T lockedOperation(Lock readOrWriteLock, Command<T> command) {

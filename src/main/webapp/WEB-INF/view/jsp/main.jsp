@@ -38,12 +38,16 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   --%>
-<c:if test="${not empty param.title}">
-    <c:set var="title" value="${param.title}"/>
-</c:if>
-<c:if test="${not empty param.body}">
-    <c:set var="body" value="${param.body}"/>
-</c:if>
+<c:choose>
+    <c:when test="${not empty param}">
+        <c:set var="title" value="${param.title}"/>
+        <c:set var="body" value="${param.body}"/>
+    </c:when>
+    <c:otherwise>
+        <c:set var="title" value="${page.title}"/>
+        <c:set var="body" value="${page.body}"/>
+    </c:otherwise>
+</c:choose>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -52,14 +56,8 @@
 </head>
 <body>
 <div class="main">
-    <div class="header">
-        <div class="logo"></div>
-    </div>
     <div class="menu">
         <jsp:include page="menu.jsp"/>
-    </div>
-    <div class="title">
-        <h1><frm:message key="${title}"/></h1>
     </div>
     <div class="context">
         <jsp:include page="${body}.jsp"/>

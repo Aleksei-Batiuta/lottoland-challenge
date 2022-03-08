@@ -24,6 +24,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -42,19 +43,78 @@ public class ApplicationTest {
     private MockMvc mockMvc;
 
     /**
-     * Test greeting with <i>name</i> parameter.
+     * Test access to main game page.
      *
      * @throws Exception if error appears
      */
     @Test
-    public void paramGreetingShouldReturnTailoredMessage() throws Exception {
-
+    public void root() throws Exception {
         this.mockMvc
                 .perform(
-                        get("/game")
+                        get("/")
                 )
                 .andDo(print())
                 .andExpect(status().isOk());
+    }
+
+    /**
+     * Test access to statistics page.
+     *
+     * @throws Exception if error appears
+     */
+    @Test
+    public void statistics() throws Exception {
+        this.mockMvc
+                .perform(
+                        get("/statistics")
+                )
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    /**
+     * Test access to new round page.
+     *
+     * @throws Exception if error appears
+     */
+    @Test
+    public void newRound() throws Exception {
+        this.mockMvc
+                .perform(
+                        post("/new")
+                )
+                .andDo(print())
+                .andExpect(status().is3xxRedirection());
+    }
+
+    /**
+     * Test access to reset game page.
+     *
+     * @throws Exception if error appears
+     */
+    @Test
+    public void resetGame() throws Exception {
+        this.mockMvc
+                .perform(
+                        post("/reset")
+                )
+                .andDo(print())
+                .andExpect(status().is3xxRedirection());
+    }
+
+    /**
+     * Test error page.
+     *
+     * @throws Exception if error appears
+     */
+    @Test
+    public void error() throws Exception {
+        this.mockMvc
+                .perform(
+                        get("/error")
+                )
+                .andDo(print())
+                .andExpect(status().is4xxClientError());
     }
 
     /**
@@ -64,7 +124,6 @@ public class ApplicationTest {
      */
     @Test
     public void cssTest() throws Exception {
-
         this.mockMvc
                 .perform(
                         get("/main.css")
@@ -99,6 +158,20 @@ public class ApplicationTest {
         this.mockMvc
                 .perform(
                         get("/favicon.ico")
+                )
+                .andExpect(status().isOk());
+    }
+    /**
+     * Test gcharts.js.
+     *
+     * @throws Exception if error appears
+     */
+    @Test
+    public void googleChartsJsTest() throws Exception {
+
+        this.mockMvc
+                .perform(
+                        get("/js/gcharts.js")
                 )
                 .andExpect(status().isOk());
     }

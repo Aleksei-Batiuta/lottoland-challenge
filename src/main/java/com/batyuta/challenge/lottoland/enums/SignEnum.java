@@ -22,7 +22,7 @@ import static com.batyuta.challenge.lottoland.enums.SignEnum.Const.LOSS;
 import static com.batyuta.challenge.lottoland.enums.SignEnum.Const.WIN;
 
 /**
- * Enum of things.
+ * Enum of signs.
  *
  * @author Aleksei Batyuta aleksei.batiuta@gmail.com
  */
@@ -113,7 +113,7 @@ public enum SignEnum implements I18n {
     }
 
     /**
-     * Compare two things.
+     * Compare two signs.
      *
      * @param o object to compare with current
      * @return {@link Const#DRAW} if equals,

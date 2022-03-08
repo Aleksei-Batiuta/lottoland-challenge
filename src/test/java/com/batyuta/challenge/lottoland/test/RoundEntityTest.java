@@ -31,6 +31,11 @@ import static org.junit.jupiter.api.parallel.ExecutionMode.CONCURRENT;
  */
 class RoundEntityTest {
     /**
+     * Counts of retry to broke system.
+     * todo: maybe it should be reviewed to use one test method
+     */
+    public static final int REPEAT_COUNT = 1;
+    /**
      * Test data.
      */
     private final RoundEntity roundEntity = new RoundEntity();
@@ -42,7 +47,7 @@ class RoundEntityTest {
     /**
      * Try to get the concurrent.
      */
-    @RepeatedTest(2000)
+    @RepeatedTest(1)
     @DisplayName("TC#01: Update property concurrently")
     @Execution(CONCURRENT)
     void concurrentModification() {

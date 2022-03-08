@@ -65,8 +65,8 @@ public class SignEnumTest {
     /**
      * The test method.
      *
-     * @param firstThing  the first test data
-     * @param secondThing the second test data
+     * @param firstSign  the first test data
+     * @param secondSign the second test data
      * @param expected    expected result
      */
     @ParameterizedTest(
@@ -74,23 +74,23 @@ public class SignEnumTest {
     )
     @MethodSource("testData")
     public void test(
-            final SignEnum firstThing,
-            final SignEnum secondThing,
+            final SignEnum firstSign,
+            final SignEnum secondSign,
             final StatusEnum expected) {
 
         assertNotNull(
                 "The first argument can't be as null",
-                firstThing
+                firstSign
         );
         assertNotNull("Result can't be as null", expected);
 
         StatusEnum actual = StatusEnum.valueOf(
-                firstThing.compareToEnum(secondThing)
+                firstSign.compareToEnum(secondSign)
         );
         assertEquals(
                 String.format(
                         "Test case was failed: {first = %s, second = %s}",
-                        firstThing, secondThing
+                        firstSign, secondSign
                 ),
                 expected,
                 actual

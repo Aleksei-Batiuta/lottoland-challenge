@@ -17,31 +17,22 @@
   ~ limitations under the License.
   --%>
 <div xmlns:jsp="http://java.sun.com/JSP/Page">
-    <div>
-        <label for="round"><frm:message key="label.round"/>:</label>
-        <output id="round">${round}</output>
-    </div>
-    <div>
-        <form action="new" method="post">
-            <button type="submit"><frm:message key="label.play.round"/></button>
-        </form>
-    </div>
-    <div>
-        <form action="reset" method="post">
-            <button type="submit"><frm:message key="label.restart.game"/></button>
-        </form>
-    </div>
-    <div class="scroll-container">
-        <div class="scroll-content">
+    <div class="scroll-table">
+        <table>
+            <thead>
+            <tr>
+                <th><frm:message key="label.id"/></th>
+                <th><frm:message key="label.player.1"/></th>
+                <th><frm:message key="label.player.2"/></th>
+                <th><frm:message key="label.round.result"/></th>
+            </tr>
+            </thead>
+        </table>
+        <div class="scroll-table-body">
             <table>
-                <tr>
-                    <th><frm:message key="label.id"/></th>
-                    <th><frm:message key="label.player.1"/></th>
-                    <th><frm:message key="label.player.2"/></th>
-                    <th><frm:message key="label.round.result"/></th>
-                </tr>
+                <tbody>
                 <c:choose>
-                    <c:when test="${empty rounds}">
+                    <c:when test="${empty page.data}">
                         <tr>
                             <td colspan="4">
                                 <frm:message key="label.table.empty"/>
@@ -49,9 +40,9 @@
                         </tr>
                     </c:when>
                     <c:otherwise>
-                        <c:forEach items="${rounds}" varStatus="index">
+                        <c:forEach items="${page.data}" varStatus="index">
                             <tr>
-                                <td>${round - index.index}</td>
+                                <td>${page.data.size() - index.index}</td>
                                 <td><frm:message key="${index.current.player1.messageKey}"/></td>
                                 <td><frm:message key="${index.current.player2.messageKey}"/></td>
                                 <td><frm:message key="${index.current.status.messageKey}"/></td>
@@ -59,25 +50,33 @@
                         </c:forEach>
                     </c:otherwise>
                 </c:choose>
+                </tbody>
             </table>
         </div>
+        <table>
+            <tfoot>
+            <tr>
+                <td colspan="3">
+                    <label for="round"><frm:message key="label.round"/>:&nbsp;</label>
+                </td>
+                <td>
+                    <output id="round">${page.data.size()}</output>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
     </div>
-    <div>
-        <div>
-            <label for="total_rounds"><frm:message key="label.rounds.total"/>:</label>
-            <output id="total_rounds">${totalrounds}</output>
+
+    <div class="button-panel">
+        <div class="button">
+            <form action="new" method="post">
+                <button type="submit"><frm:message key="label.play.round"/></button>
+            </form>
         </div>
-        <div>
-            <label for="first_wins"><frm:message key="label.rounds.first"/>:</label>
-            <output id="first_wins">${firstrounds}</output>
-        </div>
-        <div>
-            <label for="second_wins"><frm:message key="label.rounds.second"/>:</label>
-            <output id="second_wins">${secondrounds}</output>
-        </div>
-        <div>
-            <label for="total_draws"><frm:message key="label.rounds.draws"/>:</label>
-            <output id="total_draws">${totaldraws}</output>
+        <div class="button">
+            <form action="reset" method="post">
+                <button type="submit"><frm:message key="label.restart.game"/></button>
+            </form>
         </div>
     </div>
 </div>

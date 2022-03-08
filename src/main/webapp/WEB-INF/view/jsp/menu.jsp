@@ -15,15 +15,19 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   --%>
-
-<ul>
-    <li>
-        <a href="${pageContext.request.contextPath}/game"><frm:message key="title.game"/></a>
-    </li>
-    <li>
-        <a href="${pageContext.request.contextPath}/users"><frm:message key="title.users"/></a>
-    </li>
-    <li>
-        <a href="${pageContext.request.contextPath}/exception"><frm:message key="title.error"/></a>
-    </li>
-</ul>
+<div class="menu-context">
+    <div class="menu-item">
+        <ul>
+            <li class='${page.body == "game"? "active": ""}'>
+                <a href="${pageContext.request.contextPath}/"><frm:message key="title.game"/></a>
+            </li>
+            <li class='${page.body == "statistics"? "active": ""}'>
+                <a href="${pageContext.request.contextPath}/statistics"><frm:message key="title.statistics"/></a>
+            </li>
+            <li class='${(empty page or page.body == "exception")? "active": "hidden"}'>
+                <a href="${pageContext.request.contextPath}/error"><frm:message key="title.error"/></a>
+            </li>
+        </ul>
+    </div>
+    <div class="logo"></div>
+</div>

@@ -18,6 +18,7 @@
 package com.batyuta.challenge.lottoland.web;
 
 import com.batyuta.challenge.lottoland.exception.BaseException;
+import com.batyuta.challenge.lottoland.vo.PageVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +28,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -76,9 +75,8 @@ public class WebExceptionHandler {
                     locale
             );
             logger.error(errorMessage, exception);
-            List<String> messages = Collections.singletonList(errorMessage);
             HttpStatus httpStatus = HttpStatus.CONFLICT;
-            return getErrorModelAndView(messages, httpStatus);
+            return getErrorModelAndView(errorMessage, httpStatus);
         } else {
             return handleException(new Exception(), locale);
         }
@@ -102,7 +100,7 @@ public class WebExceptionHandler {
         );
         logger.error(exception.getMessage(), exception);
         return getErrorModelAndView(
-                Collections.singletonList(errorMessage),
+                errorMessage,
                 HttpStatus.INTERNAL_SERVER_ERROR
         );
     }
@@ -110,16 +108,19 @@ public class WebExceptionHandler {
     /**
      * Builds the error view.
      *
-     * @param messages   errors
+     * @param message    error
      * @param httpStatus returned HTTP status
      * @return view
      */
-    private ModelAndView getErrorModelAndView(final List<String> messages,
+    private ModelAndView getErrorModelAndView(final String message,
                                               final HttpStatus httpStatus) {
         HashMap<String, Object> map = new HashMap<>();
-        map.put("title", "title.error");
-        map.put("body", "exception");
-        map.put("messages", messages);
+        map.put("page", new PageVO<>(
+                "title.error",
+                "exception",
+                message
+        ));
+
         return new ModelAndView("main", map, httpStatus);
     }
 }

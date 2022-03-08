@@ -61,7 +61,7 @@ public class UserService {
      * @return saved user
      * @see UserDAO#create(UserEntity)
      * @see UserDAO#update(
-     * com.batyuta.challenge.lottoland.model.BaseEntity)
+     *com.batyuta.challenge.lottoland.model.BaseEntity)
      */
     public UserEntity save(final UserEntity user) {
         UserEntity userEntity;

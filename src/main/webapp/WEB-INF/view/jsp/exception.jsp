@@ -18,19 +18,48 @@
   ~ limitations under the License.
   --%>
 <div xmlns:jsp="http://java.sun.com/JSP/Page">
-    <div class="alert"></div>
-    <div>
-        <c:choose>
-            <c:when test="${empty param.messages}">
-                <p><fmt:message key="error.unknown">
-                    <fmt:param value=""/>
-                </fmt:message></p>
-            </c:when>
-            <c:otherwise>
-                <c:forEach var="message" items="${param.messages}">
-                    <p>${message}</p>
-                </c:forEach>
-            </c:otherwise>
-        </c:choose>
+    <div class="scroll-table">
+        <table>
+            <thead>
+            <tr>
+                <th colspan="2"></th>
+            </tr>
+            </thead>
+        </table>
+        <div class="scroll-table-body">
+            <table>
+                <tbody>
+                <c:choose>
+                    <c:when test="${empty page.data}">
+                        <tr>
+                            <td>
+                                <div class="alert"></div>
+                            </td>
+                            <td>
+                                <fmt:message key="error.unknown">
+                                    <fmt:param value=""/>
+                                </fmt:message>
+                            </td>
+                        </tr>
+                    </c:when>
+                    <c:otherwise>
+                        <tr>
+                            <td>
+                                <div class="alert"></div>
+                            </td>
+                            <td>${page.data}</td>
+                        </tr>
+                    </c:otherwise>
+                </c:choose>
+                </tbody>
+            </table>
+        </div>
+        <table>
+            <tfoot>
+            <tr>
+                <td colspan="2"></td>
+            </tr>
+            </tfoot>
+        </table>
     </div>
 </div>

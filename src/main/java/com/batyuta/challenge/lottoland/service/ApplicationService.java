@@ -184,9 +184,9 @@ public class ApplicationService {
     }
 
     /**
-     * Gets random Thing.
+     * Gets random Sign.
      *
-     * @return random thing
+     * @return random Sign
      */
     private SignEnum getRandom() {
         SignEnum[] values = SignEnum.values();
