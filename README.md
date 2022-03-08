@@ -3,7 +3,7 @@ The Test Challenge from Lottoland
 ![](src/docs/web.gif)
 # Developer Guide
 1. Build and Start application: `mvn spring-boot:run`
-2. Run Test Report: `mvn site` and report should be in `../target/site/index.html`
+2. Run Test Report: `mvn site` and report should be in `../target/site/index.html` ![](src/docs/site.gif)
 3. Run Maven command with _tests_ but without _checkstyle_: `mvn spring-boot:run -Pdev-test`
 4. Run Maven command without _tests_ and _checkstyle_: `mvn spring-boot:run -Pdev`
 > *Test Server starts on _8080_ port!*
