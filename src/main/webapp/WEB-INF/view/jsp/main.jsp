@@ -51,7 +51,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title><frm:message key="${title}"/></title>
+    <title><frm:message key="project.name"/>: <frm:message key="${title}"/></title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/main.css">
 </head>
 <body>

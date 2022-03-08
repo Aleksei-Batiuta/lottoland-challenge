@@ -17,12 +17,23 @@
 
 package com.batyuta.challenge.lottoland.test;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.io.IOException;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -33,9 +44,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * @author Aleksei Batyuta aleksei.batiuta@gmail.com
  */
-@SpringBootTest
+@SpringBootTest(webEnvironment =
+        SpringBootTest.WebEnvironment.DEFINED_PORT)
 @AutoConfigureMockMvc
+@DisplayName("Simple HTTP request test cases")
 public class ApplicationTest {
+
+    /**
+     * Test Server port.
+     */
+//    @LocalServerPort
+    private static final int SERVER_PORT = 8080;
     /**
      * Mock Model View Controller.
      */
@@ -58,6 +77,31 @@ public class ApplicationTest {
     }
 
     /**
+     * Test root JSP page.
+     *
+     * @throws IOException if error appears
+     */
+    @Test
+    public void rootJsp() throws IOException {
+
+        // Given
+        HttpUriRequest request =
+                new HttpGet("http://localhost:" + SERVER_PORT + "/");
+
+        // When
+        HttpResponse httpResponse = HttpClientBuilder.create()
+                .build()
+                .execute(request);
+
+        // Then
+        assertThat(
+                "Invalid HTTP response code",
+                httpResponse.getStatusLine().getStatusCode(),
+                equalTo(HttpStatus.SC_OK)
+        );
+    }
+
+    /**
      * Test access to statistics page.
      *
      * @throws Exception if error appears
@@ -70,6 +114,31 @@ public class ApplicationTest {
                 )
                 .andDo(print())
                 .andExpect(status().isOk());
+    }
+
+    /**
+     * Test statistics JSP page.
+     *
+     * @throws IOException if error appears
+     */
+    @Test
+    public void statisticsJsp() throws IOException {
+
+        // Given
+        HttpUriRequest request =
+                new HttpGet("http://localhost:" + SERVER_PORT + "/statistics");
+
+        // When
+        HttpResponse httpResponse = HttpClientBuilder.create()
+                .build()
+                .execute(request);
+
+        // Then
+        assertThat(
+                "Invalid HTTP response code",
+                httpResponse.getStatusLine().getStatusCode(),
+                equalTo(HttpStatus.SC_OK)
+        );
     }
 
     /**
@@ -88,6 +157,30 @@ public class ApplicationTest {
     }
 
     /**
+     * Test new JSP page.
+     *
+     * @throws IOException if error appears
+     */
+    @Test
+    public void newJsp() throws IOException {
+
+        // Given
+        HttpUriRequest request =
+                new HttpPost("http://localhost:" + SERVER_PORT + "/new");
+
+        // When
+        HttpResponse httpResponse = HttpClientBuilder.create()
+                .build()
+                .execute(request);
+
+        // Then
+        assertThat(
+                "Invalid HTTP response code",
+                httpResponse.getStatusLine().getStatusCode(),
+                equalTo(HttpStatus.SC_MOVED_TEMPORARILY)
+        );
+    }
+    /**
      * Test access to reset game page.
      *
      * @throws Exception if error appears
@@ -103,6 +196,30 @@ public class ApplicationTest {
     }
 
     /**
+     * Test reset JSP page.
+     *
+     * @throws IOException if error appears
+     */
+    @Test
+    public void resetJsp() throws IOException {
+
+        // Given
+        HttpUriRequest request =
+                new HttpPost("http://localhost:" + SERVER_PORT + "/reset");
+
+        // When
+        HttpResponse httpResponse = HttpClientBuilder.create()
+                .build()
+                .execute(request);
+
+        // Then
+        assertThat(
+                "Invalid HTTP response code",
+                httpResponse.getStatusLine().getStatusCode(),
+                equalTo(HttpStatus.SC_MOVED_TEMPORARILY)
+        );
+    }
+    /**
      * Test error page.
      *
      * @throws Exception if error appears
@@ -116,7 +233,30 @@ public class ApplicationTest {
                 .andDo(print())
                 .andExpect(status().is4xxClientError());
     }
+    /**
+     * Test error JSP page.
+     *
+     * @throws IOException if error appears
+     */
+    @Test
+    public void errorJsp() throws IOException {
 
+        // Given
+        HttpUriRequest request =
+                new HttpGet("http://localhost:" + SERVER_PORT + "/error");
+
+        // When
+        HttpResponse httpResponse = HttpClientBuilder.create()
+                .build()
+                .execute(request);
+
+        // Then
+        assertThat(
+                "Invalid HTTP response code",
+                httpResponse.getStatusLine().getStatusCode(),
+                equalTo(HttpStatus.SC_CONFLICT)
+        );
+    }
     /**
      * Test main.css.
      *
@@ -161,6 +301,7 @@ public class ApplicationTest {
                 )
                 .andExpect(status().isOk());
     }
+
     /**
      * Test gcharts.js.
      *

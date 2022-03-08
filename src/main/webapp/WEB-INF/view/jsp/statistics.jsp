@@ -30,7 +30,7 @@
             <table>
                 <tbody>
                 <c:choose>
-                    <c:when test="${page.data.totalRounds == 0}">
+                    <c:when test="${page.data.total == 0}">
                         <tr>
                             <td colspan="4">
                                 <frm:message key="label.table.empty"/>
@@ -51,9 +51,9 @@
                                         function drawChart() {
                                             var data = google.visualization.arrayToDataTable([
                                                 ['<frm:message key="label.rounds"/>', '<frm:message key="label.total"/>'],
-                                                ['<frm:message key="label.rounds.first"/>', ${page.data.firstRounds}],
-                                                ['<frm:message key="label.rounds.second"/>', ${page.data.secondRounds}],
-                                                ['<frm:message key="label.rounds.draws"/>', ${page.data.totalDraws}]
+                                                ['<frm:message key="label.rounds.first"/>', ${page.data.first}],
+                                                ['<frm:message key="label.rounds.second"/>', ${page.data.second}],
+                                                ['<frm:message key="label.rounds.draws"/>', ${page.data.draws}]
                                             ]);
 
                                             var options = {
@@ -79,7 +79,7 @@
                             </td>
                             <td><label for="first_wins"><frm:message key="label.rounds.first"/></label></td>
                             <td>
-                                <output id="first_wins">${page.data.firstRounds}</output>
+                                <output id="first_wins">${page.data.first}</output>
                             </td>
                         </tr>
                         <tr>
@@ -88,7 +88,7 @@
                             </td>
                             <td><label for="second_wins"><frm:message key="label.rounds.second"/></label></td>
                             <td>
-                                <output id="second_wins">${page.data.secondRounds}</output>
+                                <output id="second_wins">${page.data.second}</output>
                             </td>
                         </tr>
                         <tr>
@@ -97,7 +97,7 @@
                             </td>
                             <td><label for="total_draws"><frm:message key="label.rounds.draws"/></label></td>
                             <td>
-                                <output id="total_draws">${page.data.totalDraws}</output>
+                                <output id="total_draws">${page.data.draws}</output>
                             </td>
                         </tr>
                     </c:otherwise>
@@ -113,7 +113,7 @@
                     <label for="total_rounds"><frm:message key="label.rounds.total"/></label>
                 </td>
                 <td>
-                    <output id="total_rounds">${page.data.totalRounds}</output>
+                    <output id="total_rounds">${page.data.total}</output>
                 </td>
             </tr>
             </tfoot>
