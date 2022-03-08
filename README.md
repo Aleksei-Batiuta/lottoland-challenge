@@ -1,5 +1,6 @@
 # Lottoland
 The Test Challenge from Lottoland
+![](src/docs/web.gif)
 # Developer Guide
 1. Build and Start application: `mvn spring-boot:run`
 2. Run Test Report: `mvn site` and report should be in `../target/site/index.html`
