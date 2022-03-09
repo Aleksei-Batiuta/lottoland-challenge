@@ -80,6 +80,22 @@
     </properties>
     <profiles>
         <profile>
+            <id>release</id>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <artifactId>maven-scm-plugin</artifactId>
+                            <configuration>
+                                <message>[maven-scm-plugin] update ${project.version} GitHub Pages</message>
+                                <includes>docs/**</includes>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
+        </profile>
+        <profile>
             <!-- Runs all plugins such as checkstyle, unit tests and etc -->
             <id>prod</id>
             <activation>
@@ -227,7 +243,7 @@
                 <executions>
                     <execution>
                         <id>copy-resource-one</id>
-                        <phase>pre-site</phase>
+                        <phase>post-site</phase>
                         <goals>
                             <goal>copy-resources</goal>
                         </goals>
@@ -260,6 +276,13 @@
         <pluginManagement>
             <plugins>
                 <plugin>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>2.5.3</version>
+                    <configuration>
+                        <preparationGoals>-Prelease site site-deploy scm:checkin verify</preparationGoals>
+                    </configuration>
+                </plugin>
+                <plugin>
                     <artifactId>maven-clean-plugin</artifactId>
                     <version>3.1.0</version>
                 </plugin>
@@ -270,6 +293,10 @@
                 <plugin>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.8.0</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-scm-plugin</artifactId>
+                    <version>1.12.2</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -291,16 +318,6 @@
                 <plugin>
                     <artifactId>maven-site-plugin</artifactId>
                     <version>3.7.1</version>
-                    <executions>
-                        <execution>
-                            <id>site-deploy</id>
-                            <phase>verify</phase>
-                            <goals>
-                                <goal>site</goal>
-                                <goal>deploy</goal>
-                            </goals>
-                        </execution>
-                    </executions>
                 </plugin>
                 <plugin>
                     <artifactId>maven-project-info-reports-plugin</artifactId>
