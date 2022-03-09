@@ -16,18 +16,17 @@
   ~ limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.6.3</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath /> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.batyuta.challenge</groupId>
     <artifactId>lottoland-challenge</artifactId>
-    <version>1.7-SNAPSHOT</version>
+    <version>1.7</version>
     <name>Lottoland Challenge</name>
     <description>The Test Challenge from Lottoland</description>
     <url>https://aleksei-batiuta.github.io/lottoland-challenge/</url>
@@ -47,7 +46,7 @@
         <connection>scm:git:https://github.com/Aleksei-Batiuta/${project.artifactId}.git</connection>
         <developerConnection>scm:git:https://github.com/Aleksei-Batiuta/${project.artifactId}.git</developerConnection>
         <url>https://github.com/Aleksei-Batiuta/${project.artifactId}.git</url>
-        <tag>HEAD</tag>
+        <tag>lottoland-challenge-1.7</tag>
     </scm>
     <distributionManagement>
         <repository>
@@ -177,19 +176,16 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M5</version>
                 <configuration>
-                    <statelessTestsetReporter
-                            implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5Xml30StatelessReporter">
+                    <statelessTestsetReporter implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5Xml30StatelessReporter">
                         <usePhrasedFileName>false</usePhrasedFileName>
                         <usePhrasedTestSuiteClassName>true</usePhrasedTestSuiteClassName>
                         <usePhrasedTestCaseClassName>true</usePhrasedTestCaseClassName>
                         <usePhrasedTestCaseMethodName>true</usePhrasedTestCaseMethodName>
                     </statelessTestsetReporter>
-                    <consoleOutputReporter
-                            implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5ConsoleOutputReporter">
+                    <consoleOutputReporter implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5ConsoleOutputReporter">
                         <usePhrasedFileName>false</usePhrasedFileName>
                     </consoleOutputReporter>
-                    <statelessTestsetInfoReporter
-                            implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5StatelessTestsetInfoReporter">
+                    <statelessTestsetInfoReporter implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5StatelessTestsetInfoReporter">
                         <usePhrasedFileName>false</usePhrasedFileName>
                         <usePhrasedClassNameInRunning>true</usePhrasedClassNameInRunning>
                         <usePhrasedClassNameInTestCaseSummary>true</usePhrasedClassNameInTestCaseSummary>
