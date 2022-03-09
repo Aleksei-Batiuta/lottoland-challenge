@@ -29,7 +29,7 @@
     <artifactId>lottoland</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>Lottoland Challenge</name>
-    <description>The Test Challenge from LottoLand</description>
+    <description>The Test Challenge from Lottoland</description>
     <url>https://www.batyuta.com</url>
     <developers>
         <developer>
@@ -37,6 +37,9 @@
             <email>aleksei.batiuta@gmail.com</email>
         </developer>
     </developers>
+    <scm>
+        <url>https://github.com/Aleksei-Batiuta/lottoland.git</url>
+    </scm>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -189,6 +192,27 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <id>copy-resource-one</id>
+                        <phase>pre-site</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/target/site/images/logos</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${basedir}/src/site/images/logos</directory>
+                                    <includes>
+                                        <include>lottoland.png</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -196,6 +220,10 @@
                 <configuration>
                     <compilerArgument>-Xlint:deprecation</compilerArgument>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
             </plugin>
         </plugins>
         <pluginManagement>
