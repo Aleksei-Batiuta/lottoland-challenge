@@ -26,7 +26,7 @@
     </parent>
     <groupId>com.batyuta.challenge</groupId>
     <artifactId>lottoland</artifactId>
-    <version>1.3</version>
+    <version>1.4-SNAPSHOT</version>
     <name>Lottoland Challenge</name>
     <description>The Test Challenge from Lottoland</description>
     <url>https://www.batyuta.com</url>
@@ -40,7 +40,7 @@
         <connection>scm:git:https://github.com/Aleksei-Batiuta/lottoland.git</connection>
         <developerConnection>scm:git:https://github.com/Aleksei-Batiuta/lottoland.git</developerConnection>
         <url>https://github.com/Aleksei-Batiuta/lottoland.git</url>
-      <tag>lottoland-1.3</tag>
+      <tag>HEAD</tag>
   </scm>
     <distributionManagement>
         <repository>
