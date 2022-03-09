@@ -217,13 +217,6 @@
                 </executions>
             </plugin>
             <plugin>
-                <artifactId>maven-release-plugin</artifactId>
-                <configuration>
-                    <useReleaseProfile>true</useReleaseProfile>
-                    <goals>deploy site site-deploy</goals>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
@@ -303,6 +296,7 @@
                             <id>site-deploy</id>
                             <phase>verify</phase>
                             <goals>
+                                <goal>site</goal>
                                 <goal>deploy</goal>
                             </goals>
                         </execution>
