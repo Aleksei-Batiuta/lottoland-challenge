@@ -25,8 +25,8 @@
         <relativePath /> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.batyuta.challenge</groupId>
-    <artifactId>lottoland</artifactId>
-    <version>1.4-SNAPSHOT</version>
+    <artifactId>lottoland-challenge</artifactId>
+    <version>1.5-SNAPSHOT</version>
     <name>Lottoland Challenge</name>
     <description>The Test Challenge from Lottoland</description>
     <url>https://www.batyuta.com</url>
@@ -37,23 +37,23 @@
         </developer>
     </developers>
     <scm>
-        <connection>scm:git:https://github.com/Aleksei-Batiuta/lottoland.git</connection>
-        <developerConnection>scm:git:https://github.com/Aleksei-Batiuta/lottoland.git</developerConnection>
-        <url>https://github.com/Aleksei-Batiuta/lottoland.git</url>
+        <connection>scm:git:https://github.com/Aleksei-Batiuta/${project.artifactId}.git</connection>
+        <developerConnection>scm:git:https://github.com/Aleksei-Batiuta/${project.artifactId}.git</developerConnection>
+        <url>https://github.com/Aleksei-Batiuta/${project.artifactId}.git</url>
       <tag>HEAD</tag>
   </scm>
     <distributionManagement>
         <repository>
-            <id>github</id>
+            <id>${project.artifactId}</id>
             <name>GitHub Aleksei-Batiuta Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/Aleksei-Batiuta/lottoland</url>
+            <url>https://maven.pkg.github.com/Aleksei-Batiuta/${project.artifactId}</url>
         </repository>
     </distributionManagement>
     <repositories>
         <repository>
-            <id>github</id>
+            <id>${project.artifactId}</id>
             <name>GitHub Aleksei-Batiuta Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/Aleksei-Batiuta/lottoland</url>
+            <url>https://maven.pkg.github.com/Aleksei-Batiuta/${project.artifactId}</url>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
@@ -65,7 +65,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <java.version>1.8</java.version>
         <maven.test.failure.ignore>true</maven.test.failure.ignore>
-        <project.scm.id>github</project.scm.id>
+        <project.scm.id>${project.artifactId}</project.scm.id>
     </properties>
     <profiles>
         <profile>
