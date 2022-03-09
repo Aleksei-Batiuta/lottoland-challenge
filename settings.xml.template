@@ -1,0 +1,32 @@
+<settings>
+    <profiles>
+        <profile>
+            <id>lottoland-github</id>
+            <repositories>
+                <repository>
+                    <id>central</id>
+                    <url>https://repo1.maven.org/maven2</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                </repository>
+                <repository>
+                    <id>lottoland-github</id>
+                    <name>GitHub Aleksei-Batiuta Apache Maven Packages</name>
+                    <url>https://maven.pkg.github.com/Aleksei-Batiuta/lottoland</url>
+                </repository>
+            </repositories>
+        </profile>
+    </profiles>
+    <servers>
+        <server>
+            <id>lottoland-github</id>
+            <username>Aleksei-Batiuta</username>
+            <!-- GutHub Token -->
+            <password></password>
+        </server>
+    </servers>
+</settings>
