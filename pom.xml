@@ -38,23 +38,34 @@
         </developer>
     </developers>
     <scm>
-        <connection>scm:git:git://Aleksei-Batiuta@github.com/Aleksei-Batiuta/lottoland.git</connection>
-        <developerConnection>scm:git:ssh//Aleksei-Batiuta@github.com/Aleksei-Batiuta/lottoland.git</developerConnection>
+        <connection>scm:git:https://github.com/Aleksei-Batiuta/lottoland.git</connection>
+        <developerConnection>scm:git:https//github.com/Aleksei-Batiuta/lottoland.git</developerConnection>
         <url>https://github.com/Aleksei-Batiuta/lottoland.git</url>
     </scm>
     <distributionManagement>
         <repository>
-            <id>pkg.github.com</id>
+            <id>github</id>
             <name>GitHub Aleksei-Batiuta Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/Aleksei-Batiuta/mvn-repo</url>
+            <url>https://maven.pkg.github.com/Aleksei-Batiuta/lottoland</url>
         </repository>
     </distributionManagement>
+    <repositories>
+        <repository>
+            <id>github</id>
+            <name>GitHub Aleksei-Batiuta Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/Aleksei-Batiuta/lottoland</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <java.version>1.8</java.version>
         <maven.test.failure.ignore>true</maven.test.failure.ignore>
+        <project.scm.id>github</project.scm.id>
     </properties>
     <profiles>
         <profile>

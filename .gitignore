@@ -10,3 +10,5 @@
 steps.txt
 *.swp
 /release.properties
+/pom.xml.releaseBackup
+/settings.xml
