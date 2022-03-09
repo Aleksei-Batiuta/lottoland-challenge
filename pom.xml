@@ -38,9 +38,17 @@
         </developer>
     </developers>
     <scm>
-        <connection>scm:git:git@github.com:Aleksei-Batiuta/lottoland.git</connection>
+        <connection>scm:git:git://Aleksei-Batiuta@github.com/Aleksei-Batiuta/lottoland.git</connection>
+        <developerConnection>scm:git:ssh//Aleksei-Batiuta@github.com/Aleksei-Batiuta/lottoland.git</developerConnection>
         <url>https://github.com/Aleksei-Batiuta/lottoland.git</url>
     </scm>
+    <distributionManagement>
+        <repository>
+            <id>pkg.github.com</id>
+            <name>GitHub Aleksei-Batiuta Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/Aleksei-Batiuta/mvn-repo</url>
+        </repository>
+    </distributionManagement>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
