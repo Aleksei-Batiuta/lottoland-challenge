@@ -29,7 +29,7 @@
         <fluidoSkin>
             <topBarEnabled>true</topBarEnabled>
             <gitHub>
-                <projectId>Aleksei-Batiuta/lottoland</projectId>
+                <projectId>Aleksei-Batiuta/${project.artifactId}</projectId>
                 <ribbonOrientation>right</ribbonOrientation>
                 <ribbonColor>black</ribbonColor>
             </gitHub>
