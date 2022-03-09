@@ -38,6 +38,7 @@
         </developer>
     </developers>
     <scm>
+        <connection>scm:git:git@github.com:Aleksei-Batiuta/lottoland.git</connection>
         <url>https://github.com/Aleksei-Batiuta/lottoland.git</url>
     </scm>
     <properties>
