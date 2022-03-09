@@ -54,9 +54,9 @@
             <id>${project.artifactId}</id>
             <name>GitHub Aleksei-Batiuta Apache Maven Packages</name>
             <url>https://maven.pkg.github.com/Aleksei-Batiuta/${project.artifactId}</url>
-            <snapshots>
+            <releases>
                 <enabled>true</enabled>
-            </snapshots>
+            </releases>
         </repository>
     </repositories>
     <properties>
