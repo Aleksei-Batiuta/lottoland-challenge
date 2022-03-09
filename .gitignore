@@ -9,3 +9,4 @@
 /target/
 steps.txt
 *.swp
+/release.properties
