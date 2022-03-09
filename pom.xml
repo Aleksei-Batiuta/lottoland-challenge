@@ -26,7 +26,7 @@
     </parent>
     <groupId>com.batyuta.challenge</groupId>
     <artifactId>lottoland</artifactId>
-    <version>1.2-SNAPSHOT</version>
+    <version>1.0-SNAPSHOT</version>
     <name>Lottoland Challenge</name>
     <description>The Test Challenge from Lottoland</description>
     <url>https://www.batyuta.com</url>
@@ -40,18 +40,17 @@
         <connection>scm:git:https://github.com/Aleksei-Batiuta/lottoland.git</connection>
         <developerConnection>scm:git:https://github.com/Aleksei-Batiuta/lottoland.git</developerConnection>
         <url>https://github.com/Aleksei-Batiuta/lottoland.git</url>
-      <tag>HEAD</tag>
-  </scm>
+    </scm>
     <distributionManagement>
         <repository>
-            <id>lottoland-github</id>
+            <id>github</id>
             <name>GitHub Aleksei-Batiuta Apache Maven Packages</name>
             <url>https://maven.pkg.github.com/Aleksei-Batiuta/lottoland</url>
         </repository>
     </distributionManagement>
     <repositories>
         <repository>
-            <id>lottoland-github</id>
+            <id>github</id>
             <name>GitHub Aleksei-Batiuta Apache Maven Packages</name>
             <url>https://maven.pkg.github.com/Aleksei-Batiuta/lottoland</url>
             <snapshots>
@@ -65,7 +64,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <java.version>1.8</java.version>
         <maven.test.failure.ignore>true</maven.test.failure.ignore>
-        <project.scm.id>lottoland-github</project.scm.id>
+        <project.scm.id>github</project.scm.id>
     </properties>
     <profiles>
         <profile>
