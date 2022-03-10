@@ -16,20 +16,21 @@
   ~ limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.6.3</version>
-        <relativePath /> <!-- lookup parent from repository -->
+        <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.batyuta.challenge</groupId>
     <artifactId>lottoland-challenge</artifactId>
     <version>1.11-SNAPSHOT</version>
     <name>Lottoland Challenge</name>
     <description>The Test Challenge from Lottoland</description>
-    <url>https://aleksei-batiuta.github.io/lottoland-challenge/</url>
+    <url>https://aleksei-batiuta.github.io/${project.artifactId}/</url>
     <contributors>
         <contributor>
             <name>Aleksei Batiuta</name>
@@ -42,42 +43,81 @@
             <email>aleksei.batiuta@gmail.com</email>
         </developer>
     </developers>
+    <organization>
+        <name>Aleksei Batiuta</name>
+        <url>https://www.batyuta.com</url>
+    </organization>
+    <!-- subversion version control system settings-->
     <scm>
-        <connection>scm:git:https://github.com/Aleksei-Batiuta/${project.artifactId}.git</connection>
-        <developerConnection>scm:git:https://github.com/Aleksei-Batiuta/${project.artifactId}.git</developerConnection>
-        <url>https://github.com/Aleksei-Batiuta/${project.artifactId}.git</url>
+        <connection>scm:git:https://github.com/${github.owner}/${project.artifactId}.git</connection>
+        <developerConnection>scm:git:https://github.com/${github.owner}/${project.artifactId}.git</developerConnection>
+        <url>https://github.com/${github.owner}/${project.artifactId}.git</url>
         <tag>HEAD</tag>
     </scm>
+    <!-- Deployment Settings -->
     <distributionManagement>
+        <!-- Release Project Maven Repository -->
         <repository>
+            <!--
+            uses artifactId as ID for corresponding server settings
+            in Maven settings.xml to authorization via personal credential
+            -->
             <id>${project.artifactId}</id>
-            <name>GitHub Aleksei-Batiuta Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/Aleksei-Batiuta/${project.artifactId}</url>
+            <name>GitHub ${github.owner} Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/${github.owner}/${project.artifactId}</url>
         </repository>
+        <!-- Project Site Path -->
         <site>
             <id>${project.artifactId}</id>
+            <!-- Uses the local path to site deploy -->
             <url>file://${basedir}/docs</url>
         </site>
     </distributionManagement>
+    <!-- Libs Project Maven Repository -->
     <repositories>
         <repository>
+            <!--
+           uses artifactId as ID for corresponding server settings
+           in Maven settings.xml to authorization via personal credential
+           -->
             <id>${project.artifactId}</id>
-            <name>GitHub Aleksei-Batiuta Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/Aleksei-Batiuta/${project.artifactId}</url>
+            <name>GitHub ${github.owner} Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/${github.owner}/${project.artifactId}</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
         </repository>
+        <repository>
+            <!--
+           uses artifactId as ID for corresponding server settings
+           in Maven settings.xml to authorization via personal credential
+           -->
+            <id>central-mirror</id>
+            <name>Apache Maven Central Repository</name>
+            <url>https://repo1.maven.org/maven2/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
     </repositories>
+    <!-- Global project properties -->
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <java.version>1.8</java.version>
-        <maven.test.failure.ignore>true</maven.test.failure.ignore>
         <project.scm.id>${project.artifactId}</project.scm.id>
+        <!-- Runs all test cases -->
+        <maven.test.failure.ignore>true</maven.test.failure.ignore>
+        <!-- GitHub repository owner-->
+        <github.owner>Aleksei-Batiuta</github.owner>
     </properties>
+
     <profiles>
+        <!-- Release profile is used to release Maven goal -->
         <profile>
             <id>release</id>
             <build>
@@ -85,6 +125,7 @@
                     <plugins>
                         <plugin>
                             <artifactId>maven-scm-plugin</artifactId>
+                            <!-- Commits the Project Site (HitHub Pages) -->
                             <configuration>
                                 <message>[maven-scm-plugin] update ${project.version} GitHub Pages</message>
                                 <includes>docs/**</includes>
@@ -95,14 +136,7 @@
             </build>
         </profile>
         <profile>
-            <!-- Runs all plugins such as checkstyle, unit tests and etc -->
-            <id>prod</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-        </profile>
-        <profile>
-            <!-- Skips checkstyle and unit tests -->
+            <!-- Skips the checkstyle and unit tests -->
             <id>dev</id>
             <properties>
                 <maven.test.skip>true</maven.test.skip>
@@ -117,52 +151,8 @@
             </properties>
         </profile>
     </profiles>
-    <dependencies>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.tomcat.embed</groupId>
-            <artifactId>tomcat-embed-jasper</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>jstl</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc</artifactId>
-        </dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>javax.persistence</groupId>
-            <artifactId>javax.persistence-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>4.5.8</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
-
+    <!-- Adds JUnit test results on Project Site -->
     <reporting>
         <plugins>
             <plugin>
@@ -173,60 +163,84 @@
         </plugins>
     </reporting>
 
+    <!-- Project libraries -->
+    <dependencies>
+        <!-- Server libs -->
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-jasper</artifactId>
+        </dependency>
+        <!-- View libs -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.persistence</groupId>
+            <artifactId>javax.persistence-api</artifactId>
+        </dependency>
+        <!-- Spring boot libs -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- Test Cases libs -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <!-- General Build Configuration -->
     <build>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
             </resource>
             <resource>
+                <!--
+                Spring boot is not a WEB App and all resources
+                should be in src/main/resources directory
+                but it's more friendly to use webapp folder
+                for JSP pages, Images, CSS and other content
+                which related to HTML
+                -->
                 <directory>src/main/webapp</directory>
             </resource>
+            <!-- Resources for App message localization -->
             <resource>
                 <directory>src/main/resources/messages</directory>
                 <filtering>true</filtering>
+                <targetPath>${project.build.outputDirectory}/messages</targetPath>
             </resource>
         </resources>
+        <!-- Project Plugins-->
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M5</version>
-                <configuration>
-                    <statelessTestsetReporter implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5Xml30StatelessReporter">
-                        <usePhrasedFileName>false</usePhrasedFileName>
-                        <usePhrasedTestSuiteClassName>true</usePhrasedTestSuiteClassName>
-                        <usePhrasedTestCaseClassName>true</usePhrasedTestCaseClassName>
-                        <usePhrasedTestCaseMethodName>true</usePhrasedTestCaseMethodName>
-                    </statelessTestsetReporter>
-                    <consoleOutputReporter implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5ConsoleOutputReporter">
-                        <usePhrasedFileName>false</usePhrasedFileName>
-                    </consoleOutputReporter>
-                    <statelessTestsetInfoReporter implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5StatelessTestsetInfoReporter">
-                        <usePhrasedFileName>false</usePhrasedFileName>
-                        <usePhrasedClassNameInRunning>true</usePhrasedClassNameInRunning>
-                        <usePhrasedClassNameInTestCaseSummary>true</usePhrasedClassNameInTestCaseSummary>
-                    </statelessTestsetInfoReporter>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>google-checkstyle-validation</id>
-                        <phase>validate</phase>
-                        <configuration>
-                            <suppressionsLocation>src/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
-                            <encoding>UTF-8</encoding>
-                            <sourceDirectories>${basedir}</sourceDirectories>
-                            <includes>**/*</includes>
-                            <excludes>**/.git/**/*,**/.idea/**/*,**/target/**/,**/*.class</excludes>
-                        </configuration>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -235,91 +249,53 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
-                <version>3.2.0</version>
-                <executions>
-                    <execution>
-                        <id>copy-resource-one</id>
-                        <phase>post-site</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${basedir}/target/site/images/logos</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>${basedir}/src/site/images/logos</directory>
-                                    <includes>
-                                        <include>lottoland.png</include>
-                                    </includes>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <compilerArgument>-Xlint:deprecation</compilerArgument>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+            </plugin>
         </plugins>
+        <!-- Plugin configuration -->
         <pluginManagement>
             <plugins>
-                <plugin>
-                    <artifactId>maven-release-plugin</artifactId>
-                    <version>2.5.3</version>
-                    <configuration>
-                        <preparationGoals>-Prelease site site-deploy scm:checkin verify</preparationGoals>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-clean-plugin</artifactId>
-                    <version>3.1.0</version>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-resources-plugin</artifactId>
-                    <version>3.2.0</version>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.8.0</version>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-scm-plugin</artifactId>
-                    <version>1.12.2</version>
-                </plugin>
+                <!-- Maven JUnit5 Test Report-->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>3.0.0-M5</version>
+                    <configuration>
+                        <statelessTestsetReporter
+                                implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5Xml30StatelessReporter">
+                            <usePhrasedFileName>false</usePhrasedFileName>
+                            <usePhrasedTestSuiteClassName>true</usePhrasedTestSuiteClassName>
+                            <usePhrasedTestCaseClassName>true</usePhrasedTestCaseClassName>
+                            <usePhrasedTestCaseMethodName>true</usePhrasedTestCaseMethodName>
+                        </statelessTestsetReporter>
+                        <consoleOutputReporter
+                                implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5ConsoleOutputReporter">
+                            <usePhrasedFileName>false</usePhrasedFileName>
+                        </consoleOutputReporter>
+                        <statelessTestsetInfoReporter
+                                implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5StatelessTestsetInfoReporter">
+                            <usePhrasedFileName>false</usePhrasedFileName>
+                            <usePhrasedClassNameInRunning>true</usePhrasedClassNameInRunning>
+                            <usePhrasedClassNameInTestCaseSummary>true</usePhrasedClassNameInTestCaseSummary>
+                        </statelessTestsetInfoReporter>
+                    </configuration>
                 </plugin>
-                <plugin>
-                    <artifactId>maven-jar-plugin</artifactId>
-                    <version>3.0.2</version>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-install-plugin</artifactId>
-                    <version>2.5.2</version>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-deploy-plugin</artifactId>
-                    <version>2.8.2</version>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-site-plugin</artifactId>
-                    <version>3.7.1</version>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-project-info-reports-plugin</artifactId>
-                    <version>3.0.0</version>
-                </plugin>
-
+                <!-- Validates the source code style -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-checkstyle-plugin</artifactId>
@@ -331,6 +307,117 @@
                             <version>8.45.1</version>
                         </dependency>
                     </dependencies>
+                    <executions>
+                        <execution>
+                            <id>google-checkstyle-validation</id>
+                            <phase>validate</phase>
+                            <configuration>
+                                <suppressionsLocation>src/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
+                                <encoding>UTF-8</encoding>
+                                <sourceDirectories>${basedir}</sourceDirectories>
+                                <includes>**/*</includes>
+                                <excludes>**/.git/**/*,**/.idea/**/*,**/target/**/,**/*.class</excludes>
+                            </configuration>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <!-- Precesses the resources -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>3.2.0</version>
+                    <configuration>
+                        <propertiesEncoding>ISO-8859-1</propertiesEncoding>
+                    </configuration>
+                    <executions>
+                        <!-- Copes the logo into site -->
+                        <execution>
+                            <id>copy-logo</id>
+                            <phase>post-site</phase>
+                            <goals>
+                                <goal>copy-resources</goal>
+                            </goals>
+                            <configuration>
+                                <outputDirectory>${basedir}/target/site/images/logos</outputDirectory>
+                                <resources>
+                                    <resource>
+                                        <directory>${basedir}/src/site/images/logos</directory>
+                                        <includes>
+                                            <include>lottoland.png</include>
+                                        </includes>
+                                    </resource>
+                                </resources>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <!-- Compiles the code -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <configuration>
+                        <compilerArgument>-Xlint:deprecation</compilerArgument>
+                    </configuration>
+                </plugin>
+                <!-- Maven release goal -->
+                <plugin>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>2.5.3</version>
+                    <configuration>
+                        <!--
+                        Commits the test reports before thr release:prepare goal
+                        will commit pom file with a new release version
+                        -->
+                        <preparationGoals>-Prelease site site-deploy scm:checkin verify</preparationGoals>
+                    </configuration>
+                </plugin>
+                <!-- Project site plugins-->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>3.7.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-project-info-reports-plugin</artifactId>
+                    <version>3.2.2</version>
+                    <!--TODO: to fix the[WARNING] Unable to create Maven project for .. from repository. -->
+                    <!--<dependencies>
+                        <dependency>
+                            <groupId>com.fasterxml.jackson.module</groupId>
+                            <artifactId>jackson-module-scala_2.11</artifactId>
+                            <version>2.13.1</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>com.fasterxml.jackson.module</groupId>
+                            <artifactId>jackson-module-scala_2.12</artifactId>
+                            <version>2.13.1</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>com.fasterxml.jackson.module</groupId>
+                            <artifactId>jackson-module-scala_2.13</artifactId>
+                            <version>2.13.1</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>com.fasterxml.jackson.module</groupId>
+                            <artifactId>jackson-module-scala_3</artifactId>
+                            <version>2.13.1</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>com.querydsl</groupId>
+                            <artifactId>querydsl-codegen-utils</artifactId>
+                            <version>5.0.0</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>org.elasticsearch.distribution.integ-test-zip</groupId>
+                            <artifactId>elasticsearch</artifactId>
+                            <type>zip</type>
+                            <version>7.15.2</version>
+                        </dependency>
+                    </dependencies>-->
                 </plugin>
             </plugins>
         </pluginManagement>
