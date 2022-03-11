@@ -182,6 +182,7 @@ public class ApplicationTest {
                 equalTo(HttpStatus.SC_MOVED_TEMPORARILY)
         );
     }
+
     /**
      * Test access to reset game page.
      *
@@ -221,6 +222,7 @@ public class ApplicationTest {
                 equalTo(HttpStatus.SC_MOVED_TEMPORARILY)
         );
     }
+
     /**
      * Test error page.
      *
@@ -235,6 +237,7 @@ public class ApplicationTest {
                 .andDo(print())
                 .andExpect(status().is4xxClientError());
     }
+
     /**
      * Test error JSP page.
      *
@@ -259,6 +262,7 @@ public class ApplicationTest {
                 equalTo(HttpStatus.SC_CONFLICT)
         );
     }
+
     /**
      * Test main.css.
      *

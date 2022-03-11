@@ -22,12 +22,12 @@ import com.batyuta.challenge.lottoland.model.UserEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 /**
  * User DAO class.
  */
-@Component
+@Repository
 public final class UserDAO implements CrudDAO<UserEntity> {
     /**
      * Logger.

@@ -19,13 +19,13 @@ package com.batyuta.challenge.lottoland.service;
 
 import com.batyuta.challenge.lottoland.model.UserEntity;
 import com.batyuta.challenge.lottoland.vo.UserVO;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
  * Lightweight Service between
  * {@link UserEntity} and {@link UserVO}.
  */
-@Component
+@Service
 public final class UserLightweightService
         implements LightweightService<UserEntity, UserVO> {
 

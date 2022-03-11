@@ -19,7 +19,6 @@ package com.batyuta.challenge.lottoland.test;
 
 import com.batyuta.challenge.lottoland.model.RoundEntity;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.parallel.Execution;
 
@@ -30,7 +29,7 @@ import static org.junit.jupiter.api.parallel.ExecutionMode.CONCURRENT;
 /**
  * Test of modifying entity properties.
  */
-@Order(4)
+@DisplayName("Round Entity Concurrency modification test")
 class RoundEntityTest {
     /**
      * Counts of retry to broke system.

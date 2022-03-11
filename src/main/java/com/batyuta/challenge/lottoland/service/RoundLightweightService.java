@@ -19,13 +19,13 @@ package com.batyuta.challenge.lottoland.service;
 
 import com.batyuta.challenge.lottoland.model.RoundEntity;
 import com.batyuta.challenge.lottoland.vo.RoundVO;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
  * Lightweight Service between
  * {@link RoundEntity} and {@link RoundVO}.
  */
-@Component
+@Service
 public final class RoundLightweightService
         implements LightweightService<RoundEntity, RoundVO> {
     @Override

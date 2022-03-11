@@ -19,7 +19,7 @@ package com.batyuta.challenge.lottoland.test;
 
 import com.batyuta.challenge.lottoland.enums.SignEnum;
 import com.batyuta.challenge.lottoland.enums.StatusEnum;
-import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -34,7 +34,7 @@ import static org.springframework.test.util.AssertionErrors.assertNotNull;
  *
  * @author Aleksei Batyuta aleksei.batiuta@gmail.com
  */
-@Order(6)
+@DisplayName("Status Enum test cases")
 public class StatusEnumTest {
     /**
      * Invalid positive test data value.

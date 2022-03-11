@@ -22,7 +22,7 @@ import com.batyuta.challenge.lottoland.model.RoundEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -30,8 +30,8 @@ import java.util.stream.Collectors;
 /**
  * Round DAO class.
  */
-@Component
-public final class RoundDAO implements CrudDAO<RoundEntity> {
+@Repository
+public class RoundDAO implements CrudDAO<RoundEntity> {
     /**
      * Logger.
      */
@@ -51,6 +51,12 @@ public final class RoundDAO implements CrudDAO<RoundEntity> {
         this.repository = repository;
     }
 
+    /**
+     * Save a new {@link RoundEntity} into DB/Memory.
+     *
+     * @param round round
+     * @return updated round
+     */
     @Override
     public RoundEntity create(RoundEntity round) {
         try {
@@ -81,6 +87,11 @@ public final class RoundDAO implements CrudDAO<RoundEntity> {
         }
     }
 
+    /**
+     * Gets all {@link RoundEntity} from DB/Memory.
+     *
+     * @return rounds
+     */
     @Override
     public Collection<RoundEntity> getAll() {
         Collection<RoundEntity> rounds = null;

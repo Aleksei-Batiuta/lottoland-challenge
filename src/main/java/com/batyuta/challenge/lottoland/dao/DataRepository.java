@@ -37,7 +37,7 @@ import java.util.stream.Stream;
  * Data repository class.
  */
 @Repository
-public final class DataRepository extends LockedData {
+public class DataRepository extends LockedData {
     /**
      * This is a user table index.
      */

@@ -21,14 +21,14 @@ import com.batyuta.challenge.lottoland.dao.RoundDAO;
 import com.batyuta.challenge.lottoland.enums.StatusEnum;
 import com.batyuta.challenge.lottoland.model.RoundEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 
 /**
  * Round DAO Service.
  */
-@Component
+@Service
 public class RoundService {
     /**
      * Round DAO.

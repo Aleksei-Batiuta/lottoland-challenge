@@ -26,7 +26,6 @@ import org.junit.jupiter.api.ClassOrderer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestClassOrder;
 import org.junit.jupiter.api.TestInstance;
@@ -37,6 +36,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.event.annotation.BeforeTestClass;
 
 import java.util.ArrayList;
@@ -60,8 +60,8 @@ import static org.junit.jupiter.api.parallel.ExecutionMode.CONCURRENT;
 /**
  * Round DAO test class.
  */
-@Order(1)
 @TestClassOrder(ClassOrderer.OrderAnnotation.class)
+@DisplayName("Test Cases of Round DAO")
 public final class RoundDAOTest {
     /**
      * The first test user ID.
@@ -89,9 +89,9 @@ public final class RoundDAOTest {
     @Nested
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     @TestMethodOrder(MethodOrderer.DisplayName.class)
-    @Order(1)
     @SpringBootTest
     @DisplayName("Test Cases of Round DAO Functional Test")
+    @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
     public class FunctionalTest {
         /**
          * How many rounds will be created for each user.
@@ -452,6 +452,7 @@ public final class RoundDAOTest {
                 name = "getTotalRoundsByStatus[{index}]: first={0}"
         )
         @MethodSource("testStatusEnums")
+        @DisplayName("TC#14: Checks data to correct total count of status")
         void getTotalRoundsByStatus(StatusEnum statusEnum) {
             int totalRoundsByStatus =
                     roundDao.getTotalRoundsByStatus(statusEnum);
@@ -475,7 +476,6 @@ public final class RoundDAOTest {
      * Test cases of thread safe.
      */
     @Nested
-    @Order(2)
     @SpringBootTest
     @DisplayName("Test Cases of Round DAO Concurrency Test")
     public class ConcurrencyTest {

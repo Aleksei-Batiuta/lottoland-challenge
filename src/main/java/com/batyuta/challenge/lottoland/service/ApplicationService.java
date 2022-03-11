@@ -22,7 +22,7 @@ import com.batyuta.challenge.lottoland.enums.StatusEnum;
 import com.batyuta.challenge.lottoland.model.RoundEntity;
 import com.batyuta.challenge.lottoland.model.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.Random;
@@ -31,7 +31,7 @@ import java.util.UUID;
 /**
  * The General Application Service.
  */
-@Component
+@Service
 public class ApplicationService {
     /**
      * Random instance.

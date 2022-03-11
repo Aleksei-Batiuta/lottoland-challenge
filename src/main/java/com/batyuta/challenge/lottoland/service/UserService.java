@@ -20,14 +20,14 @@ package com.batyuta.challenge.lottoland.service;
 import com.batyuta.challenge.lottoland.dao.UserDAO;
 import com.batyuta.challenge.lottoland.model.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 
 /**
  * User DAO Service.
  */
-@Component
+@Service
 public class UserService {
     /**
      * User DAO.
