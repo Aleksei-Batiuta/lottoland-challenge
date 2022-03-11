@@ -46,10 +46,10 @@ public class StatisticsVO {
      * @param secondRounds the second users wins
      * @param totalDraws   the total of draws
      */
-    public StatisticsVO(int totalRounds,
-                        int firstRounds,
-                        int secondRounds,
-                        int totalDraws) {
+    public StatisticsVO(final int totalRounds,
+                        final int firstRounds,
+                        final int secondRounds,
+                        final int totalDraws) {
         this.total = totalRounds;
         this.first = firstRounds;
         this.second = secondRounds;

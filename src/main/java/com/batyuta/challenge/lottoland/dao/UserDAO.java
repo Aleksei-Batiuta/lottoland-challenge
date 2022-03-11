@@ -41,18 +41,17 @@ public final class UserDAO implements CrudDAO<UserEntity> {
     /**
      * Default Constructor.
      *
-     * @param repository data repository
+     * @param dataRepository data repository
      */
     @Autowired
-    public UserDAO(final DataRepository repository) {
-        this.repository = repository;
+    public UserDAO(final DataRepository dataRepository) {
+        this.repository = dataRepository;
     }
 
     @Override
-    public UserEntity create(UserEntity user) {
+    public UserEntity create(final UserEntity user) {
         try {
-            user = repository.createUser(user);
-            return user;
+            return repository.createUser(user);
         } finally {
             log.info("create: User {} has been created", user);
         }

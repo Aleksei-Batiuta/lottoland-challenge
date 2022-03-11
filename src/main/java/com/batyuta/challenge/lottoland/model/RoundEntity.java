@@ -147,7 +147,7 @@ public class RoundEntity extends BaseEntity {
      *
      * @param isDeleted delete flag
      */
-    public void setDeleted(boolean isDeleted) {
+    public void setDeleted(final boolean isDeleted) {
         write(() -> this.deleted = isDeleted);
     }
 

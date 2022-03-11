@@ -50,11 +50,11 @@ public class WebExceptionHandler {
     /**
      * Default constructor.
      *
-     * @param messageSource message servcice
+     * @param source message servcice
      */
     @Autowired
-    public WebExceptionHandler(final MessageSource messageSource) {
-        this.messageSource = messageSource;
+    public WebExceptionHandler(final MessageSource source) {
+        this.messageSource = source;
     }
 
     /**

@@ -44,11 +44,11 @@ public class RoundDAO implements CrudDAO<RoundEntity> {
     /**
      * Default Constructor.
      *
-     * @param repository data repository
+     * @param dataRepository data repository
      */
     @Autowired
-    public RoundDAO(final DataRepository repository) {
-        this.repository = repository;
+    public RoundDAO(final DataRepository dataRepository) {
+        this.repository = dataRepository;
     }
 
     /**
@@ -58,10 +58,9 @@ public class RoundDAO implements CrudDAO<RoundEntity> {
      * @return updated round
      */
     @Override
-    public RoundEntity create(RoundEntity round) {
+    public RoundEntity create(final RoundEntity round) {
         try {
-            round = repository.createRound(round);
-            return round;
+            return repository.createRound(round);
         } finally {
             log.info("create: Round {} has been created", round);
         }
@@ -155,7 +154,8 @@ public class RoundDAO implements CrudDAO<RoundEntity> {
         }
     }
 
-    private void log(String methodName, Collection<RoundEntity> rounds) {
+    private void log(final String methodName,
+                     final Collection<RoundEntity> rounds) {
         if (rounds == null || rounds.isEmpty()) {
             if (log.isTraceEnabled()) {
                 log.trace("{}: No Round Entities in repo!", methodName);

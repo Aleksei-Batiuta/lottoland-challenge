@@ -51,10 +51,10 @@ public abstract class BaseEntity extends LockedData implements Serializable {
     /**
      * Default constructor.
      *
-     * @param id entity ID.
+     * @param entityId entity ID.
      */
-    protected BaseEntity(final Integer id) {
-        this.setId(id);
+    protected BaseEntity(final Integer entityId) {
+        this.setId(entityId);
     }
 
     /**
@@ -79,9 +79,9 @@ public abstract class BaseEntity extends LockedData implements Serializable {
     /**
      * Getter of entity ID.
      *
-     * @param id entity ID
+     * @param entityId entity ID
      */
-    public void setId(int id) {
-        write(() -> this.id = id);
+    public void setId(final int entityId) {
+        write(() -> this.id = entityId);
     }
 }

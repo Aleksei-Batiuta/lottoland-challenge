@@ -36,10 +36,10 @@ public abstract class BaseVO {
     /**
      * Default constructor.
      *
-     * @param id view ID
+     * @param voId view ID
      */
-    public BaseVO(final int id) {
-        this.id = id;
+    public BaseVO(final int voId) {
+        this.id = voId;
     }
 
     /**

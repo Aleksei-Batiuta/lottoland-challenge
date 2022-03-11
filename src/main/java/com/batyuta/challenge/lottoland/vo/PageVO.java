@@ -39,14 +39,16 @@ public class PageVO<T> {
     /**
      * Default constructor.
      *
-     * @param title page title
-     * @param body  subpage name
-     * @param data  custom data
+     * @param pageTitle page title
+     * @param pageBody  subpage name
+     * @param pageData  custom data
      */
-    public PageVO(String title, String body, T data) {
-        this.title = title;
-        this.body = body;
-        this.data = data;
+    public PageVO(final String pageTitle,
+                  final String pageBody,
+                  final T pageData) {
+        this.title = pageTitle;
+        this.body = pageBody;
+        this.data = pageData;
     }
 
     /**

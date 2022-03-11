@@ -78,7 +78,7 @@ public class WebController {
      * @return greetings model and view
      */
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ModelAndView game(HttpServletRequest httpRequest) {
+    public ModelAndView game(final HttpServletRequest httpRequest) {
         UserVO userVO = getOrCreateUserVO(httpRequest);
         Collection<RoundVO> rounds = roundService.getViews(
                 applicationService.getRoundsByUserId(userVO.getId())
@@ -101,7 +101,7 @@ public class WebController {
      * @return game model and view
      */
     @RequestMapping(value = "/new", method = RequestMethod.POST)
-    public String newRound(HttpServletRequest httpRequest) {
+    public String newRound(final HttpServletRequest httpRequest) {
         UserVO userVO = getOrCreateUserVO(httpRequest);
         RoundEntity round = applicationService.newRoundByUserId(userVO.getId());
         return "redirect:/";
@@ -114,7 +114,7 @@ public class WebController {
      * @return game model and view
      */
     @RequestMapping(value = "/reset", method = RequestMethod.POST)
-    public String resetGame(HttpServletRequest httpRequest) {
+    public String resetGame(final HttpServletRequest httpRequest) {
         UserVO userVO = getOrCreateUserVO(httpRequest);
         applicationService.deleteAllRoundsByUserId(userVO.getId());
 
@@ -128,7 +128,7 @@ public class WebController {
      * @return game model and view
      */
     @RequestMapping(value = "/statistics", method = RequestMethod.GET)
-    public ModelAndView statistics(HttpServletRequest httpRequest) {
+    public ModelAndView statistics(final HttpServletRequest httpRequest) {
         UserVO userVO = getOrCreateUserVO(httpRequest);
         int totalRounds = applicationService.getTotalRounds();
         int firstRounds = applicationService.getFirstRounds();
@@ -155,7 +155,7 @@ public class WebController {
      * @param httpRequest HTTP Servlet Request
      * @return current user VO
      */
-    private UserVO getOrCreateUserVO(HttpServletRequest httpRequest) {
+    private UserVO getOrCreateUserVO(final HttpServletRequest httpRequest) {
         UserVO userVO = (UserVO) httpRequest.getSession().getAttribute("user");
 
         UserEntity userEntity = applicationService.getOrCreateUser(

@@ -39,12 +39,12 @@ public abstract class NamedEntity extends BaseEntity {
      * Default constructor.
      *
      * @param id   entity ID
-     * @param name name field of entity
+     * @param entityName name field of entity
      */
     protected NamedEntity(final Integer id,
-                          final String name) {
+                          final String entityName) {
         super(id);
-        this.name = name;
+        this.name = entityName;
     }
 
     /**

@@ -65,9 +65,10 @@ public class DataRepository extends LockedData {
      * @param isDescendingOrder order
      * @return rounds
      */
-    public Collection<RoundEntity> getRounds(Integer userId, Boolean isDeleted,
-                                             StatusEnum status,
-                                             boolean isDescendingOrder) {
+    public Collection<RoundEntity> getRounds(final Integer userId,
+                                             final Boolean isDeleted,
+                                             final StatusEnum status,
+                                             final boolean isDescendingOrder) {
         return read(
                 () -> getRoundEntities(
                         userId,
@@ -84,13 +85,13 @@ public class DataRepository extends LockedData {
      * @param userId            user ID
      * @param isDeleted         deleted flag
      * @param status            status of rounds
-     * @param isDescendingOrder data order
+     * @param isDescOrder data order
      * @return list of rounds
      */
-    private List<RoundEntity> getRoundEntities(Integer userId,
-                                               Boolean isDeleted,
-                                               StatusEnum status,
-                                               boolean isDescendingOrder) {
+    private List<RoundEntity> getRoundEntities(final Integer userId,
+                                               final Boolean isDeleted,
+                                               final StatusEnum status,
+                                               final boolean isDescOrder) {
         Stream<RoundEntity> roundsStream = rounds.stream()
                 .filter(Objects::nonNull);
         if (userId != null) {
@@ -107,7 +108,7 @@ public class DataRepository extends LockedData {
         }
         List<RoundEntity> roundsList =
                 roundsStream.collect(Collectors.toList());
-        if (isDescendingOrder) {
+        if (isDescOrder) {
             Collections.reverse(roundsList);
         }
         return Collections.unmodifiableList(roundsList);
@@ -120,7 +121,8 @@ public class DataRepository extends LockedData {
      * @param status round status
      * @return count of deleted rounds
      */
-    public Integer deleteRounds(Integer userId, StatusEnum status) {
+    public Integer deleteRounds(final Integer userId,
+                                final StatusEnum status) {
         return write(
                 () -> {
                     Collection<RoundEntity> roundsList = getRounds(
@@ -135,11 +137,11 @@ public class DataRepository extends LockedData {
         );
     }
 
-    private void markRoundAsDeleted(RoundEntity round) {
+    private void markRoundAsDeleted(final RoundEntity round) {
         round.setDeleted(true);
     }
 
-    private void setId(BaseEntity entity, int id) {
+    private void setId(final BaseEntity entity, final int id) {
         entity.setId(id);
     }
 
@@ -149,7 +151,7 @@ public class DataRepository extends LockedData {
      * @param round round
      * @return created round
      */
-    public RoundEntity createRound(RoundEntity round) {
+    public RoundEntity createRound(final RoundEntity round) {
         return write(
                 () -> {
                     setId(round, roundIndex.incrementAndGet());
@@ -167,7 +169,7 @@ public class DataRepository extends LockedData {
      * @param user user
      * @return created user
      */
-    public UserEntity createUser(UserEntity user) {
+    public UserEntity createUser(final UserEntity user) {
         return write(
                 () -> {
                     setId(user, userIndex.incrementAndGet());
@@ -185,7 +187,7 @@ public class DataRepository extends LockedData {
      * @param userId user ID
      * @return user
      */
-    public UserEntity getUser(int userId) {
+    public UserEntity getUser(final int userId) {
         return read(
                 () -> users.stream()
                         .filter(user -> user.getId() == userId)

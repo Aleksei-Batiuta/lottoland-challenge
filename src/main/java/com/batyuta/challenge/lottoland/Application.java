@@ -26,7 +26,9 @@ import java.util.Arrays;
 /**
  * Hello world!
  */
+// CHECKSTYLE:SUPPRESS:HideUtilityClassConstructor
 @SpringBootApplication
+@SuppressWarnings("checkstyle:HideUtilityClassConstructor")
 public class Application {
 
     /**
@@ -45,5 +47,6 @@ public class Application {
             System.out.println(beanName);
         }
     }
-
 }
+// CHECKSTYLE:UNSUPPRESS:HideUtilityClassConstructor
+

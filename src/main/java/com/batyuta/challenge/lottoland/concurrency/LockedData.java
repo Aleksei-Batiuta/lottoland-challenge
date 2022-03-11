@@ -65,7 +65,7 @@ public abstract class LockedData {
      * @return object
      */
     @Transient
-    public <T> T read(Supplier<T> command) {
+    public <T> T read(final Supplier<T> command) {
         return lockedOperation(readLock, command);
     }
 
@@ -77,7 +77,7 @@ public abstract class LockedData {
      * @return object
      */
     @Transient
-    public <T> T write(Supplier<T> command) {
+    public <T> T write(final Supplier<T> command) {
         return lockedOperation(writeLock, command);
     }
 
@@ -89,7 +89,8 @@ public abstract class LockedData {
      * @param <T>             returned type
      * @return object
      */
-    private <T> T lockedOperation(Lock readOrWriteLock, Supplier<T> command) {
+    private <T> T lockedOperation(final Lock readOrWriteLock,
+                                  final Supplier<T> command) {
         try {
             boolean isLockAcquired;
             int trying = 0;
