@@ -36,4 +36,5 @@
     <suppress checks="MagicNumber" files=".*Test.java"/>
     <!-- Don't process the release.properties -->
     <suppress checks="RegexpSingleline" files="release.properties"/>
+    <suppress checks="NewlineAtEndOfFile" files="docs/.*"/>
 </suppressions>
