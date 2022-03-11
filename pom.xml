@@ -311,7 +311,6 @@
                             </goals>
                         </execution>
                         <!-- Check the java coverage code rate to 50%-->
-                        <!--
                         <execution>
                             <id>jacoco-check</id>
                             <goals>
@@ -320,10 +319,10 @@
                             <configuration>
                                 <rules>
                                     <rule>
-                                        <element>PACKAGE</element>
+                                        <element>BUNDLE</element>
                                         <limits>
                                             <limit>
-                                                <counter>LINE</counter>
+                                                <counter>INSTRUCTION</counter>
                                                 <value>COVEREDRATIO</value>
                                                 <minimum>0.50</minimum>
                                             </limit>
@@ -332,7 +331,6 @@
                                 </rules>
                             </configuration>
                         </execution>
-                        -->
                     </executions>
                 </plugin>
                 <!-- Maven JUnit5 Test Report-->
