@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RoundDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Lottoland Challenge</a> &gt; <a href="index.source.html" class="el_package">com.batyuta.challenge.lottoland.dao</a> &gt; <span class="el_source">RoundDAO.java</span></div><h1>RoundDAO.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2022 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.batyuta.challenge.lottoland.dao;
+
+import com.batyuta.challenge.lottoland.enums.StatusEnum;
+import com.batyuta.challenge.lottoland.model.RoundEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import java.util.Collection;
+import java.util.stream.Collectors;
+
+/**
+ * Round DAO class.
+ */
+@Repository
+public class RoundDAO implements CrudDAO&lt;RoundEntity&gt; {
+    /**
+     * Logger.
+     */
+<span class="fc" id="L38">    private final Logger log = LoggerFactory.getLogger(RoundDAO.class);</span>
+    /**
+     * Data Repository.
+     */
+    private final DataRepository repository;
+
+    /**
+     * Default Constructor.
+     *
+     * @param repository data repository
+     */
+    @Autowired
+<span class="fc" id="L50">    public RoundDAO(final DataRepository repository) {</span>
+<span class="fc" id="L51">        this.repository = repository;</span>
+<span class="fc" id="L52">    }</span>
+
+    /**
+     * Save a new {@link RoundEntity} into DB/Memory.
+     *
+     * @param round round
+     * @return updated round
+     */
+    @Override
+    public RoundEntity create(RoundEntity round) {
+        try {
+<span class="fc" id="L63">            round = repository.createRound(round);</span>
+<span class="fc" id="L64">            return round;</span>
+        } finally {
+<span class="fc" id="L66">            log.info(&quot;create: Round {} has been created&quot;, round);</span>
+        }
+    }
+
+    /**
+     * Deletes all rounds by user ID.
+     *
+     * @param userId user ID
+     * @return count of deleted rounds
+     */
+    public int deleteAllByUserId(final int userId) {
+<span class="fc" id="L77">        int rounds = 0;</span>
+        try {
+<span class="fc" id="L79">            rounds = repository.deleteRounds(userId, null);</span>
+<span class="fc" id="L80">            return rounds;</span>
+        } finally {
+<span class="fc" id="L82">            log.info(</span>
+                    &quot;deleteAllByUserId: user = {}; count = {}&quot;,
+<span class="fc" id="L84">                    userId,</span>
+<span class="fc" id="L85">                    rounds</span>
+            );
+        }
+    }
+
+    /**
+     * Gets all {@link RoundEntity} from DB/Memory.
+     *
+     * @return rounds
+     */
+    @Override
+    public Collection&lt;RoundEntity&gt; getAll() {
+<span class="fc" id="L97">        Collection&lt;RoundEntity&gt; rounds = null;</span>
+        try {
+<span class="fc" id="L99">            rounds = repository.getRounds(null, null, null, false);</span>
+<span class="fc" id="L100">            return rounds;</span>
+        } finally {
+<span class="fc" id="L102">            log(&quot;getAll&quot;, rounds);</span>
+        }
+    }
+
+    /**
+     * Gets rounds by user ID.
+     *
+     * @param userId user ID
+     * @return rounds
+     */
+    public Collection&lt;RoundEntity&gt; getRoundsByUserId(final int userId) {
+<span class="fc" id="L113">        Collection&lt;RoundEntity&gt; rounds = null;</span>
+        try {
+<span class="fc" id="L115">            rounds = repository.getRounds(userId, false, null, true);</span>
+<span class="fc" id="L116">            return rounds;</span>
+        } finally {
+<span class="fc" id="L118">            log(&quot;getRoundsByUserId: userId = &quot; + userId, rounds);</span>
+        }
+    }
+
+    /**
+     * Gets total played rounds.
+     *
+     * @return number of total played rounds
+     */
+    public int getTotalRounds() {
+<span class="fc" id="L128">        return getAll().size();</span>
+    }
+
+    /**
+     * Gets total played rounds by status.
+     *
+     * @param status status of rounds
+     * @return number of total played rounds
+     */
+    public int getTotalRoundsByStatus(final StatusEnum status) {
+<span class="fc" id="L138">        return getAllRoundsByStatus(status).size();</span>
+    }
+
+    /**
+     * Gets total played rounds by status.
+     *
+     * @param status status of rounds
+     * @return number of total played rounds
+     */
+    public Collection&lt;RoundEntity&gt; getAllRoundsByStatus(
+            final StatusEnum status) {
+<span class="fc" id="L149">        Collection&lt;RoundEntity&gt; rounds = null;</span>
+        try {
+<span class="fc" id="L151">            rounds = repository.getRounds(null, null, status, false);</span>
+<span class="fc" id="L152">            return rounds;</span>
+        } finally {
+<span class="fc" id="L154">            log(&quot;getRoundsByStatus: status = &quot; + status, rounds);</span>
+        }
+    }
+
+    private void log(String methodName, Collection&lt;RoundEntity&gt; rounds) {
+<span class="pc bpc" id="L159" title="1 of 4 branches missed.">        if (rounds == null || rounds.isEmpty()) {</span>
+<span class="pc bpc" id="L160" title="1 of 2 branches missed.">            if (log.isTraceEnabled()) {</span>
+<span class="nc" id="L161">                log.trace(&quot;{}: No Round Entities in repo!&quot;, methodName);</span>
+            } else {
+<span class="fc" id="L163">                log.info(&quot;{}&quot;, methodName);</span>
+            }
+        } else {
+<span class="pc bpc" id="L166" title="1 of 2 branches missed.">            if (log.isTraceEnabled()) {</span>
+<span class="nc" id="L167">                log.trace(</span>
+                        &quot;{}: [\n{}\n]&quot;,
+                        methodName,
+<span class="nc" id="L170">                        rounds.stream()</span>
+<span class="nc" id="L171">                                .map(Object::toString)</span>
+<span class="nc" id="L172">                                .collect(Collectors.joining(&quot;,\n&quot;))</span>
+                );
+            } else {
+<span class="fc" id="L175">                log.info(&quot;{}: count = {}&quot;, methodName, rounds.size());</span>
+            }
+        }
+<span class="fc" id="L178">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

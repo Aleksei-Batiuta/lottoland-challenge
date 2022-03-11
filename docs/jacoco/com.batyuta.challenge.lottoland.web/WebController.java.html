@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WebController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Lottoland Challenge</a> &gt; <a href="index.source.html" class="el_package">com.batyuta.challenge.lottoland.web</a> &gt; <span class="el_source">WebController.java</span></div><h1>WebController.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2022 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.batyuta.challenge.lottoland.web;
+
+import com.batyuta.challenge.lottoland.exception.ApplicationException;
+import com.batyuta.challenge.lottoland.model.RoundEntity;
+import com.batyuta.challenge.lottoland.model.UserEntity;
+import com.batyuta.challenge.lottoland.service.ApplicationService;
+import com.batyuta.challenge.lottoland.service.RoundLightweightService;
+import com.batyuta.challenge.lottoland.service.UserLightweightService;
+import com.batyuta.challenge.lottoland.vo.PageVO;
+import com.batyuta.challenge.lottoland.vo.RoundVO;
+import com.batyuta.challenge.lottoland.vo.StatisticsVO;
+import com.batyuta.challenge.lottoland.vo.UserVO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Collection;
+import java.util.HashMap;
+
+/**
+ * The main WEB controller.
+ */
+@Controller
+public class WebController {
+    /**
+     * Application Main Service.
+     */
+    private final ApplicationService applicationService;
+    /**
+     * User Service.
+     */
+    private final UserLightweightService userService;
+    /**
+     * Round Service.
+     */
+    private final RoundLightweightService roundService;
+
+    /**
+     * Default constructor.
+     *
+     * @param service  application service
+     * @param uService user lightweight service
+     * @param rService round lightweight service
+     */
+    @Autowired
+    public WebController(final ApplicationService service,
+                         final UserLightweightService uService,
+<span class="fc" id="L68">                         final RoundLightweightService rService) {</span>
+<span class="fc" id="L69">        this.applicationService = service;</span>
+<span class="fc" id="L70">        this.userService = uService;</span>
+<span class="fc" id="L71">        this.roundService = rService;</span>
+<span class="fc" id="L72">    }</span>
+
+    /**
+     * Gets greetings.
+     *
+     * @param httpRequest HTTP Servlet Request
+     * @return greetings model and view
+     */
+    @RequestMapping(value = &quot;/&quot;, method = RequestMethod.GET)
+    public ModelAndView game(HttpServletRequest httpRequest) {
+<span class="fc" id="L82">        UserVO userVO = getOrCreateUserVO(httpRequest);</span>
+<span class="fc" id="L83">        Collection&lt;RoundVO&gt; rounds = roundService.getViews(</span>
+<span class="fc" id="L84">                applicationService.getRoundsByUserId(userVO.getId())</span>
+        );
+
+<span class="fc" id="L87">        HashMap&lt;String, Object&gt; map = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L88">        map.put(&quot;page&quot;, new PageVO&lt;&gt;(</span>
+                &quot;title.game&quot;,
+                &quot;game&quot;,
+                rounds
+        ));
+
+<span class="fc" id="L94">        return new ModelAndView(&quot;main&quot;, map);</span>
+    }
+
+    /**
+     * new Round.
+     *
+     * @param httpRequest HTTP Servlet Request
+     * @return game model and view
+     */
+    @RequestMapping(value = &quot;/new&quot;, method = RequestMethod.POST)
+    public String newRound(HttpServletRequest httpRequest) {
+<span class="fc" id="L105">        UserVO userVO = getOrCreateUserVO(httpRequest);</span>
+<span class="fc" id="L106">        RoundEntity round = applicationService.newRoundByUserId(userVO.getId());</span>
+<span class="fc" id="L107">        return &quot;redirect:/&quot;;</span>
+    }
+
+    /**
+     * Requests to e new Round.
+     *
+     * @param httpRequest HTTP Servlet Request
+     * @return game model and view
+     */
+    @RequestMapping(value = &quot;/reset&quot;, method = RequestMethod.POST)
+    public String resetGame(HttpServletRequest httpRequest) {
+<span class="fc" id="L118">        UserVO userVO = getOrCreateUserVO(httpRequest);</span>
+<span class="fc" id="L119">        applicationService.deleteAllRoundsByUserId(userVO.getId());</span>
+
+<span class="fc" id="L121">        return &quot;redirect:/&quot;;</span>
+    }
+
+    /**
+     * Gets Statistics data.
+     *
+     * @param httpRequest HTTP Servlet Request
+     * @return game model and view
+     */
+    @RequestMapping(value = &quot;/statistics&quot;, method = RequestMethod.GET)
+    public ModelAndView statistics(HttpServletRequest httpRequest) {
+<span class="fc" id="L132">        UserVO userVO = getOrCreateUserVO(httpRequest);</span>
+<span class="fc" id="L133">        int totalRounds = applicationService.getTotalRounds();</span>
+<span class="fc" id="L134">        int firstRounds = applicationService.getFirstRounds();</span>
+<span class="fc" id="L135">        int secondRounds = applicationService.getSecondRounds();</span>
+<span class="fc" id="L136">        int totalDraws = applicationService.getDraws();</span>
+
+<span class="fc" id="L138">        HashMap&lt;String, Object&gt; map = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L139">        map.put(&quot;page&quot;, new PageVO&lt;&gt;(</span>
+                &quot;title.statistics&quot;,
+                &quot;statistics&quot;,
+                new StatisticsVO(
+                        totalRounds,
+                        firstRounds,
+                        secondRounds,
+                        totalDraws
+                )
+        ));
+<span class="fc" id="L149">        return new ModelAndView(&quot;main&quot;, map);</span>
+    }
+
+    /**
+     * User Authorization.
+     *
+     * @param httpRequest HTTP Servlet Request
+     * @return current user VO
+     */
+    private UserVO getOrCreateUserVO(HttpServletRequest httpRequest) {
+<span class="fc" id="L159">        UserVO userVO = (UserVO) httpRequest.getSession().getAttribute(&quot;user&quot;);</span>
+
+<span class="fc" id="L161">        UserEntity userEntity = applicationService.getOrCreateUser(</span>
+<span class="fc" id="L162">                userService.toEntity(userVO)</span>
+        );
+<span class="fc" id="L164">        userVO = userService.toView(userEntity);</span>
+
+<span class="fc" id="L166">        httpRequest.getSession().setAttribute(&quot;user&quot;, userVO);</span>
+<span class="fc" id="L167">        return userVO;</span>
+    }
+
+    /**
+     * Gets greetings.
+     *
+     * @return greetings model and view
+     */
+    @RequestMapping(value = &quot;/error&quot;, method = RequestMethod.GET)
+    public ModelAndView exception() {
+<span class="fc" id="L177">        throw new ApplicationException(</span>
+                &quot;error.unsupported.operation&quot;,
+                &quot;This is a test error page&quot;
+        );
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
