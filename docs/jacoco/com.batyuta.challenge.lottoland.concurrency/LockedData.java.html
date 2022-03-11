@@ -65,7 +65,7 @@ import java.util.function.Supplier;
      * @return object
      */
     @Transient
-    public &lt;T&gt; T read(Supplier&lt;T&gt; command) {
+    public &lt;T&gt; T read(final Supplier&lt;T&gt; command) {
 <span class="fc" id="L69">        return lockedOperation(readLock, command);</span>
     }
 
@@ -77,7 +77,7 @@ import java.util.function.Supplier;
      * @return object
      */
     @Transient
-    public &lt;T&gt; T write(Supplier&lt;T&gt; command) {
+    public &lt;T&gt; T write(final Supplier&lt;T&gt; command) {
 <span class="fc" id="L81">        return lockedOperation(writeLock, command);</span>
     }
 
@@ -89,26 +89,27 @@ import java.util.function.Supplier;
      * @param &lt;T&gt;             returned type
      * @return object
      */
-    private &lt;T&gt; T lockedOperation(Lock readOrWriteLock, Supplier&lt;T&gt; command) {
+    private &lt;T&gt; T lockedOperation(final Lock readOrWriteLock,
+                                  final Supplier&lt;T&gt; command) {
         try {
             boolean isLockAcquired;
-<span class="fc" id="L95">            int trying = 0;</span>
+<span class="fc" id="L96">            int trying = 0;</span>
             do {
-<span class="fc" id="L97">                isLockAcquired = readOrWriteLock</span>
-<span class="fc" id="L98">                        .tryLock(WAITING_TIME, WAITING_TIME_UNIT);</span>
-<span class="fc" id="L99">                trying++;</span>
-<span class="pc bpc" id="L100" title="3 of 4 branches missed.">            } while (!isLockAcquired &amp;&amp; trying &lt; MAX_TRYING);</span>
-<span class="pc bpc" id="L101" title="1 of 2 branches missed.">            if (isLockAcquired) {</span>
+<span class="fc" id="L98">                isLockAcquired = readOrWriteLock</span>
+<span class="fc" id="L99">                        .tryLock(WAITING_TIME, WAITING_TIME_UNIT);</span>
+<span class="fc" id="L100">                trying++;</span>
+<span class="pc bpc" id="L101" title="3 of 4 branches missed.">            } while (!isLockAcquired &amp;&amp; trying &lt; MAX_TRYING);</span>
+<span class="pc bpc" id="L102" title="1 of 2 branches missed.">            if (isLockAcquired) {</span>
                 try {
-<span class="fc" id="L103">                    return command.get();</span>
+<span class="fc" id="L104">                    return command.get();</span>
                 } finally {
-<span class="fc" id="L105">                    readOrWriteLock.unlock();</span>
+<span class="fc" id="L106">                    readOrWriteLock.unlock();</span>
                 }
             } else {
-<span class="nc" id="L108">                throw new ConcurrentModificationException();</span>
+<span class="nc" id="L109">                throw new ConcurrentModificationException();</span>
             }
-<span class="nc" id="L110">        } catch (InterruptedException e) {</span>
-<span class="nc" id="L111">            throw new ConcurrentModificationException(e.getMessage(), e);</span>
+<span class="nc" id="L111">        } catch (InterruptedException e) {</span>
+<span class="nc" id="L112">            throw new ConcurrentModificationException(e.getMessage(), e);</span>
         }
     }
 }

@@ -121,7 +121,7 @@ public class RoundEntity extends BaseEntity {
      * @return second player choice
      */
     public SignEnum getPlayer2() {
-<span class="nc" id="L124">        return player2;</span>
+<span class="fc" id="L124">        return player2;</span>
     }
 
     /**
@@ -147,7 +147,7 @@ public class RoundEntity extends BaseEntity {
      *
      * @param isDeleted delete flag
      */
-    public void setDeleted(boolean isDeleted) {
+    public void setDeleted(final boolean isDeleted) {
 <span class="fc" id="L151">        write(() -&gt; this.deleted = isDeleted);</span>
 <span class="fc" id="L152">    }</span>
 

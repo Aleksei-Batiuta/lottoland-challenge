@@ -26,8 +26,10 @@ import java.util.Arrays;
 /**
  * Hello world!
  */
+// CHECKSTYLE:SUPPRESS:HideUtilityClassConstructor
 @SpringBootApplication
-<span class="fc" id="L30">public class Application {</span>
+@SuppressWarnings(&quot;checkstyle:HideUtilityClassConstructor&quot;)
+<span class="fc" id="L32">public class Application {</span>
 
     /**
      * The main method for run app.
@@ -35,16 +37,17 @@ import java.util.Arrays;
      * @param args arguments.
      */
     public static void main(final String[] args) {
-<span class="nc" id="L38">        ApplicationContext ctx = SpringApplication.run(Application.class, args);</span>
+<span class="nc" id="L40">        ApplicationContext ctx = SpringApplication.run(Application.class, args);</span>
 
-<span class="nc" id="L40">        System.out.println(&quot;Let's inspect the beans provided by Spring Boot:&quot;);</span>
+<span class="nc" id="L42">        System.out.println(&quot;Let's inspect the beans provided by Spring Boot:&quot;);</span>
 
-<span class="nc" id="L42">        String[] beanNames = ctx.getBeanDefinitionNames();</span>
-<span class="nc" id="L43">        Arrays.sort(beanNames);</span>
-<span class="nc bnc" id="L44" title="All 2 branches missed.">        for (String beanName : beanNames) {</span>
-<span class="nc" id="L45">            System.out.println(beanName);</span>
+<span class="nc" id="L44">        String[] beanNames = ctx.getBeanDefinitionNames();</span>
+<span class="nc" id="L45">        Arrays.sort(beanNames);</span>
+<span class="nc bnc" id="L46" title="All 2 branches missed.">        for (String beanName : beanNames) {</span>
+<span class="nc" id="L47">            System.out.println(beanName);</span>
         }
-<span class="nc" id="L47">    }</span>
-
+<span class="nc" id="L49">    }</span>
 }
+// CHECKSTYLE:UNSUPPRESS:HideUtilityClassConstructor
+
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

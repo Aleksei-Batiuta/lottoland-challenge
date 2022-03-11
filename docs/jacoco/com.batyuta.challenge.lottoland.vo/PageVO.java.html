@@ -39,15 +39,17 @@ public class PageVO&lt;T&gt; {
     /**
      * Default constructor.
      *
-     * @param title page title
-     * @param body  subpage name
-     * @param data  custom data
+     * @param pageTitle page title
+     * @param pageBody  subpage name
+     * @param pageData  custom data
      */
-<span class="fc" id="L46">    public PageVO(String title, String body, T data) {</span>
-<span class="fc" id="L47">        this.title = title;</span>
-<span class="fc" id="L48">        this.body = body;</span>
-<span class="fc" id="L49">        this.data = data;</span>
-<span class="fc" id="L50">    }</span>
+    public PageVO(final String pageTitle,
+                  final String pageBody,
+<span class="fc" id="L48">                  final T pageData) {</span>
+<span class="fc" id="L49">        this.title = pageTitle;</span>
+<span class="fc" id="L50">        this.body = pageBody;</span>
+<span class="fc" id="L51">        this.data = pageData;</span>
+<span class="fc" id="L52">    }</span>
 
     /**
      * Getter of page title.
@@ -55,7 +57,7 @@ public class PageVO&lt;T&gt; {
      * @return page title
      */
     public String getTitle() {
-<span class="fc" id="L58">        return title;</span>
+<span class="fc" id="L60">        return title;</span>
     }
 
     /**
@@ -64,7 +66,7 @@ public class PageVO&lt;T&gt; {
      * @return subpage name
      */
     public String getBody() {
-<span class="fc" id="L67">        return body;</span>
+<span class="fc" id="L69">        return body;</span>
     }
 
     /**
@@ -73,7 +75,7 @@ public class PageVO&lt;T&gt; {
      * @return custom data
      */
     public T getData() {
-<span class="fc" id="L76">        return data;</span>
+<span class="fc" id="L78">        return data;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -65,11 +65,12 @@ import java.util.stream.Stream;
      * @param isDescendingOrder order
      * @return rounds
      */
-    public Collection&lt;RoundEntity&gt; getRounds(Integer userId, Boolean isDeleted,
-                                             StatusEnum status,
-                                             boolean isDescendingOrder) {
-<span class="fc" id="L71">        return read(</span>
-<span class="fc" id="L72">                () -&gt; getRoundEntities(</span>
+    public Collection&lt;RoundEntity&gt; getRounds(final Integer userId,
+                                             final Boolean isDeleted,
+                                             final StatusEnum status,
+                                             final boolean isDescendingOrder) {
+<span class="fc" id="L72">        return read(</span>
+<span class="fc" id="L73">                () -&gt; getRoundEntities(</span>
                         userId,
                         isDeleted,
                         status,
@@ -84,33 +85,33 @@ import java.util.stream.Stream;
      * @param userId            user ID
      * @param isDeleted         deleted flag
      * @param status            status of rounds
-     * @param isDescendingOrder data order
+     * @param isDescOrder data order
      * @return list of rounds
      */
-    private List&lt;RoundEntity&gt; getRoundEntities(Integer userId,
-                                               Boolean isDeleted,
-                                               StatusEnum status,
-                                               boolean isDescendingOrder) {
-<span class="fc" id="L94">        Stream&lt;RoundEntity&gt; roundsStream = rounds.stream()</span>
-<span class="fc" id="L95">                .filter(Objects::nonNull);</span>
-<span class="fc bfc" id="L96" title="All 2 branches covered.">        if (userId != null) {</span>
-<span class="fc" id="L97">            roundsStream = roundsStream</span>
-<span class="fc bfc" id="L98" title="All 2 branches covered.">                    .filter(round -&gt; round.getUserid() == userId);</span>
+    private List&lt;RoundEntity&gt; getRoundEntities(final Integer userId,
+                                               final Boolean isDeleted,
+                                               final StatusEnum status,
+                                               final boolean isDescOrder) {
+<span class="fc" id="L95">        Stream&lt;RoundEntity&gt; roundsStream = rounds.stream()</span>
+<span class="fc" id="L96">                .filter(Objects::nonNull);</span>
+<span class="fc bfc" id="L97" title="All 2 branches covered.">        if (userId != null) {</span>
+<span class="fc" id="L98">            roundsStream = roundsStream</span>
+<span class="fc bfc" id="L99" title="All 2 branches covered.">                    .filter(round -&gt; round.getUserid() == userId);</span>
         }
-<span class="fc bfc" id="L100" title="All 2 branches covered.">        if (isDeleted != null) {</span>
-<span class="fc" id="L101">            roundsStream = roundsStream</span>
-<span class="fc bfc" id="L102" title="All 2 branches covered.">                    .filter(round -&gt; round.isDeleted() == isDeleted);</span>
+<span class="fc bfc" id="L101" title="All 2 branches covered.">        if (isDeleted != null) {</span>
+<span class="fc" id="L102">            roundsStream = roundsStream</span>
+<span class="fc bfc" id="L103" title="All 2 branches covered.">                    .filter(round -&gt; round.isDeleted() == isDeleted);</span>
         }
-<span class="fc bfc" id="L104" title="All 2 branches covered.">        if (status != null) {</span>
-<span class="fc" id="L105">            roundsStream = roundsStream</span>
-<span class="fc bfc" id="L106" title="All 2 branches covered.">                    .filter(round -&gt; round.getStatus() == status);</span>
+<span class="fc bfc" id="L105" title="All 2 branches covered.">        if (status != null) {</span>
+<span class="fc" id="L106">            roundsStream = roundsStream</span>
+<span class="fc bfc" id="L107" title="All 2 branches covered.">                    .filter(round -&gt; round.getStatus() == status);</span>
         }
-<span class="fc" id="L108">        List&lt;RoundEntity&gt; roundsList =</span>
-<span class="fc" id="L109">                roundsStream.collect(Collectors.toList());</span>
-<span class="fc bfc" id="L110" title="All 2 branches covered.">        if (isDescendingOrder) {</span>
-<span class="fc" id="L111">            Collections.reverse(roundsList);</span>
+<span class="fc" id="L109">        List&lt;RoundEntity&gt; roundsList =</span>
+<span class="fc" id="L110">                roundsStream.collect(Collectors.toList());</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">        if (isDescOrder) {</span>
+<span class="fc" id="L112">            Collections.reverse(roundsList);</span>
         }
-<span class="fc" id="L113">        return Collections.unmodifiableList(roundsList);</span>
+<span class="fc" id="L114">        return Collections.unmodifiableList(roundsList);</span>
     }
 
     /**
@@ -120,28 +121,29 @@ import java.util.stream.Stream;
      * @param status round status
      * @return count of deleted rounds
      */
-    public Integer deleteRounds(Integer userId, StatusEnum status) {
-<span class="fc" id="L124">        return write(</span>
+    public Integer deleteRounds(final Integer userId,
+                                final StatusEnum status) {
+<span class="fc" id="L126">        return write(</span>
                 () -&gt; {
-<span class="fc" id="L126">                    Collection&lt;RoundEntity&gt; roundsList = getRounds(</span>
+<span class="fc" id="L128">                    Collection&lt;RoundEntity&gt; roundsList = getRounds(</span>
                             userId,
-<span class="fc" id="L128">                            false,</span>
+<span class="fc" id="L130">                            false,</span>
                             status,
                             false
                     );
-<span class="fc" id="L132">                    roundsList.forEach(this::markRoundAsDeleted);</span>
-<span class="fc" id="L133">                    return roundsList.size();</span>
+<span class="fc" id="L134">                    roundsList.forEach(this::markRoundAsDeleted);</span>
+<span class="fc" id="L135">                    return roundsList.size();</span>
                 }
         );
     }
 
-    private void markRoundAsDeleted(RoundEntity round) {
-<span class="fc" id="L139">        round.setDeleted(true);</span>
-<span class="fc" id="L140">    }</span>
+    private void markRoundAsDeleted(final RoundEntity round) {
+<span class="fc" id="L141">        round.setDeleted(true);</span>
+<span class="fc" id="L142">    }</span>
 
-    private void setId(BaseEntity entity, int id) {
-<span class="fc" id="L143">        entity.setId(id);</span>
-<span class="fc" id="L144">    }</span>
+    private void setId(final BaseEntity entity, final int id) {
+<span class="fc" id="L145">        entity.setId(id);</span>
+<span class="fc" id="L146">    }</span>
 
     /**
      * Creates round.
@@ -149,14 +151,14 @@ import java.util.stream.Stream;
      * @param round round
      * @return created round
      */
-    public RoundEntity createRound(RoundEntity round) {
-<span class="fc" id="L153">        return write(</span>
+    public RoundEntity createRound(final RoundEntity round) {
+<span class="fc" id="L155">        return write(</span>
                 () -&gt; {
-<span class="fc" id="L155">                    setId(round, roundIndex.incrementAndGet());</span>
-<span class="pc bpc" id="L156" title="1 of 2 branches missed.">                    if (rounds.add(round)) {</span>
-<span class="fc" id="L157">                        return round;</span>
+<span class="fc" id="L157">                    setId(round, roundIndex.incrementAndGet());</span>
+<span class="pc bpc" id="L158" title="1 of 2 branches missed.">                    if (rounds.add(round)) {</span>
+<span class="fc" id="L159">                        return round;</span>
                     }
-<span class="nc" id="L159">                    throw new IllegalArgumentException();</span>
+<span class="nc" id="L161">                    throw new IllegalArgumentException();</span>
                 }
         );
     }
@@ -167,14 +169,14 @@ import java.util.stream.Stream;
      * @param user user
      * @return created user
      */
-    public UserEntity createUser(UserEntity user) {
-<span class="fc" id="L171">        return write(</span>
+    public UserEntity createUser(final UserEntity user) {
+<span class="fc" id="L173">        return write(</span>
                 () -&gt; {
-<span class="fc" id="L173">                    setId(user, userIndex.incrementAndGet());</span>
-<span class="pc bpc" id="L174" title="1 of 2 branches missed.">                    if (users.add(user)) {</span>
-<span class="fc" id="L175">                        return user;</span>
+<span class="fc" id="L175">                    setId(user, userIndex.incrementAndGet());</span>
+<span class="pc bpc" id="L176" title="1 of 2 branches missed.">                    if (users.add(user)) {</span>
+<span class="fc" id="L177">                        return user;</span>
                     }
-<span class="nc" id="L177">                    throw new IllegalArgumentException();</span>
+<span class="nc" id="L179">                    throw new IllegalArgumentException();</span>
                 }
         );
     }
@@ -185,12 +187,12 @@ import java.util.stream.Stream;
      * @param userId user ID
      * @return user
      */
-    public UserEntity getUser(int userId) {
-<span class="nc" id="L189">        return read(</span>
-<span class="nc" id="L190">                () -&gt; users.stream()</span>
-<span class="nc bnc" id="L191" title="All 2 branches missed.">                        .filter(user -&gt; user.getId() == userId)</span>
-<span class="nc" id="L192">                        .findFirst()</span>
-<span class="nc" id="L193">                        .orElse(null)</span>
+    public UserEntity getUser(final int userId) {
+<span class="nc" id="L191">        return read(</span>
+<span class="nc" id="L192">                () -&gt; users.stream()</span>
+<span class="nc bnc" id="L193" title="All 2 branches missed.">                        .filter(user -&gt; user.getId() == userId)</span>
+<span class="nc" id="L194">                        .findFirst()</span>
+<span class="nc" id="L195">                        .orElse(null)</span>
         );
     }
 }

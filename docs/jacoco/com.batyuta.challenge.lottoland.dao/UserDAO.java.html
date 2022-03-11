@@ -41,29 +41,28 @@ public final class UserDAO implements CrudDAO&lt;UserEntity&gt; {
     /**
      * Default Constructor.
      *
-     * @param repository data repository
+     * @param dataRepository data repository
      */
     @Autowired
-<span class="fc" id="L47">    public UserDAO(final DataRepository repository) {</span>
-<span class="fc" id="L48">        this.repository = repository;</span>
+<span class="fc" id="L47">    public UserDAO(final DataRepository dataRepository) {</span>
+<span class="fc" id="L48">        this.repository = dataRepository;</span>
 <span class="fc" id="L49">    }</span>
 
     @Override
-    public UserEntity create(UserEntity user) {
+    public UserEntity create(final UserEntity user) {
         try {
-<span class="fc" id="L54">            user = repository.createUser(user);</span>
-<span class="fc" id="L55">            return user;</span>
+<span class="fc" id="L54">            return repository.createUser(user);</span>
         } finally {
-<span class="fc" id="L57">            log.info(&quot;create: User {} has been created&quot;, user);</span>
+<span class="fc" id="L56">            log.info(&quot;create: User {} has been created&quot;, user);</span>
         }
     }
 
     @Override
     public UserEntity get(final int userId) {
         try {
-<span class="nc" id="L64">            return repository.getUser(userId);</span>
-<span class="nc" id="L65">        } catch (Exception e) {</span>
-<span class="nc" id="L66">            throw new DaoException(&quot;error.dao.user.not.found&quot;, userId, e);</span>
+<span class="nc" id="L63">            return repository.getUser(userId);</span>
+<span class="nc" id="L64">        } catch (Exception e) {</span>
+<span class="nc" id="L65">            throw new DaoException(&quot;error.dao.user.not.found&quot;, userId, e);</span>
         }
     }
 }
