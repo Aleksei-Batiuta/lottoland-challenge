@@ -22,7 +22,7 @@ import com.batyuta.challenge.lottoland.enums.StatusEnum;
 import com.batyuta.challenge.lottoland.model.BaseEntity;
 import com.batyuta.challenge.lottoland.model.RoundEntity;
 import com.batyuta.challenge.lottoland.model.UserEntity;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,7 +36,7 @@ import java.util.stream.Stream;
 /**
  * Data repository class.
  */
-@Component
+@Repository
 public final class DataRepository extends LockedData {
     /**
      * This is a user table index.
@@ -69,32 +69,48 @@ public final class DataRepository extends LockedData {
                                              StatusEnum status,
                                              boolean isDescendingOrder) {
         return read(
-                () -> {
-                    Stream<RoundEntity> roundsStream = rounds.stream()
-                            .filter(Objects::nonNull);
-                    if (userId != null) {
-                        roundsStream = roundsStream
-                                .filter(round -> round.getUserid() == userId);
-                    }
-                    if (isDeleted != null) {
-                        roundsStream = roundsStream
-                                .filter(
-                                        round ->
-                                                round.isDeleted() == isDeleted
-                                );
-                    }
-                    if (status != null) {
-                        roundsStream = roundsStream
-                                .filter(round -> round.getStatus() == status);
-                    }
-                    List<RoundEntity> roundsList =
-                            roundsStream.collect(Collectors.toList());
-                    if (isDescendingOrder) {
-                        Collections.reverse(roundsList);
-                    }
-                    return Collections.unmodifiableList(roundsList);
-                }
+                () -> getRoundEntities(
+                        userId,
+                        isDeleted,
+                        status,
+                        isDescendingOrder
+                )
         );
+    }
+
+    /**
+     * Gets round entities.
+     *
+     * @param userId            user ID
+     * @param isDeleted         deleted flag
+     * @param status            status of rounds
+     * @param isDescendingOrder data order
+     * @return list of rounds
+     */
+    private List<RoundEntity> getRoundEntities(Integer userId,
+                                               Boolean isDeleted,
+                                               StatusEnum status,
+                                               boolean isDescendingOrder) {
+        Stream<RoundEntity> roundsStream = rounds.stream()
+                .filter(Objects::nonNull);
+        if (userId != null) {
+            roundsStream = roundsStream
+                    .filter(round -> round.getUserid() == userId);
+        }
+        if (isDeleted != null) {
+            roundsStream = roundsStream
+                    .filter(round -> round.isDeleted() == isDeleted);
+        }
+        if (status != null) {
+            roundsStream = roundsStream
+                    .filter(round -> round.getStatus() == status);
+        }
+        List<RoundEntity> roundsList =
+                roundsStream.collect(Collectors.toList());
+        if (isDescendingOrder) {
+            Collections.reverse(roundsList);
+        }
+        return Collections.unmodifiableList(roundsList);
     }
 
     /**
