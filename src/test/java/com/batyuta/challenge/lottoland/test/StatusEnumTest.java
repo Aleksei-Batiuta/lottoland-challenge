@@ -20,10 +20,13 @@ package com.batyuta.challenge.lottoland.test;
 import com.batyuta.challenge.lottoland.enums.SignEnum;
 import com.batyuta.challenge.lottoland.enums.StatusEnum;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.io.IOException;
+import java.util.Properties;
 import java.util.stream.Stream;
 
 import static org.springframework.test.util.AssertionErrors.assertEquals;
@@ -100,5 +103,19 @@ public class StatusEnumTest {
                     actual.getClass()
             );
         }
+    }
+
+    @DisplayName("Test Localization")
+    @Test
+    void testLocalized() throws IOException {
+        Properties p = new Properties();
+        p.load(getClass().getClassLoader()
+                .getResourceAsStream("messages/messages.properties"));
+        String msg = p.getProperty("label.player.1.wins");
+        assertEquals(
+                "There are different",
+                msg,
+                StatusEnum.WIN.getLocalized()
+        );
     }
 }

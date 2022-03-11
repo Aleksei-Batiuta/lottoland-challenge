@@ -33,17 +33,6 @@ public abstract class BaseException extends NestedRuntimeException {
      * Default Constructor.
      *
      * @param msg       format message
-     * @param arguments arguments
-     */
-    public BaseException(final String msg,
-                         final Object... arguments) {
-        this(msg, null, arguments);
-    }
-
-    /**
-     * Default Constructor.
-     *
-     * @param msg       format message
      * @param cause     exception
      * @param arguments arguments
      */
@@ -52,7 +41,7 @@ public abstract class BaseException extends NestedRuntimeException {
                          final Object... arguments) {
         super(msg, cause);
         this.args =
-                arguments == null || arguments.length == 0
+                arguments.length == 0
                         ? new Object[]{""}
                         : arguments;
     }

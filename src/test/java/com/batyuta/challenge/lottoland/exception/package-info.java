@@ -15,30 +15,10 @@
  * limitations under the License.
  */
 
-package com.batyuta.challenge.lottoland.model;
-
-import javax.persistence.Entity;
-
 /**
- * User entity.
+ * The classes in this package implements
+ * the test cases of Custom Exception Classes.
+ *
+ * @author Aleksei Batuita
  */
-@Entity
-public class UserEntity extends NamedEntity {
-    /**
-     * Default no-arguments constructor.
-     */
-    public UserEntity() {
-        this(NEW_ENTITY_ID, null);
-    }
-
-    /**
-     * Default Constructor.
-     *
-     * @param userId   user ID
-     * @param userName username
-     */
-    public UserEntity(final int userId,
-                      final String userName) {
-        super(userId, userName);
-    }
-}
+package com.batyuta.challenge.lottoland.exception;

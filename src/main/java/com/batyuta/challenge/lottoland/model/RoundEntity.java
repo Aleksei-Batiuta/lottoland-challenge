@@ -53,6 +53,7 @@ public class RoundEntity extends BaseEntity {
      * Default no-arguments constructor.
      */
     public RoundEntity() {
+        super();
     }
 
     /**

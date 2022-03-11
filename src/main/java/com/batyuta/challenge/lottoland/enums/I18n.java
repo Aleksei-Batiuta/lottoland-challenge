@@ -17,6 +17,10 @@
 
 package com.batyuta.challenge.lottoland.enums;
 
+import com.batyuta.challenge.lottoland.exception.ApplicationException;
+
+import java.io.IOException;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 /**
@@ -38,8 +42,21 @@ public interface I18n {
      */
     @Deprecated
     default String getLocalized() {
-        return ResourceBundle
-                .getBundle("classpath:/messages/messages")
-                .getString(getMessageKey());
+        try {
+            ResourceBundle bundle =
+                    ResourceBundle.getBundle("classpath:/messages/messages");
+            return bundle.getString(getMessageKey());
+        } catch (Exception e) {
+            try {
+                Properties p = new Properties();
+                p.load(getClass().getClassLoader()
+                        .getResourceAsStream("messages/messages.properties"));
+                return p.getProperty(getMessageKey());
+            } catch (IOException ex) {
+                throw new ApplicationException(
+                        "error.read.property", getMessageKey()
+                );
+            }
+        }
     }
 }

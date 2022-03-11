@@ -296,6 +296,16 @@
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
                     <version>0.8.7</version>
+                    <configuration>
+                        <excludes>
+                            <!--
+                            The main application class will never run
+                            in tests as single class.
+                            -->
+                            <exclude>**/Application.class</exclude>
+                            <exclude>**/SignEnum$Const.class</exclude>
+                        </excludes>
+                    </configuration>
                     <executions>
                         <execution>
                             <goals>

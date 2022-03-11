@@ -30,12 +30,6 @@ public abstract class NamedEntity extends BaseEntity {
     private String name;
 
     /**
-     * Default no-arguments constructor.
-     */
-    public NamedEntity() {
-    }
-
-    /**
      * Default constructor.
      *
      * @param id   entity ID
