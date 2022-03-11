@@ -23,6 +23,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.function.Supplier;
 
 /**
  * Abstract class for Locking the Write/Read properties.
@@ -64,7 +65,7 @@ public abstract class LockedData {
      * @return object
      */
     @Transient
-    public <T> T read(Command<T> command) {
+    public <T> T read(Supplier<T> command) {
         return lockedOperation(readLock, command);
     }
 
@@ -76,7 +77,7 @@ public abstract class LockedData {
      * @return object
      */
     @Transient
-    public <T> T write(Command<T> command) {
+    public <T> T write(Supplier<T> command) {
         return lockedOperation(writeLock, command);
     }
 
@@ -88,7 +89,7 @@ public abstract class LockedData {
      * @param <T>             returned type
      * @return object
      */
-    private <T> T lockedOperation(Lock readOrWriteLock, Command<T> command) {
+    private <T> T lockedOperation(Lock readOrWriteLock, Supplier<T> command) {
         try {
             boolean isLockAcquired;
             int trying = 0;
@@ -99,7 +100,7 @@ public abstract class LockedData {
             } while (!isLockAcquired && trying < MAX_TRYING);
             if (isLockAcquired) {
                 try {
-                    return command.run();
+                    return command.get();
                 } finally {
                     readOrWriteLock.unlock();
                 }
@@ -109,20 +110,5 @@ public abstract class LockedData {
         } catch (InterruptedException e) {
             throw new ConcurrentModificationException(e.getMessage(), e);
         }
-    }
-
-    /**
-     * Functional interface for the locked operation.
-     *
-     * @param <T> returned type
-     */
-    @FunctionalInterface
-    protected interface Command<T> {
-        /**
-         * Runs operation.
-         *
-         * @return result
-         */
-        T run();
     }
 }
