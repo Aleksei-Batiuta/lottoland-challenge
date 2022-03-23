@@ -117,12 +117,16 @@
         <project.scm.id>${project.artifactId}</project.scm.id>
         <!-- Runs all test cases -->
         <maven.test.failure.ignore>false</maven.test.failure.ignore>
+        <dockerhub.publish>false</dockerhub.publish>
     </properties>
 
     <profiles>
         <!-- Release profile is used to release Maven goal -->
         <profile>
             <id>release</id>
+            <properties>
+                <dockerhub.publish>true</dockerhub.publish>
+            </properties>
             <build>
                 <pluginManagement>
                     <plugins>
@@ -523,7 +527,7 @@
                             <name>${dockerhub.owner}/${project.artifactId}:${project.version}</name>
                         </image>
                         <pullPolicy>IF_NOT_PRESENT</pullPolicy>
-                        <publish>true</publish>
+                        <publish>${dockerhub.publish}</publish>
                         <docker>
                             <publishRegistry>
                                 <username>${dockerhub.owner}</username>
