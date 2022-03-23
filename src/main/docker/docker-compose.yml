@@ -1,0 +1,12 @@
+version: "3.1"
+
+services:
+  spring-petclinic:
+    image: @project.artifactId@:@project.version@
+    networks:
+      - spring
+    ports:
+      - "8080:8080"
+    restart: on-failure
+networks:
+  spring:

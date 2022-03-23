@@ -26,7 +26,13 @@
     </parent>
     <groupId>com.batyuta.challenge</groupId>
     <artifactId>lottoland-challenge</artifactId>
-    <version>18-SNAPSHOT</version>
+    <version>0.19-SNAPSHOT</version>
+    <!--
+    The project uses the JSP-pages and
+    Application should be as WAR to
+    run on Docker Container correctly
+    -->
+    <packaging>war</packaging>
     <name>Lottoland Challenge</name>
     <description>The Test Challenge from Lottoland</description>
     <url>https://aleksei-batiuta.github.io/${project.artifactId}/</url>
@@ -247,6 +253,12 @@
                 <filtering>true</filtering>
                 <targetPath>${project.build.outputDirectory}/messages</targetPath>
             </resource>
+            <!-- Resources for Docker Compose file -->
+            <resource>
+                <directory>src/main/docker</directory>
+                <filtering>true</filtering>
+                <targetPath>${project.basedir}/target/docker</targetPath>
+            </resource>
         </resources>
         <!-- Project Plugins-->
         <plugins>
@@ -269,10 +281,12 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
+                <version>${maven-dependency-plugin.version}</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
