@@ -118,6 +118,12 @@
         <!-- Runs all test cases -->
         <maven.test.failure.ignore>false</maven.test.failure.ignore>
         <dockerhub.publish>false</dockerhub.publish>
+        <!--
+        The next properties should be declared in ~/.m2/settings.xml by correct values
+        -->
+        <dockerhub.owner>alekseibatiuta</dockerhub.owner>
+        <dockerhub.password>password</dockerhub.password>
+        <dockerhub.url/>
     </properties>
 
     <profiles>
