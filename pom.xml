@@ -68,8 +68,8 @@
             in Maven settings.xml to authorization via personal credential
             -->
             <id>${project.artifactId}</id>
-            <name>GitHub ${github.owner} Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/${github.owner}/${project.artifactId}</url>
+            <name>GitHub Aleksei-Batiuta Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/Aleksei-Batiuta/${project.artifactId}</url>
         </repository>
         <!-- Project Site Path -->
         <site>
@@ -86,8 +86,8 @@
            in Maven settings.xml to authorization via personal credential
            -->
             <id>${project.artifactId}</id>
-            <name>GitHub ${github.owner} Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/${github.owner}/${project.artifactId}</url>
+            <name>GitHub Aleksei-Batiuta Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/Aleksei-Batiuta/${project.artifactId}</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
