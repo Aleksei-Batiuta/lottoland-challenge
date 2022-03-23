@@ -17,6 +17,10 @@
 
 package com.batyuta.challenge.lottoland.enums;
 
+import com.batyuta.challenge.lottoland.exception.ApplicationException;
+
+import java.io.IOException;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 /**
@@ -38,9 +42,22 @@ public interface I18n {
      */
     @Deprecated
     default String getLocalized() {
-<span class="nc" id="L41">        return ResourceBundle</span>
-<span class="nc" id="L42">                .getBundle(&quot;classpath:/messages/messages&quot;)</span>
-<span class="nc" id="L43">                .getString(getMessageKey());</span>
+        try {
+<span class="fc" id="L46">            ResourceBundle bundle =</span>
+<span class="nc" id="L47">                    ResourceBundle.getBundle(&quot;classpath:/messages/messages&quot;);</span>
+<span class="nc" id="L48">            return bundle.getString(getMessageKey());</span>
+<span class="fc" id="L49">        } catch (Exception e) {</span>
+            try {
+<span class="fc" id="L51">                Properties p = new Properties();</span>
+<span class="fc" id="L52">                p.load(getClass().getClassLoader()</span>
+<span class="fc" id="L53">                        .getResourceAsStream(&quot;messages/messages.properties&quot;));</span>
+<span class="fc" id="L54">                return p.getProperty(getMessageKey());</span>
+<span class="nc" id="L55">            } catch (IOException ex) {</span>
+<span class="nc" id="L56">                throw new ApplicationException(</span>
+<span class="nc" id="L57">                        &quot;error.read.property&quot;, getMessageKey()</span>
+                );
+            }
+        }
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

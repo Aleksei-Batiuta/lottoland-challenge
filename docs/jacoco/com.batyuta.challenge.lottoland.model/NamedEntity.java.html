@@ -30,12 +30,6 @@ public abstract class NamedEntity extends BaseEntity {
     private String name;
 
     /**
-     * Default no-arguments constructor.
-     */
-<span class="nc" id="L35">    public NamedEntity() {</span>
-<span class="nc" id="L36">    }</span>
-
-    /**
      * Default constructor.
      *
      * @param id   entity ID
@@ -43,9 +37,9 @@ public abstract class NamedEntity extends BaseEntity {
      */
     protected NamedEntity(final Integer id,
                           final String entityName) {
-<span class="fc" id="L46">        super(id);</span>
-<span class="fc" id="L47">        this.name = entityName;</span>
-<span class="fc" id="L48">    }</span>
+<span class="fc" id="L40">        super(id);</span>
+<span class="fc" id="L41">        this.name = entityName;</span>
+<span class="fc" id="L42">    }</span>
 
     /**
      * Getter of entity name.
@@ -53,7 +47,7 @@ public abstract class NamedEntity extends BaseEntity {
      * @return entity name
      */
     public String getName() {
-<span class="fc" id="L56">        return name;</span>
+<span class="fc" id="L50">        return name;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

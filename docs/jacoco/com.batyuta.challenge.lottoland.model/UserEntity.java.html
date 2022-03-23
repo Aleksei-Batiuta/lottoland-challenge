@@ -27,8 +27,9 @@ public class UserEntity extends NamedEntity {
     /**
      * Default no-arguments constructor.
      */
-<span class="nc" id="L30">    public UserEntity() {</span>
-<span class="nc" id="L31">    }</span>
+    public UserEntity() {
+<span class="fc" id="L31">        this(NEW_ENTITY_ID, null);</span>
+<span class="fc" id="L32">    }</span>
 
     /**
      * Default Constructor.
@@ -38,7 +39,7 @@ public class UserEntity extends NamedEntity {
      */
     public UserEntity(final int userId,
                       final String userName) {
-<span class="fc" id="L41">        super(userId, userName);</span>
-<span class="fc" id="L42">    }</span>
+<span class="fc" id="L42">        super(userId, userName);</span>
+<span class="fc" id="L43">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
