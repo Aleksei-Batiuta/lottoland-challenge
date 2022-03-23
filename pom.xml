@@ -35,7 +35,7 @@
     <packaging>war</packaging>
     <name>Lottoland Challenge</name>
     <description>The Test Challenge from Lottoland</description>
-    <url>https://${github.owner}.github.io/${project.artifactId}/</url>
+    <url>https://Aleksei-Batiuta.github.io/${project.artifactId}/</url>
     <contributors>
         <contributor>
             <name>Aleksei Batiuta</name>
