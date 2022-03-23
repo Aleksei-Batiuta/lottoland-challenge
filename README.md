@@ -8,6 +8,9 @@ The Test Challenge from Lottoland
 4. Run Maven command without _tests_ and _checkstyle_: `mvn spring-boot:run -Pdev`
 > *Test Server starts on **8080** port!*
 5. Project has correct _maven_ `release:prepare` and `release:perform` goals since 'v1.10'
+6. Docker
+   * Build image `mvn spring-boot:build-image`
+   * Run Docker image `docker-compose up`
 # Test Cases
 1. Open 'http://localhost:8080/' to view the rounds' statistics, 'Play Round' and 'Restart Game'
 2. Open 'Statistics' page by click to corresponding menu item and verify the data for all users
