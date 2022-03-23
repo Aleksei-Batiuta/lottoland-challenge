@@ -21,12 +21,12 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.6.3</version>
+        <version>2.6.4</version>
         <relativePath /> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.batyuta.challenge</groupId>
     <artifactId>lottoland-challenge</artifactId>
-    <version>0.20-SNAPSHOT</version>
+    <version>0.23-SNAPSHOT</version>
     <!--
     The project uses the JSP-pages and
     Application should be as WAR to
@@ -35,7 +35,7 @@
     <packaging>war</packaging>
     <name>Lottoland Challenge</name>
     <description>The Test Challenge from Lottoland</description>
-    <url>https://aleksei-batiuta.github.io/${project.artifactId}/</url>
+    <url>https://${github.owner}.github.io/${project.artifactId}/</url>
     <contributors>
         <contributor>
             <name>Aleksei Batiuta</name>
@@ -117,8 +117,6 @@
         <project.scm.id>${project.artifactId}</project.scm.id>
         <!-- Runs all test cases -->
         <maven.test.failure.ignore>false</maven.test.failure.ignore>
-        <!-- GitHub repository owner-->
-        <github.owner>Aleksei-Batiuta</github.owner>
     </properties>
 
     <profiles>
@@ -252,6 +250,15 @@
                 <directory>src/main/resources/messages</directory>
                 <filtering>true</filtering>
                 <targetPath>${project.build.outputDirectory}/messages</targetPath>
+            </resource>
+            <!-- Resources for App message localization -->
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/application.properties</include>
+                </includes>
+                <targetPath>${project.build.outputDirectory}</targetPath>
             </resource>
             <!-- Resources for Docker Compose file -->
             <resource>
@@ -460,7 +467,7 @@
                         Commits the test reports before thr release:prepare goal
                         will commit pom file with a new release version
                         -->
-                        <preparationGoals>-Prelease site site-deploy scm:checkin verify</preparationGoals>
+                        <preparationGoals>-Prelease site site-deploy scm:checkin verify spring-boot:build-image -P lottoland-challenge</preparationGoals>
                     </configuration>
                 </plugin>
                 <!-- Project site plugins-->
@@ -507,6 +514,24 @@
                             <version>7.15.2</version>
                         </dependency>
                     </dependencies>-->
+                </plugin>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <configuration>
+                        <image>
+                            <name>${dockerhub.owner}/${project.artifactId}:${project.version}</name>
+                        </image>
+                        <pullPolicy>IF_NOT_PRESENT</pullPolicy>
+                        <publish>true</publish>
+                        <docker>
+                            <publishRegistry>
+                                <username>${dockerhub.owner}</username>
+                                <password>${dockerhub.password}</password>
+                                <url>${dockerhub.url}</url>
+                            </publishRegistry>
+                        </docker>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>

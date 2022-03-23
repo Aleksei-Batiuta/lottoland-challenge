@@ -9,8 +9,58 @@ The Test Challenge from Lottoland
 > *Test Server starts on **8080** port!*
 5. Project has correct _maven_ `release:prepare` and `release:perform` goals since 'v1.10'
 6. Docker
-   * Build image `mvn spring-boot:build-image`
-   * Run Docker image `docker-compose -f target/docker/docker-compose.yml up`
+   * Example of User Maven settings `~/.m2/settings.xml`
+       ```
+       <settings>
+           <profiles>
+               <profile>
+                   <id>lottoland-challenge</id>
+                   <repositories>
+                       <repository>
+                           <id>central</id>
+                           <url>https://repo1.maven.org/maven2</url>
+                           <releases>
+                               <enabled>true</enabled>
+                           </releases>
+                           <snapshots>
+                               <enabled>true</enabled>
+                           </snapshots>
+                       </repository>
+                       <repository>
+                           <id>lottoland-challenge</id>
+                           <name>GitHub ${github.owner} Apache Maven Packages</name>
+                           <url>https://maven.pkg.github.com/${github.owner}/lottoland-challenge</url>
+                       </repository>
+                   </repositories>
+                   <properties>
+                       <!-- GitHub repository owner-->
+                       <github.owner>Aleksei-Batiuta</github.owner>
+                       
+                       <!-- DockerHub repository settings-->
+                       <dockerhub.site>docker.io</dockerhub.site>
+                       <dockerhub.owner>!!!Docker Hub Username!!!</dockerhub.owner>
+                       <dockerhub.password>!!!Docker Hub User Password!!!</dockerhub.password>
+                       <dockerhub.url>${dockerhub.site}/library/${dockerhub.owner}</dockerhub.url>
+                   </properties>
+               </profile>
+           </profiles>
+           <servers>
+               <server>
+                   <id>lottoland-challenge</id>
+                   <username>!!!GitHub Username!!!</username>
+                   <password>!!!GitHub User Token!!!</password>
+               </server>
+           </servers>
+       </settings>
+       ```
+   * Build image 
+   ```
+   mvn spring-boot:build-image -P lottoland-challenge
+   ```
+   * Run Docker image 
+   ```
+   docker-compose -f target/docker/docker-compose.yml up
+   ```
 # Test Cases
 1. Open 'http://localhost:8080/' to view the rounds' statistics, 'Play Round' and 'Restart Game'
 2. Open 'Statistics' page by click to corresponding menu item and verify the data for all users
@@ -23,3 +73,12 @@ The Test Challenge from Lottoland
 6. No redirect to default page when URL/Path was not found
 7. The error page should be more informative
 8. After removing the @Data annotation from Entity/VO classes those Objects have not friendly `toString()` method
+
+# Hub Docker (@Deprecated)
+
+This is a description of manual usage:
+```
+docker tag lottoland-challenge:0.20-SNAPSHOT lottoland-challenge:latest
+docker tag lottoland-challenge:0.20-SNAPSHOT alekseibatiuta/lottoland-challenge:0.20-SNAPSHOT
+docker push alekseibatiuta/lottoland-challenge:0.20-SNAPSHOT
+```
