@@ -1,7 +1,7 @@
 version: "3.1"
 
 services:
-  spring-petclinic:
+  @project.artifactId@:
     image: @project.artifactId@:@project.version@
     networks:
       - spring
