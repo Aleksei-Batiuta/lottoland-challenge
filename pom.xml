@@ -26,7 +26,7 @@
     </parent>
     <groupId>com.batyuta.challenge</groupId>
     <artifactId>lottoland-challenge</artifactId>
-    <version>0.23-SNAPSHOT</version>
+    <version>0.25</version>
     <!--
     The project uses the JSP-pages and
     Application should be as WAR to
@@ -57,7 +57,7 @@
         <connection>scm:git:https://github.com/Aleksei-Batiuta/${project.artifactId}.git</connection>
         <developerConnection>scm:git:https://github.com/Aleksei-Batiuta/${project.artifactId}.git</developerConnection>
         <url>https://github.com/Aleksei-Batiuta/${project.artifactId}.git</url>
-        <tag>HEAD</tag>
+        <tag>lottoland-challenge-0.25</tag>
     </scm>
     <!-- Deployment Settings -->
     <distributionManagement>
