@@ -116,6 +116,7 @@
         <java.version>1.8</java.version>
         <project.scm.id>${project.artifactId}</project.scm.id>
         <!-- Runs all test cases -->
+        <checkstyle.skip>true</checkstyle.skip>
         <maven.test.failure.ignore>false</maven.test.failure.ignore>
         <dockerhub.publish>false</dockerhub.publish>
         <!--
