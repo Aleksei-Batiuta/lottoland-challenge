@@ -19,6 +19,7 @@ package com.batyuta.challenge.lottoland.model;
 
 import com.batyuta.challenge.lottoland.enums.SignEnum;
 import com.batyuta.challenge.lottoland.enums.StatusEnum;
+import lombok.ToString;
 
 import javax.persistence.Entity;
 import java.text.MessageFormat;
@@ -27,6 +28,7 @@ import java.text.MessageFormat;
  * Round entity.
  */
 @Entity
+@ToString
 public class RoundEntity extends BaseEntity {
     /**
      * User ID.
@@ -47,14 +49,14 @@ public class RoundEntity extends BaseEntity {
     /**
      * Deleted flag.
      */
-<span class="fc" id="L50">    private boolean deleted = false;</span>
+<span class="fc" id="L52">    private boolean deleted = false;</span>
 
     /**
      * Default no-arguments constructor.
      */
     public RoundEntity() {
-<span class="fc" id="L56">        super();</span>
-<span class="fc" id="L57">    }</span>
+<span class="fc" id="L58">        super();</span>
+<span class="fc" id="L59">    }</span>
 
     /**
      * Default Constructor.
@@ -68,14 +70,14 @@ public class RoundEntity extends BaseEntity {
                        final SignEnum player1Enum,
                        final SignEnum player2Enum,
                        final StatusEnum statusEnum) {
-<span class="fc" id="L71">        this(</span>
-<span class="fc" id="L72">                NEW_ENTITY_ID,</span>
+<span class="fc" id="L73">        this(</span>
+<span class="fc" id="L74">                NEW_ENTITY_ID,</span>
                 user,
                 player1Enum,
                 player2Enum,
                 statusEnum
         );
-<span class="fc" id="L78">    }</span>
+<span class="fc" id="L80">    }</span>
 
     /**
      * Default Constructor.
@@ -91,12 +93,12 @@ public class RoundEntity extends BaseEntity {
                        final SignEnum player1Enum,
                        final SignEnum player2Enum,
                        final StatusEnum statusEnum) {
-<span class="fc" id="L94">        super(roundId);</span>
-<span class="fc" id="L95">        this.userid = user;</span>
-<span class="fc" id="L96">        this.player1 = player1Enum;</span>
-<span class="fc" id="L97">        this.player2 = player2Enum;</span>
-<span class="fc" id="L98">        this.status = statusEnum;</span>
-<span class="fc" id="L99">    }</span>
+<span class="fc" id="L96">        super(roundId);</span>
+<span class="fc" id="L97">        this.userid = user;</span>
+<span class="fc" id="L98">        this.player1 = player1Enum;</span>
+<span class="fc" id="L99">        this.player2 = player2Enum;</span>
+<span class="fc" id="L100">        this.status = statusEnum;</span>
+<span class="fc" id="L101">    }</span>
 
     /**
      * Getter of user ID.
@@ -104,7 +106,7 @@ public class RoundEntity extends BaseEntity {
      * @return user ID
      */
     public int getUserid() {
-<span class="fc" id="L107">        return userid;</span>
+<span class="fc" id="L109">        return userid;</span>
     }
 
     /**
@@ -113,7 +115,7 @@ public class RoundEntity extends BaseEntity {
      * @return first player choice
      */
     public SignEnum getPlayer1() {
-<span class="fc" id="L116">        return player1;</span>
+<span class="fc" id="L118">        return player1;</span>
     }
 
     /**
@@ -122,7 +124,7 @@ public class RoundEntity extends BaseEntity {
      * @return second player choice
      */
     public SignEnum getPlayer2() {
-<span class="nc" id="L125">        return player2;</span>
+<span class="fc" id="L127">        return player2;</span>
     }
 
     /**
@@ -131,7 +133,7 @@ public class RoundEntity extends BaseEntity {
      * @return round result
      */
     public StatusEnum getStatus() {
-<span class="fc" id="L134">        return status;</span>
+<span class="fc" id="L136">        return status;</span>
     }
 
     /**
@@ -140,7 +142,7 @@ public class RoundEntity extends BaseEntity {
      * @return delete flag
      */
     public boolean isDeleted() {
-<span class="fc" id="L143">        return read(() -&gt; deleted);</span>
+<span class="fc" id="L145">        return read(() -&gt; deleted);</span>
     }
 
     /**
@@ -149,8 +151,8 @@ public class RoundEntity extends BaseEntity {
      * @param isDeleted delete flag
      */
     public void setDeleted(final boolean isDeleted) {
-<span class="fc" id="L152">        write(() -&gt; this.deleted = isDeleted);</span>
-<span class="fc" id="L153">    }</span>
+<span class="fc" id="L154">        write(() -&gt; this.deleted = isDeleted);</span>
+<span class="fc" id="L155">    }</span>
 
     /**
      * Returns a string representation of the object.
@@ -159,10 +161,10 @@ public class RoundEntity extends BaseEntity {
      */
     @Override
     public String toString() {
-<span class="fc" id="L162">        return MessageFormat.format(</span>
+<span class="fc" id="L164">        return MessageFormat.format(</span>
                 &quot;RoundEntity'{'id={0}, userid={1}, player1={2}, player2={3}, &quot;
                         + &quot;status={4}, deleted={5}'}'&quot;,
-<span class="fc" id="L165">                getId(), userid, player1, player2, status, deleted</span>
+<span class="fc" id="L167">                getId(), userid, player1, player2, status, deleted</span>
         );
     }
 }

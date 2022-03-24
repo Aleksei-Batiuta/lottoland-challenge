@@ -17,11 +17,14 @@
 
 package com.batyuta.challenge.lottoland.vo;
 
+import lombok.ToString;
+
 /**
  * Base response HTTP page VO.
  *
  * @param &lt;T&gt; data type
  */
+<span class="fc" id="L27">@ToString</span>
 public class PageVO&lt;T&gt; {
     /**
      * Page title.
@@ -45,11 +48,11 @@ public class PageVO&lt;T&gt; {
      */
     public PageVO(final String pageTitle,
                   final String pageBody,
-<span class="fc" id="L48">                  final T pageData) {</span>
-<span class="fc" id="L49">        this.title = pageTitle;</span>
-<span class="fc" id="L50">        this.body = pageBody;</span>
-<span class="fc" id="L51">        this.data = pageData;</span>
-<span class="fc" id="L52">    }</span>
+<span class="fc" id="L51">                  final T pageData) {</span>
+<span class="fc" id="L52">        this.title = pageTitle;</span>
+<span class="fc" id="L53">        this.body = pageBody;</span>
+<span class="fc" id="L54">        this.data = pageData;</span>
+<span class="fc" id="L55">    }</span>
 
     /**
      * Getter of page title.
@@ -57,7 +60,7 @@ public class PageVO&lt;T&gt; {
      * @return page title
      */
     public String getTitle() {
-<span class="fc" id="L60">        return title;</span>
+<span class="fc" id="L63">        return title;</span>
     }
 
     /**
@@ -66,7 +69,7 @@ public class PageVO&lt;T&gt; {
      * @return subpage name
      */
     public String getBody() {
-<span class="fc" id="L69">        return body;</span>
+<span class="fc" id="L72">        return body;</span>
     }
 
     /**
@@ -75,7 +78,7 @@ public class PageVO&lt;T&gt; {
      * @return custom data
      */
     public T getData() {
-<span class="fc" id="L78">        return data;</span>
+<span class="fc" id="L81">        return data;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

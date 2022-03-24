@@ -17,25 +17,19 @@
 
 package com.batyuta.challenge.lottoland.dao;
 
+import com.batyuta.challenge.lottoland.annotation.LogEntry;
 import com.batyuta.challenge.lottoland.enums.StatusEnum;
 import com.batyuta.challenge.lottoland.model.RoundEntity;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 /**
  * Round DAO class.
  */
 @Repository
 public class RoundDAO implements CrudDAO&lt;RoundEntity&gt; {
-    /**
-     * Logger.
-     */
-<span class="fc" id="L38">    private final Logger log = LoggerFactory.getLogger(RoundDAO.class);</span>
     /**
      * Data Repository.
      */
@@ -47,9 +41,9 @@ public class RoundDAO implements CrudDAO&lt;RoundEntity&gt; {
      * @param dataRepository data repository
      */
     @Autowired
-<span class="fc" id="L50">    public RoundDAO(final DataRepository dataRepository) {</span>
-<span class="fc" id="L51">        this.repository = dataRepository;</span>
-<span class="fc" id="L52">    }</span>
+<span class="fc" id="L44">    public RoundDAO(final DataRepository dataRepository) {</span>
+<span class="fc" id="L45">        this.repository = dataRepository;</span>
+<span class="fc" id="L46">    }</span>
 
     /**
      * Save a new {@link RoundEntity} into DB/Memory.
@@ -58,12 +52,9 @@ public class RoundDAO implements CrudDAO&lt;RoundEntity&gt; {
      * @return updated round
      */
     @Override
+    @LogEntry
     public RoundEntity create(final RoundEntity round) {
-        try {
-<span class="fc" id="L63">            return repository.createRound(round);</span>
-        } finally {
-<span class="fc" id="L65">            log.info(&quot;create: Round {} has been created&quot;, round);</span>
-        }
+<span class="fc" id="L57">        return repository.createRound(round);</span>
     }
 
     /**
@@ -72,18 +63,9 @@ public class RoundDAO implements CrudDAO&lt;RoundEntity&gt; {
      * @param userId user ID
      * @return count of deleted rounds
      */
+    @LogEntry
     public int deleteAllByUserId(final int userId) {
-<span class="fc" id="L76">        int rounds = 0;</span>
-        try {
-<span class="fc" id="L78">            rounds = repository.deleteRounds(userId, null);</span>
-<span class="fc" id="L79">            return rounds;</span>
-        } finally {
-<span class="fc" id="L81">            log.info(</span>
-                    &quot;deleteAllByUserId: user = {}; count = {}&quot;,
-<span class="fc" id="L83">                    userId,</span>
-<span class="fc" id="L84">                    rounds</span>
-            );
-        }
+<span class="fc" id="L68">        return repository.deleteRounds(userId, null);</span>
     }
 
     /**
@@ -92,14 +74,9 @@ public class RoundDAO implements CrudDAO&lt;RoundEntity&gt; {
      * @return rounds
      */
     @Override
+    @LogEntry
     public Collection&lt;RoundEntity&gt; getAll() {
-<span class="fc" id="L96">        Collection&lt;RoundEntity&gt; rounds = null;</span>
-        try {
-<span class="fc" id="L98">            rounds = repository.getRounds(null, null, null, false);</span>
-<span class="fc" id="L99">            return rounds;</span>
-        } finally {
-<span class="fc" id="L101">            log(&quot;getAll&quot;, rounds);</span>
-        }
+<span class="fc" id="L79">        return repository.getRounds(null, null, null, false);</span>
     }
 
     /**
@@ -108,14 +85,9 @@ public class RoundDAO implements CrudDAO&lt;RoundEntity&gt; {
      * @param userId user ID
      * @return rounds
      */
+    @LogEntry
     public Collection&lt;RoundEntity&gt; getRoundsByUserId(final int userId) {
-<span class="fc" id="L112">        Collection&lt;RoundEntity&gt; rounds = null;</span>
-        try {
-<span class="fc" id="L114">            rounds = repository.getRounds(userId, false, null, true);</span>
-<span class="fc" id="L115">            return rounds;</span>
-        } finally {
-<span class="fc" id="L117">            log(&quot;getRoundsByUserId: userId = &quot; + userId, rounds);</span>
-        }
+<span class="fc" id="L90">        return repository.getRounds(userId, false, null, true);</span>
     }
 
     /**
@@ -123,8 +95,9 @@ public class RoundDAO implements CrudDAO&lt;RoundEntity&gt; {
      *
      * @return number of total played rounds
      */
+    @LogEntry
     public int getTotalRounds() {
-<span class="fc" id="L127">        return getAll().size();</span>
+<span class="fc" id="L100">        return getAll().size();</span>
     }
 
     /**
@@ -133,8 +106,9 @@ public class RoundDAO implements CrudDAO&lt;RoundEntity&gt; {
      * @param status status of rounds
      * @return number of total played rounds
      */
+    @LogEntry
     public int getTotalRoundsByStatus(final StatusEnum status) {
-<span class="fc" id="L137">        return getAllRoundsByStatus(status).size();</span>
+<span class="fc" id="L111">        return getAllRoundsByStatus(status).size();</span>
     }
 
     /**
@@ -143,38 +117,10 @@ public class RoundDAO implements CrudDAO&lt;RoundEntity&gt; {
      * @param status status of rounds
      * @return number of total played rounds
      */
+    @LogEntry
     public Collection&lt;RoundEntity&gt; getAllRoundsByStatus(
             final StatusEnum status) {
-<span class="fc" id="L148">        Collection&lt;RoundEntity&gt; rounds = null;</span>
-        try {
-<span class="fc" id="L150">            rounds = repository.getRounds(null, null, status, false);</span>
-<span class="fc" id="L151">            return rounds;</span>
-        } finally {
-<span class="fc" id="L153">            log(&quot;getRoundsByStatus: status = &quot; + status, rounds);</span>
-        }
+<span class="fc" id="L123">        return repository.getRounds(null, null, status, false);</span>
     }
-
-    private void log(final String methodName,
-                     final Collection&lt;RoundEntity&gt; rounds) {
-<span class="pc bpc" id="L159" title="1 of 4 branches missed.">        if (rounds == null || rounds.isEmpty()) {</span>
-<span class="pc bpc" id="L160" title="1 of 2 branches missed.">            if (log.isTraceEnabled()) {</span>
-<span class="nc" id="L161">                log.trace(&quot;{}: No Round Entities in repo!&quot;, methodName);</span>
-            } else {
-<span class="fc" id="L163">                log.info(&quot;{}&quot;, methodName);</span>
-            }
-        } else {
-<span class="pc bpc" id="L166" title="1 of 2 branches missed.">            if (log.isTraceEnabled()) {</span>
-<span class="nc" id="L167">                log.trace(</span>
-                        &quot;{}: [\n{}\n]&quot;,
-                        methodName,
-<span class="nc" id="L170">                        rounds.stream()</span>
-<span class="nc" id="L171">                                .map(Object::toString)</span>
-<span class="nc" id="L172">                                .collect(Collectors.joining(&quot;,\n&quot;))</span>
-                );
-            } else {
-<span class="fc" id="L175">                log.info(&quot;{}: count = {}&quot;, methodName, rounds.size());</span>
-            }
-        }
-<span class="fc" id="L178">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

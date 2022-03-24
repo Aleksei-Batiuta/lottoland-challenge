@@ -17,9 +17,12 @@
 
 package com.batyuta.challenge.lottoland.vo;
 
+import lombok.ToString;
+
 /**
  * User VO.
  */
+<span class="fc" id="L25">@ToString</span>
 public class UserVO extends BaseVO {
     /**
      * User e-mail.
@@ -33,9 +36,9 @@ public class UserVO extends BaseVO {
      * @param userEmail e-mail address
      */
     public UserVO(final int userId, final String userEmail) {
-<span class="fc" id="L36">        super(userId);</span>
-<span class="fc" id="L37">        this.email = userEmail;</span>
-<span class="fc" id="L38">    }</span>
+<span class="fc" id="L39">        super(userId);</span>
+<span class="fc" id="L40">        this.email = userEmail;</span>
+<span class="fc" id="L41">    }</span>
 
     /**
      * Getter of user e-mail.
@@ -43,7 +46,7 @@ public class UserVO extends BaseVO {
      * @return e-mail
      */
     public String getEmail() {
-<span class="nc" id="L46">        return email;</span>
+<span class="fc" id="L49">        return email;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

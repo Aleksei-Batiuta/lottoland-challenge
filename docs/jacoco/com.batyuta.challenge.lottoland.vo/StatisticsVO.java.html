@@ -17,9 +17,12 @@
 
 package com.batyuta.challenge.lottoland.vo;
 
+import lombok.ToString;
+
 /**
  * Statistics page VO.
  */
+<span class="fc" id="L25">@ToString</span>
 public class StatisticsVO {
     /**
      * The total of all rounds.
@@ -49,12 +52,12 @@ public class StatisticsVO {
     public StatisticsVO(final int totalRounds,
                         final int firstRounds,
                         final int secondRounds,
-<span class="fc" id="L52">                        final int totalDraws) {</span>
-<span class="fc" id="L53">        this.total = totalRounds;</span>
-<span class="fc" id="L54">        this.first = firstRounds;</span>
-<span class="fc" id="L55">        this.second = secondRounds;</span>
-<span class="fc" id="L56">        this.draws = totalDraws;</span>
-<span class="fc" id="L57">    }</span>
+<span class="fc" id="L55">                        final int totalDraws) {</span>
+<span class="fc" id="L56">        this.total = totalRounds;</span>
+<span class="fc" id="L57">        this.first = firstRounds;</span>
+<span class="fc" id="L58">        this.second = secondRounds;</span>
+<span class="fc" id="L59">        this.draws = totalDraws;</span>
+<span class="fc" id="L60">    }</span>
 
     /**
      * Getter of total of all rounds.
@@ -62,7 +65,7 @@ public class StatisticsVO {
      * @return the total of all rounds.
      */
     public int getTotal() {
-<span class="fc" id="L65">        return total;</span>
+<span class="fc" id="L68">        return total;</span>
     }
 
     /**
@@ -71,7 +74,7 @@ public class StatisticsVO {
      * @return the total wins of the first user.
      */
     public int getFirst() {
-<span class="fc" id="L74">        return first;</span>
+<span class="fc" id="L77">        return first;</span>
     }
 
     /**
@@ -80,7 +83,7 @@ public class StatisticsVO {
      * @return the total wins of the second user.
      */
     public int getSecond() {
-<span class="fc" id="L83">        return second;</span>
+<span class="fc" id="L86">        return second;</span>
     }
 
     /**
@@ -89,7 +92,7 @@ public class StatisticsVO {
      * @return the total draws.
      */
     public int getDraws() {
-<span class="fc" id="L92">        return draws;</span>
+<span class="fc" id="L95">        return draws;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
