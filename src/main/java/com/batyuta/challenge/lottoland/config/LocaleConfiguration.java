@@ -17,6 +17,7 @@
 
 package com.batyuta.challenge.lottoland.config;
 
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,6 +27,7 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
  * Locale Custom Configuration.
  */
 @Configuration
+@EnableAutoConfiguration
 public class LocaleConfiguration {
     /**
      * Custom configuration of {@link MessageSource}.
