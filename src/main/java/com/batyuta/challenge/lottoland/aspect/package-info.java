@@ -15,37 +15,9 @@
  * limitations under the License.
  */
 
-package com.batyuta.challenge.lottoland.vo;
-
-import lombok.ToString;
-
 /**
- * User VO.
+ * Application AspectJ configuration and implementation package.
+ *
+ * @author Aleksei Batuita
  */
-@ToString
-public class UserVO extends BaseVO {
-    /**
-     * User e-mail.
-     */
-    private final String email;
-
-    /**
-     * Default constructor.
-     *
-     * @param userId    user ID
-     * @param userEmail e-mail address
-     */
-    public UserVO(final int userId, final String userEmail) {
-        super(userId);
-        this.email = userEmail;
-    }
-
-    /**
-     * Getter of user e-mail.
-     *
-     * @return e-mail
-     */
-    public String getEmail() {
-        return email;
-    }
-}
+package com.batyuta.challenge.lottoland.aspect;

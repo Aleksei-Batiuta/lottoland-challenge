@@ -19,10 +19,12 @@ package com.batyuta.challenge.lottoland.vo;
 
 import com.batyuta.challenge.lottoland.enums.SignEnum;
 import com.batyuta.challenge.lottoland.enums.StatusEnum;
+import lombok.ToString;
 
 /**
  * Round VO.
  */
+@ToString
 public class RoundVO extends BaseVO {
     /**
      * User ID.

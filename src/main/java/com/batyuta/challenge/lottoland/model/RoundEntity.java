@@ -19,6 +19,7 @@ package com.batyuta.challenge.lottoland.model;
 
 import com.batyuta.challenge.lottoland.enums.SignEnum;
 import com.batyuta.challenge.lottoland.enums.StatusEnum;
+import lombok.ToString;
 
 import javax.persistence.Entity;
 import java.text.MessageFormat;
@@ -27,6 +28,7 @@ import java.text.MessageFormat;
  * Round entity.
  */
 @Entity
+@ToString
 public class RoundEntity extends BaseEntity {
     /**
      * User ID.

@@ -17,12 +17,15 @@
 
 package com.batyuta.challenge.lottoland.model;
 
+import lombok.ToString;
+
 import javax.persistence.Entity;
 
 /**
  * User entity.
  */
 @Entity
+@ToString
 public class UserEntity extends NamedEntity {
     /**
      * Default no-arguments constructor.

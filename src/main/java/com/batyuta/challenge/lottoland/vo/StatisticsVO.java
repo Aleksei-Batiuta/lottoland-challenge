@@ -17,9 +17,12 @@
 
 package com.batyuta.challenge.lottoland.vo;
 
+import lombok.ToString;
+
 /**
  * Statistics page VO.
  */
+@ToString
 public class StatisticsVO {
     /**
      * The total of all rounds.

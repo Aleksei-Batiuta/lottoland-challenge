@@ -17,11 +17,14 @@
 
 package com.batyuta.challenge.lottoland.vo;
 
+import lombok.ToString;
+
 /**
  * Base response HTTP page VO.
  *
  * @param <T> data type
  */
+@ToString
 public class PageVO<T> {
     /**
      * Page title.
