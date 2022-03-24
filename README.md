@@ -91,3 +91,47 @@ docker tag lottoland-challenge:0.20-SNAPSHOT lottoland-challenge:latest
 docker tag lottoland-challenge:0.20-SNAPSHOT alekseibatiuta/lottoland-challenge:0.20-SNAPSHOT
 docker push alekseibatiuta/lottoland-challenge:0.20-SNAPSHOT
 ```
+
+# Heroku
+## Deploy Application
+  1. Login
+  ```
+  heroku login
+  ```
+  2. Create a new project
+  ```
+  heroku create lottoland-challenge
+  ```
+  3. Change git repository to HerokuGit
+  
+  The Local Git repository should be initialized before (`git init` and etc)
+  ```
+  heroku git:remote -a lottoland-challenge
+  ```
+  4. Deploy on Heroku
+  ```
+  git push heroku master
+  ```
+## Heroku config file
+1. Heroku _Procfile_ to deploy WAR package
+```
+java -Dserver.port=$PORT $JAVA_OPTS -jar target/dependency/webapp-runner.jar --port $PORT target/lottoland-challenge-*.war
+```
+2. Spring Boot WAR package needs the ServletInitializer
+```
+/**
+ * Servlet Initializer for WAR.
+ */
+public class ServletInitializer extends SpringBootServletInitializer {
+
+	/**
+	 * Configure main application.
+	 * @param application application
+	 * @return builder
+	 */
+	@Override
+	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+		return application.sources(Application.class);
+	}
+}
+```
