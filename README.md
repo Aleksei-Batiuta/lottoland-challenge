@@ -57,10 +57,19 @@ The Test Challenge from Lottoland
    ```
    mvn spring-boot:build-image -P lottoland-challenge
    ```
-   * Run Docker image 
-   ```
-   docker-compose -f target/docker/docker-compose.yml up
-   ```
+   * Run Application
+    * Maven goal  
+    ```
+    mvn spring-boot:run -Dspring-boot.run.profiles=debug -P lottoland-challenge
+    ```
+    * Run Docker image 
+    ```
+    docker-compose -f target/docker/docker-compose.yml up
+    ```
+    DEBUG
+    ```
+    docker run -p 8080:8080 -e "SPRING_PROFILES_ACTIVE=debug" -t alekseibatiuta/lottoland-challenge:0.28
+    ```
 # Test Cases
 1. Open 'http://localhost:8080/' to view the rounds' statistics, 'Play Round' and 'Restart Game'
 2. Open 'Statistics' page by click to corresponding menu item and verify the data for all users
