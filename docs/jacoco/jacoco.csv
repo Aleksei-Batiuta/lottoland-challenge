@@ -2,6 +2,7 @@ GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_
 Lottoland Challenge,com.batyuta.challenge.lottoland.web,WebController,0,151,0,0,0,32,0,7,0,7
 Lottoland Challenge,com.batyuta.challenge.lottoland.web,WebExceptionHandler,32,58,2,2,5,15,3,3,1,3
 Lottoland Challenge,com.batyuta.challenge.lottoland.config,LocaleConfiguration,0,18,0,0,0,6,0,2,0,2
+Lottoland Challenge,com.batyuta.challenge.lottoland.config,ServletInitializer,12,0,0,0,2,0,2,0,2,0
 Lottoland Challenge,com.batyuta.challenge.lottoland.enums,I18n,20,18,0,0,5,6,0,1,0,1
 Lottoland Challenge,com.batyuta.challenge.lottoland.enums,StatusEnum,3,53,0,4,1,14,1,7,1,4
 Lottoland Challenge,com.batyuta.challenge.lottoland.enums,SignEnum,7,32,0,0,2,7,2,2,2,2
