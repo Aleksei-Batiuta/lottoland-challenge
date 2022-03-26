@@ -20,6 +20,7 @@ package com.batyuta.challenge.lottoland.service;
 import com.batyuta.challenge.lottoland.enums.SignEnum;
 import com.batyuta.challenge.lottoland.enums.StatusEnum;
 import com.batyuta.challenge.lottoland.exception.DataException;
+import com.batyuta.challenge.lottoland.model.BaseEntity;
 import com.batyuta.challenge.lottoland.model.RoundEntity;
 import com.batyuta.challenge.lottoland.model.UserEntity;
 import com.batyuta.challenge.lottoland.repository.RoundEntityRepository;
@@ -39,7 +40,7 @@ public class ApplicationService {
     /**
      * Random instance.
      */
-<span class="fc" id="L42">    private static final Random RANDOM = new Random();</span>
+<span class="fc" id="L43">    private static final Random RANDOM = new Random();</span>
     /**
      * User repository.
      */
@@ -57,10 +58,10 @@ public class ApplicationService {
      */
     @Autowired
     public ApplicationService(final UserEntityRepository service,
-<span class="fc" id="L60">                              final RoundEntityRepository rService) {</span>
-<span class="fc" id="L61">        this.userService = service;</span>
-<span class="fc" id="L62">        this.roundService = rService;</span>
-<span class="fc" id="L63">    }</span>
+<span class="fc" id="L61">                              final RoundEntityRepository rService) {</span>
+<span class="fc" id="L62">        this.userService = service;</span>
+<span class="fc" id="L63">        this.roundService = rService;</span>
+<span class="fc" id="L64">    }</span>
 
     /**
      * Gets random integer.
@@ -71,7 +72,7 @@ public class ApplicationService {
      */
     private static int getRandomNumberUsingNextInt(final int min,
                                                    final int max) {
-<span class="fc" id="L74">        return RANDOM.nextInt(max - min + 1) + min;</span>
+<span class="fc" id="L75">        return RANDOM.nextInt(max - min + 1) + min;</span>
     }
 
     /**
@@ -81,7 +82,7 @@ public class ApplicationService {
      * @see UserEntityRepository#findAll()
      */
     public Iterable&lt;UserEntity&gt; getAllUsers() {
-<span class="nc" id="L84">        return userService.findAll();</span>
+<span class="nc" id="L85">        return userService.findAll();</span>
     }
 
     /**
@@ -89,10 +90,10 @@ public class ApplicationService {
      *
      * @param user user
      * @return updated user entity
-     * @see UserEntityRepository#save(UserEntity)
+     * @see com.batyuta.challenge.lottoland.repository.BaseEntityRepository#save(BaseEntity) to details
      */
     public UserEntity saveUser(final UserEntity user) {
-<span class="fc" id="L95">        return userService.save(user);</span>
+<span class="fc" id="L96">        return userService.save(user);</span>
     }
 
     /**
@@ -102,8 +103,8 @@ public class ApplicationService {
      * @return user
      */
     public UserEntity getUserById(final Long userId) {
-<span class="nc" id="L105">        return userService.findById(userId).orElseThrow(</span>
-<span class="nc" id="L106">                () -&gt; new DataException(&quot;error.data.user.not.found&quot;, userId)</span>
+<span class="nc" id="L106">        return userService.findById(userId).orElseThrow(</span>
+<span class="nc" id="L107">                () -&gt; new DataException(&quot;error.data.user.not.found&quot;, userId)</span>
         );
     }
 
@@ -116,17 +117,17 @@ public class ApplicationService {
      */
     public UserEntity getOrCreateUser(final UserEntity user) {
         UserEntity userEntity;
-<span class="pc bpc" id="L119" title="3 of 4 branches missed.">        if (user == null || user.isNew()) {</span>
-<span class="fc" id="L120">            userEntity = saveUser(</span>
+<span class="pc bpc" id="L120" title="3 of 4 branches missed.">        if (user == null || user.isNew()) {</span>
+<span class="fc" id="L121">            userEntity = saveUser(</span>
                     new UserEntity(
-<span class="fc" id="L122">                            UserEntity.NEW_ENTITY_ID,</span>
-<span class="fc" id="L123">                            UUID.randomUUID().toString()</span>
+<span class="fc" id="L123">                            UserEntity.NEW_ENTITY_ID,</span>
+<span class="fc" id="L124">                            UUID.randomUUID().toString()</span>
                     )
             );
         } else {
-<span class="nc" id="L127">            userEntity = getUserById(user.getId());</span>
+<span class="nc" id="L128">            userEntity = getUserById(user.getId());</span>
         }
-<span class="fc" id="L129">        return userEntity;</span>
+<span class="fc" id="L130">        return userEntity;</span>
     }
 
     /**
@@ -136,7 +137,7 @@ public class ApplicationService {
      * @return rounds
      */
     public Collection&lt;RoundEntity&gt; getRoundsByUserId(final Long userId) {
-<span class="fc" id="L139">        return roundService.findByUserId(userId);</span>
+<span class="fc" id="L140">        return roundService.findByUserId(userId);</span>
     }
 
     /**
@@ -146,7 +147,7 @@ public class ApplicationService {
      * @return saved round
      */
     public RoundEntity saveRound(final RoundEntity round) {
-<span class="fc" id="L149">        return roundService.save(round);</span>
+<span class="fc" id="L150">        return roundService.save(round);</span>
     }
 
     /**
@@ -155,8 +156,8 @@ public class ApplicationService {
      * @param userId user ID
      */
     public void deleteAllRoundsByUserId(final Long userId) {
-<span class="fc" id="L158">        roundService.deleteAllByUserId(userId);</span>
-<span class="fc" id="L159">    }</span>
+<span class="fc" id="L159">        roundService.deleteAllByUserId(userId);</span>
+<span class="fc" id="L160">    }</span>
 
     /**
      * Generates a new round and saves it.
@@ -167,22 +168,22 @@ public class ApplicationService {
     public RoundEntity newRoundByUserId(final Long userId) {
         SignEnum player1;
         SignEnum player2;
-<span class="fc bfc" id="L170" title="All 2 branches covered.">        if (getRandomNumberUsingNextInt(0, 1) == 1) {</span>
-<span class="fc" id="L171">            player1 = getRandom();</span>
-<span class="fc" id="L172">            player2 = SignEnum.ROCK;</span>
+<span class="fc bfc" id="L171" title="All 2 branches covered.">        if (getRandomNumberUsingNextInt(0, 1) == 1) {</span>
+<span class="fc" id="L172">            player1 = getRandom();</span>
+<span class="fc" id="L173">            player2 = SignEnum.ROCK;</span>
         } else {
-<span class="fc" id="L174">            player1 = SignEnum.ROCK;</span>
-<span class="fc" id="L175">            player2 = getRandom();</span>
+<span class="fc" id="L175">            player1 = SignEnum.ROCK;</span>
+<span class="fc" id="L176">            player2 = getRandom();</span>
 
         }
 
-<span class="fc" id="L179">        return saveRound(</span>
+<span class="fc" id="L180">        return saveRound(</span>
                 new RoundEntity(
                         userId,
                         player1,
                         player2,
-<span class="fc" id="L184">                        StatusEnum.valueOf(</span>
-<span class="fc" id="L185">                                player1.compareToEnum(player2)</span>
+<span class="fc" id="L185">                        StatusEnum.valueOf(</span>
+<span class="fc" id="L186">                                player1.compareToEnum(player2)</span>
                         )
                 )
         );
@@ -194,8 +195,8 @@ public class ApplicationService {
      * @return random Sign
      */
     private SignEnum getRandom() {
-<span class="fc" id="L197">        SignEnum[] values = SignEnum.values();</span>
-<span class="fc" id="L198">        return values[getRandomNumberUsingNextInt(0, values.length - 1)];</span>
+<span class="fc" id="L198">        SignEnum[] values = SignEnum.values();</span>
+<span class="fc" id="L199">        return values[getRandomNumberUsingNextInt(0, values.length - 1)];</span>
     }
 
     /**
@@ -204,7 +205,7 @@ public class ApplicationService {
      * @return number of rounds
      */
     public long getTotalRounds() {
-<span class="fc" id="L207">        return roundService.count();</span>
+<span class="fc" id="L208">        return roundService.count();</span>
     }
 
     /**
@@ -213,7 +214,7 @@ public class ApplicationService {
      * @return number of rounds
      */
     public int getFirstRounds() {
-<span class="fc" id="L216">        return getTotalRounds(StatusEnum.WIN);</span>
+<span class="fc" id="L217">        return getTotalRounds(StatusEnum.WIN);</span>
     }
 
     /**
@@ -222,7 +223,7 @@ public class ApplicationService {
      * @return number of rounds
      */
     public int getSecondRounds() {
-<span class="fc" id="L225">        return getTotalRounds(StatusEnum.LOSS);</span>
+<span class="fc" id="L226">        return getTotalRounds(StatusEnum.LOSS);</span>
     }
 
     /**
@@ -231,7 +232,7 @@ public class ApplicationService {
      * @return number of rounds
      */
     public int getDraws() {
-<span class="fc" id="L234">        return getTotalRounds(StatusEnum.DRAW);</span>
+<span class="fc" id="L235">        return getTotalRounds(StatusEnum.DRAW);</span>
     }
 
     /**
@@ -241,7 +242,7 @@ public class ApplicationService {
      * @return number of rounds
      */
     private int getTotalRounds(final StatusEnum status) {
-<span class="fc" id="L244">        return roundService.getTotalRoundsByStatus(status);</span>
+<span class="fc" id="L245">        return roundService.getTotalRoundsByStatus(status);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

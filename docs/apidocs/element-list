@@ -1,0 +1,12 @@
+com.batyuta.challenge.lottoland
+com.batyuta.challenge.lottoland.annotation
+com.batyuta.challenge.lottoland.aspect
+com.batyuta.challenge.lottoland.concurrency
+com.batyuta.challenge.lottoland.config
+com.batyuta.challenge.lottoland.enums
+com.batyuta.challenge.lottoland.exception
+com.batyuta.challenge.lottoland.model
+com.batyuta.challenge.lottoland.repository
+com.batyuta.challenge.lottoland.service
+com.batyuta.challenge.lottoland.vo
+com.batyuta.challenge.lottoland.web
