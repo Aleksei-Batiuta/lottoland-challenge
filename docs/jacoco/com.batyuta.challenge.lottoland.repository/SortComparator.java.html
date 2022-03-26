@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SortComparator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Lottoland Challenge</a> &gt; <a href="index.source.html" class="el_package">com.batyuta.challenge.lottoland.repository</a> &gt; <span class="el_source">SortComparator.java</span></div><h1>SortComparator.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2022 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.batyuta.challenge.lottoland.repository;
+
+import com.batyuta.challenge.lottoland.exception.DataException;
+import org.apache.commons.beanutils.BeanUtilsBean;
+import org.springframework.data.domain.Sort;
+
+import java.util.Comparator;
+
+/**
+ * Sort comparator implementation class.
+ *
+ * @param &lt;T&gt; Objects type class to compare
+ */
+public class SortComparator&lt;T extends Comparable&lt;? super T&gt;&gt;
+        implements Comparator&lt;T&gt; {
+    /**
+     * Sort type.
+     */
+    private final Sort sort;
+
+    /**
+     * Default constructor.
+     *
+     * @param sortType sort type
+     */
+<span class="fc" id="L43">    public SortComparator(Sort sortType) {</span>
+<span class="fc" id="L44">        this.sort = sortType;</span>
+<span class="fc" id="L45">    }</span>
+
+    /**
+     * Gets property value.
+     *
+     * @param order property declaration in order
+     * @param o     object
+     * @param &lt;P&gt;   object type class
+     * @return property value
+     */
+    private static &lt;P extends Comparable&lt;? super P&gt;&gt; P getProperty(
+            Sort.Order order, Object o) {
+        try {
+<span class="nc" id="L58">            return (P) BeanUtilsBean.getInstance()</span>
+<span class="nc" id="L59">                    .getNestedProperty(o, order.getProperty());</span>
+<span class="nc" id="L60">        } catch (Exception e) {</span>
+<span class="nc" id="L61">            throw new DataException(</span>
+                    &quot;error.unsupported.operation&quot;,
+                    e,
+<span class="nc" id="L64">                    e.getMessage()</span>
+            );
+        }
+    }
+
+    /**
+     * Implementation of {@link Comparator#compare(Object, Object)}.
+     *
+     * @param o1 the first object
+     * @param o2 the second object
+     * @return compare result
+     */
+    @Override
+    public int compare(T o1, T o2) {
+<span class="fc" id="L78">        return getSortComparator(sort).compare(o1, o2);</span>
+    }
+
+    /**
+     * Creates {@link Comparator} by sort type.
+     *
+     * @param orders sort type
+     * @return comparator
+     */
+    private Comparator&lt;T&gt; getSortComparator(Sort orders) {
+<span class="fc" id="L88">        Comparator&lt;T&gt; comparator = null;</span>
+<span class="fc bfc" id="L89" title="All 2 branches covered.">        if (orders != null) {</span>
+<span class="fc bfc" id="L90" title="All 2 branches covered.">            for (Sort.Order order : orders) {</span>
+<span class="fc" id="L91">                Comparator&lt;T&gt; sortOrderComparator =</span>
+<span class="fc" id="L92">                        getSortOrderComparator(order);</span>
+<span class="pc bpc" id="L93" title="1 of 2 branches missed.">                if (comparator == null) {</span>
+<span class="fc" id="L94">                    comparator = sortOrderComparator;</span>
+                } else {
+<span class="nc" id="L96">                    comparator = comparator.thenComparing(sortOrderComparator);</span>
+                }
+<span class="fc" id="L98">            }</span>
+        }
+<span class="fc bfc" id="L100" title="All 2 branches covered.">        if (comparator == null) {</span>
+<span class="fc" id="L101">            comparator = Comparator.naturalOrder();</span>
+        }
+<span class="fc" id="L103">        return comparator;</span>
+    }
+
+    /**
+     * Creates {@link Comparator} by order type.
+     *
+     * @param order order type
+     * @param &lt;P&gt;   compared field type class
+     * @return comparator
+     */
+    private &lt;P extends Comparable&lt;? super P&gt;&gt; Comparator&lt;T&gt;
+    getSortOrderComparator(Sort.Order order) {
+        Comparator&lt;P&gt; orderComparator;
+<span class="pc bpc" id="L116" title="1 of 2 branches missed.">        if (order.isDescending()) {</span>
+<span class="fc" id="L117">            orderComparator = Comparator.reverseOrder();</span>
+        } else {
+<span class="nc" id="L119">            orderComparator = Comparator.naturalOrder();</span>
+        }
+
+<span class="fc" id="L122">        Comparator&lt;T&gt; comparator = Comparator.comparing(</span>
+<span class="nc" id="L123">                o -&gt; getProperty(order, o),</span>
+                orderComparator
+        );
+
+        Comparator&lt;T&gt; nullHandlingComparator;
+<span class="pc bpc" id="L128" title="2 of 3 branches missed.">        switch (order.getNullHandling()) {</span>
+            case NULLS_FIRST: {
+<span class="nc" id="L130">                nullHandlingComparator = Comparator.nullsFirst(comparator);</span>
+<span class="nc" id="L131">                break;</span>
+            }
+            case NULLS_LAST: {
+<span class="nc" id="L134">                nullHandlingComparator = Comparator.nullsLast(comparator);</span>
+<span class="nc" id="L135">                break;</span>
+            }
+            default: {
+<span class="fc" id="L138">                nullHandlingComparator = Comparator.naturalOrder();</span>
+            }
+        }
+<span class="fc" id="L141">        return nullHandlingComparator;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

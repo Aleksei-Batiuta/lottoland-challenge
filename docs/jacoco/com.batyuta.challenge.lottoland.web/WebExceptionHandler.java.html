@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WebExceptionHandler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Lottoland Challenge</a> &gt; <a href="index.source.html" class="el_package">com.batyuta.challenge.lottoland.web</a> &gt; <span class="el_source">WebExceptionHandler.java</span></div><h1>WebExceptionHandler.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2022 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.batyuta.challenge.lottoland.web;
+
+import com.batyuta.challenge.lottoland.exception.BaseException;
+import com.batyuta.challenge.lottoland.vo.PageVO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.HashMap;
+import java.util.Locale;
+
+/**
+ * WEB Exception Handler class.
+ */
+@ControllerAdvice
+public class WebExceptionHandler {
+    /**
+     * Logger.
+     */
+<span class="fc" id="L42">    private final Logger logger =</span>
+<span class="fc" id="L43">            LoggerFactory.getLogger(WebExceptionHandler.class);</span>
+
+    /**
+     * Message Source Bean.
+     */
+    private final MessageSource messageSource;
+
+    /**
+     * Default constructor.
+     *
+     * @param source message servcice
+     */
+    @Autowired
+<span class="fc" id="L56">    public WebExceptionHandler(final MessageSource source) {</span>
+<span class="fc" id="L57">        this.messageSource = source;</span>
+<span class="fc" id="L58">    }</span>
+
+    /**
+     * Catches the {@link BaseException}.
+     *
+     * @param exception exception instance
+     * @param locale    current session locale
+     * @return view
+     */
+    @ExceptionHandler(BaseException.class)
+    public ModelAndView handleBaseException(final BaseException exception,
+                                            final Locale locale) {
+<span class="pc bpc" id="L70" title="2 of 4 branches missed.">        if (exception != null &amp;&amp; exception.getMessage() != null) {</span>
+<span class="fc" id="L71">            String errorMessage = messageSource.getMessage(</span>
+<span class="fc" id="L72">                    exception.getMessage(),</span>
+<span class="fc" id="L73">                    exception.getArgs(),</span>
+                    null,
+                    locale
+            );
+<span class="fc" id="L77">            logger.error(errorMessage, exception);</span>
+<span class="fc" id="L78">            HttpStatus httpStatus = HttpStatus.CONFLICT;</span>
+<span class="fc" id="L79">            return getErrorModelAndView(errorMessage, httpStatus);</span>
+        } else {
+<span class="nc" id="L81">            return handleException(new Exception(), locale);</span>
+        }
+    }
+
+    /**
+     * Catches the {@link Exception}.
+     *
+     * @param exception exception instance
+     * @param locale    current session locale
+     * @return view
+     */
+    @ExceptionHandler(Exception.class)
+    public ModelAndView handleException(final Exception exception,
+                                        final Locale locale) {
+<span class="nc" id="L95">        String errorMessage = messageSource.getMessage(</span>
+                &quot;error.unknown&quot;,
+<span class="nc" id="L97">                new Object[]{exception.getMessage()},</span>
+                null,
+                locale
+        );
+<span class="nc" id="L101">        logger.error(exception.getMessage(), exception);</span>
+<span class="nc" id="L102">        return getErrorModelAndView(</span>
+                errorMessage,
+                HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
+
+    /**
+     * Builds the error view.
+     *
+     * @param message    error
+     * @param httpStatus returned HTTP status
+     * @return view
+     */
+    private ModelAndView getErrorModelAndView(final String message,
+                                              final HttpStatus httpStatus) {
+<span class="fc" id="L117">        HashMap&lt;String, Object&gt; map = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L118">        map.put(&quot;page&quot;, new PageVO&lt;&gt;(</span>
+                &quot;title.error&quot;,
+                &quot;exception&quot;,
+                message
+        ));
+
+<span class="fc" id="L124">        return new ModelAndView(&quot;main&quot;, map, httpStatus);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
