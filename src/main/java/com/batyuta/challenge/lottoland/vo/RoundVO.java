@@ -29,7 +29,7 @@ public class RoundVO extends BaseVO {
     /**
      * User ID.
      */
-    private final int userId;
+    private final long userId;
     /**
      * Choice of first player.
      */
@@ -51,7 +51,7 @@ public class RoundVO extends BaseVO {
      * @param player2Enum choice of player 2
      * @param statusEnum  status
      */
-    public RoundVO(final int user,
+    public RoundVO(final long user,
                    final SignEnum player1Enum,
                    final SignEnum player2Enum,
                    final StatusEnum statusEnum) {
@@ -66,7 +66,7 @@ public class RoundVO extends BaseVO {
      *
      * @return user ID
      */
-    public int getUserId() {
+    public long getUserId() {
         return userId;
     }
 

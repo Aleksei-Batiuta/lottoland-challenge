@@ -27,19 +27,22 @@ import java.io.Serializable;
 
 /**
  * Base Entity class.
+ *
+ * @param <T> entity type class
  */
 @MappedSuperclass
-public abstract class BaseEntity extends LockedData implements Serializable {
+public abstract class BaseEntity<T> extends LockedData
+        implements Serializable, Comparable<T> {
     /**
      * New Entity ID.
      */
-    public static final int NEW_ENTITY_ID = -1;
+    public static final long NEW_ENTITY_ID = -1L;
     /**
      * Entity ID.
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     /**
      * Default no arguments Constructor.
@@ -53,7 +56,7 @@ public abstract class BaseEntity extends LockedData implements Serializable {
      *
      * @param entityId entity ID.
      */
-    protected BaseEntity(final Integer entityId) {
+    protected BaseEntity(final Long entityId) {
         this.setId(entityId);
     }
 
@@ -72,7 +75,7 @@ public abstract class BaseEntity extends LockedData implements Serializable {
      *
      * @return entity ID
      */
-    public int getId() {
+    public Long getId() {
         return read(() -> this.id);
     }
 
@@ -81,7 +84,7 @@ public abstract class BaseEntity extends LockedData implements Serializable {
      *
      * @param entityId entity ID
      */
-    public void setId(final int entityId) {
+    public void setId(final Long entityId) {
         write(() -> this.id = entityId);
     }
 }

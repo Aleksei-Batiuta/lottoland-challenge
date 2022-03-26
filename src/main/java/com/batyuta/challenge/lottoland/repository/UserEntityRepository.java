@@ -15,23 +15,14 @@
  * limitations under the License.
  */
 
-package com.batyuta.challenge.lottoland;
+package com.batyuta.challenge.lottoland.repository;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import com.batyuta.challenge.lottoland.model.UserEntity;
+import org.springframework.stereotype.Repository;
 
 /**
- * The Lottoland main application.
+ * User repository implementation class.
  */
-@SpringBootApplication
-public class Application {
-
-    /**
-     * The main method for run app.
-     *
-     * @param args arguments.
-     */
-    public static void main(final String[] args) {
-        SpringApplication.run(Application.class, args);
-    }
+@Repository
+public class UserEntityRepository extends BaseEntityRepository<UserEntity> {
 }

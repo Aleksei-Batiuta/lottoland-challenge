@@ -35,7 +35,7 @@ public class UserVO extends BaseVO {
      * @param userId    user ID
      * @param userEmail e-mail address
      */
-    public UserVO(final int userId, final String userEmail) {
+    public UserVO(final long userId, final String userEmail) {
         super(userId);
         this.email = userEmail;
     }

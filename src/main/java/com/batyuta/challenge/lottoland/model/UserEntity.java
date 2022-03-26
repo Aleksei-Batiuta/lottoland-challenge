@@ -20,13 +20,14 @@ package com.batyuta.challenge.lottoland.model;
 import lombok.ToString;
 
 import javax.persistence.Entity;
+import java.util.Comparator;
 
 /**
  * User entity.
  */
 @Entity
 @ToString
-public class UserEntity extends NamedEntity {
+public class UserEntity extends NamedEntity<UserEntity> {
     /**
      * Default no-arguments constructor.
      */
@@ -40,8 +41,23 @@ public class UserEntity extends NamedEntity {
      * @param userId   user ID
      * @param userName username
      */
-    public UserEntity(final int userId,
+    public UserEntity(final Long userId,
                       final String userName) {
         super(userId, userName);
+    }
+
+    /**
+     * Entities comparator.
+     *
+     * @param o object to compare
+     * @return compare result
+     */
+    @Override
+    public int compareTo(final UserEntity o) {
+        Comparator<UserEntity> comparator =
+                Comparator.nullsFirst(
+                        Comparator.comparing(BaseEntity::getId)
+                );
+        return comparator.compare(this, o);
     }
 }

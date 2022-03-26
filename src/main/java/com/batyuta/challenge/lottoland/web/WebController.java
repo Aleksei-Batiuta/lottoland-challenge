@@ -130,10 +130,10 @@ public class WebController {
     @RequestMapping(value = "/statistics", method = RequestMethod.GET)
     public ModelAndView statistics(final HttpServletRequest httpRequest) {
         UserVO userVO = getOrCreateUserVO(httpRequest);
-        int totalRounds = applicationService.getTotalRounds();
-        int firstRounds = applicationService.getFirstRounds();
-        int secondRounds = applicationService.getSecondRounds();
-        int totalDraws = applicationService.getDraws();
+        long totalRounds = applicationService.getTotalRounds();
+        long firstRounds = applicationService.getFirstRounds();
+        long secondRounds = applicationService.getSecondRounds();
+        long totalDraws = applicationService.getDraws();
 
         HashMap<String, Object> map = new HashMap<>();
         map.put("page", new PageVO<>(

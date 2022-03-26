@@ -15,23 +15,31 @@
  * limitations under the License.
  */
 
-package com.batyuta.challenge.lottoland;
+package com.batyuta.challenge.lottoland.test;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
-/**
- * The Lottoland main application.
- */
-@SpringBootApplication
-public class Application {
+@DisplayName("User Entity Repository test cases")
+class UserEntityRepositoryTest {
 
-    /**
-     * The main method for run app.
-     *
-     * @param args arguments.
-     */
-    public static void main(final String[] args) {
-        SpringApplication.run(Application.class, args);
+    @Test
+    void create() {
+    }
+
+    @Test
+    void update() {
+    }
+
+    @Test
+    void get() {
+    }
+
+    @Test
+    void getAll() {
+    }
+
+    @Test
+    void delete() {
     }
 }

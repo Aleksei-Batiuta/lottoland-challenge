@@ -26,13 +26,15 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
  */
 public class ServletInitializer extends SpringBootServletInitializer {
 
-	/**
-	 * Configure main application.
-	 * @param application application
-	 * @return builder
-	 */
-	@Override
-	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-		return application.sources(Application.class);
-	}
+    /**
+     * Configure main application.
+     *
+     * @param application application
+     * @return builder
+     */
+    @Override
+    protected SpringApplicationBuilder configure(
+            SpringApplicationBuilder application) {
+        return application.sources(Application.class);
+    }
 }

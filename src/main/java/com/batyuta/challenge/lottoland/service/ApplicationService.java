@@ -19,8 +19,11 @@ package com.batyuta.challenge.lottoland.service;
 
 import com.batyuta.challenge.lottoland.enums.SignEnum;
 import com.batyuta.challenge.lottoland.enums.StatusEnum;
+import com.batyuta.challenge.lottoland.exception.DataException;
 import com.batyuta.challenge.lottoland.model.RoundEntity;
 import com.batyuta.challenge.lottoland.model.UserEntity;
+import com.batyuta.challenge.lottoland.repository.RoundEntityRepository;
+import com.batyuta.challenge.lottoland.repository.UserEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,23 +41,23 @@ public class ApplicationService {
      */
     private static final Random RANDOM = new Random();
     /**
-     * User DAO Service.
+     * User repository.
      */
-    private final UserService userService;
+    private final UserEntityRepository userService;
     /**
-     * Rounds DAO Service.
+     * Rounds repository.
      */
-    private final RoundService roundService;
+    private final RoundEntityRepository roundService;
 
     /**
      * Default constructor.
      *
-     * @param service  user DAO service
-     * @param rService round DAO service
+     * @param service  user repository
+     * @param rService round repository
      */
     @Autowired
-    public ApplicationService(final UserService service,
-                              final RoundService rService) {
+    public ApplicationService(final UserEntityRepository service,
+                              final RoundEntityRepository rService) {
         this.userService = service;
         this.roundService = rService;
     }
@@ -75,10 +78,10 @@ public class ApplicationService {
      * Getter for all users.
      *
      * @return users
-     * @see UserService#getAllUsers()
+     * @see UserEntityRepository#findAll()
      */
-    public Collection<UserEntity> getAllUsers() {
-        return userService.getAllUsers();
+    public Iterable<UserEntity> getAllUsers() {
+        return userService.findAll();
     }
 
     /**
@@ -86,7 +89,7 @@ public class ApplicationService {
      *
      * @param user user
      * @return updated user entity
-     * @see UserService#save(UserEntity)
+     * @see UserEntityRepository#save(UserEntity)
      */
     public UserEntity saveUser(final UserEntity user) {
         return userService.save(user);
@@ -98,8 +101,10 @@ public class ApplicationService {
      * @param userId user ID
      * @return user
      */
-    public UserEntity getUserById(final int userId) {
-        return userService.getUserById(userId);
+    public UserEntity getUserById(final Long userId) {
+        return userService.findById(userId).orElseThrow(
+                () -> new DataException("error.data.user.not.found", userId)
+        );
     }
 
     /**
@@ -130,8 +135,8 @@ public class ApplicationService {
      * @param userId user ID
      * @return rounds
      */
-    public Collection<RoundEntity> getRoundsByUserId(final int userId) {
-        return roundService.getRoundsByUserId(userId);
+    public Collection<RoundEntity> getRoundsByUserId(final Long userId) {
+        return roundService.findByUserId(userId);
     }
 
     /**
@@ -149,8 +154,8 @@ public class ApplicationService {
      *
      * @param userId user ID
      */
-    public void deleteAllRoundsByUserId(final int userId) {
-        roundService.deleteAllRoundsByUserId(userId);
+    public void deleteAllRoundsByUserId(final Long userId) {
+        roundService.deleteAllByUserId(userId);
     }
 
     /**
@@ -159,7 +164,7 @@ public class ApplicationService {
      * @param userId user ID
      * @return generated round
      */
-    public RoundEntity newRoundByUserId(final int userId) {
+    public RoundEntity newRoundByUserId(final Long userId) {
         SignEnum player1;
         SignEnum player2;
         if (getRandomNumberUsingNextInt(0, 1) == 1) {
@@ -198,8 +203,8 @@ public class ApplicationService {
      *
      * @return number of rounds
      */
-    public int getTotalRounds() {
-        return roundService.getTotalRounds();
+    public long getTotalRounds() {
+        return roundService.count();
     }
 
     /**
@@ -236,6 +241,6 @@ public class ApplicationService {
      * @return number of rounds
      */
     private int getTotalRounds(final StatusEnum status) {
-        return roundService.getTotalRounds(status);
+        return roundService.getTotalRoundsByStatus(status);
     }
 }

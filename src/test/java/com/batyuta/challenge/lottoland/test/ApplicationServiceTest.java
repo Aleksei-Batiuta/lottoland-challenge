@@ -54,7 +54,7 @@ class ApplicationServiceTest {
     @RepeatedTest(REPEAT_COUNT)
     @Execution(CONCURRENT)
     void newRoundByUserId() {
-        RoundEntity roundEntity = service.newRoundByUserId(0);
+        RoundEntity roundEntity = service.newRoundByUserId(0L);
         assertNotNull(roundEntity, "Round was not generated");
         assertEquals(SignEnum.ROCK,
                 roundEntity.getPlayer1() == SignEnum.ROCK

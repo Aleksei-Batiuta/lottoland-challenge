@@ -51,7 +51,7 @@ class UserEntityTest {
     @DisplayName("TC#01: Test Default Constructor")
     void testDefaultConstructor() {
         String userName = "User Name";
-        UserEntity user = new UserEntity(1, userName);
+        UserEntity user = new UserEntity(1L, userName);
         assertNotNull("Entity was not created", user);
         assertFalse("Entity is a new", user.isNew());
         assertEquals("Entity has name", userName, user.getName());

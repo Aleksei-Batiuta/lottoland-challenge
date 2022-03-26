@@ -27,12 +27,6 @@
     By convention application classes end with *Application
     -->
     <suppress checks="HideUtilityClassConstructor" files=".*Application.java"/>
-    <suppress checks="HiddenField" files=".*VO.java"/>
-    <suppress checks="HiddenField" files="WebExceptionHandler.java"/>
-    <suppress checks="HiddenField" files=".*Entity.java"/>
-    <suppress checks="HiddenField" files=".*DAO.java"/>
-    <suppress checks="AvoidNestedBlocks" files=".*.java"/>
-    <suppress checks="FinalParameters" files=".*.java"/>
     <suppress checks="MagicNumber" files=".*Test.java"/>
     <!-- Don't process the release.properties -->
     <suppress checks="RegexpSingleline" files="release.properties"/>

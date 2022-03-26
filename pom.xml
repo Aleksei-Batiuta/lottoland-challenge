@@ -32,7 +32,7 @@
     Application should be as WAR to
     run on Docker Container correctly
     -->
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <name>Lottoland Challenge</name>
     <description>The Test Challenge from Lottoland</description>
     <url>https://Aleksei-Batiuta.github.io/${project.artifactId}/</url>
@@ -125,6 +125,9 @@
         <dockerhub.owner>alekseibatiuta</dockerhub.owner>
         <dockerhub.password>password</dockerhub.password>
         <dockerhub.url />
+
+        <springfox.version>3.0.0</springfox.version>
+
     </properties>
 
     <profiles>
@@ -153,8 +156,8 @@
             <!-- Skips the checkstyle and unit tests -->
             <id>dev</id>
             <properties>
-                <maven.test.skip>true</maven.test.skip>
-                <checkstyle.skip>true</checkstyle.skip>
+                <maven.test.skip>false</maven.test.skip>
+                <checkstyle.skip>false</checkstyle.skip>
             </properties>
         </profile>
         <profile>
@@ -190,6 +193,11 @@
 
     <!-- Project libraries -->
     <dependencies>
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>1.9.4</version>
+        </dependency>
         <!-- Server libs -->
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
@@ -226,6 +234,18 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-rest</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
         <!-- Test Cases libs -->
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
@@ -250,7 +270,16 @@
             <scope>runtime</scope>
         </dependency>
     </dependencies>
-
+    <!-- Dependencies Manager -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-boot-starter</artifactId>
+                <version>${springfox.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <!-- General Build Configuration -->
     <build>
         <resources>

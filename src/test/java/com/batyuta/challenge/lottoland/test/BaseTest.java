@@ -15,23 +15,25 @@
  * limitations under the License.
  */
 
-package com.batyuta.challenge.lottoland;
+package com.batyuta.challenge.lottoland.test;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 /**
- * The Lottoland main application.
+ * The base Test Class.
  */
-@SpringBootApplication
-public class Application {
-
+public abstract class BaseTest {
     /**
-     * The main method for run app.
+     * Converts the {@link Iterable} to {@link List}.
      *
-     * @param args arguments.
+     * @param iterable input value
+     * @param <T>      object type
+     * @return list of objects
      */
-    public static void main(final String[] args) {
-        SpringApplication.run(Application.class, args);
+    protected <T> List<T> toList(Iterable<T> iterable) {
+        return StreamSupport.stream(iterable.spliterator(), false)
+                .collect(Collectors.toList());
     }
 }

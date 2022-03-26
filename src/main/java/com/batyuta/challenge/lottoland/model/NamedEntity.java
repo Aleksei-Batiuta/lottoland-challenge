@@ -21,9 +21,10 @@ import javax.persistence.MappedSuperclass;
 
 /**
  * Named entity base class.
+ * @param <T> entity type class
  */
 @MappedSuperclass
-public abstract class NamedEntity extends BaseEntity {
+public abstract class NamedEntity<T> extends BaseEntity<T> {
     /**
      * Name field.
      */
@@ -35,7 +36,7 @@ public abstract class NamedEntity extends BaseEntity {
      * @param id   entity ID
      * @param entityName name field of entity
      */
-    protected NamedEntity(final Integer id,
+    protected NamedEntity(final Long id,
                           final String entityName) {
         super(id);
         this.name = entityName;

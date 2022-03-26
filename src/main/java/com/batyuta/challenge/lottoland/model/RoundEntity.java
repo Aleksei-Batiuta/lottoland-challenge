@@ -23,17 +23,18 @@ import lombok.ToString;
 
 import javax.persistence.Entity;
 import java.text.MessageFormat;
+import java.util.Comparator;
 
 /**
  * Round entity.
  */
 @Entity
 @ToString
-public class RoundEntity extends BaseEntity {
+public class RoundEntity extends BaseEntity<RoundEntity> {
     /**
      * User ID.
      */
-    private int userid;
+    private Long userid;
     /**
      * Choice of first player.
      */
@@ -66,7 +67,7 @@ public class RoundEntity extends BaseEntity {
      * @param player2Enum choice of player 2
      * @param statusEnum  status
      */
-    public RoundEntity(final int user,
+    public RoundEntity(final Long user,
                        final SignEnum player1Enum,
                        final SignEnum player2Enum,
                        final StatusEnum statusEnum) {
@@ -88,8 +89,8 @@ public class RoundEntity extends BaseEntity {
      * @param player2Enum choice of player 2
      * @param statusEnum  status
      */
-    public RoundEntity(final Integer roundId,
-                       final int user,
+    public RoundEntity(final Long roundId,
+                       final Long user,
                        final SignEnum player1Enum,
                        final SignEnum player2Enum,
                        final StatusEnum statusEnum) {
@@ -105,7 +106,7 @@ public class RoundEntity extends BaseEntity {
      *
      * @return user ID
      */
-    public int getUserid() {
+    public Long getUserid() {
         return userid;
     }
 
@@ -166,5 +167,20 @@ public class RoundEntity extends BaseEntity {
                         + "status={4}, deleted={5}'}'",
                 getId(), userid, player1, player2, status, deleted
         );
+    }
+
+    /**
+     * Entities comparator.
+     *
+     * @param o object to compare
+     * @return compare result
+     */
+    @Override
+    public int compareTo(RoundEntity o) {
+        Comparator<RoundEntity> comparator =
+                Comparator.nullsFirst(
+                        Comparator.comparing(BaseEntity::getId)
+                );
+        return comparator.compare(this, o);
     }
 }

@@ -24,7 +24,7 @@ public abstract class BaseVO {
     /**
      * View ID.
      */
-    private final int id;
+    private final long id;
 
     /**
      * Default no-arguments Constructor.
@@ -38,7 +38,7 @@ public abstract class BaseVO {
      *
      * @param voId view ID
      */
-    public BaseVO(final int voId) {
+    public BaseVO(final long voId) {
         this.id = voId;
     }
 
@@ -47,7 +47,7 @@ public abstract class BaseVO {
      *
      * @return ID
      */
-    public int getId() {
+    public long getId() {
         return id;
     }
 }

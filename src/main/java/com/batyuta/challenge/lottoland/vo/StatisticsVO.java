@@ -27,19 +27,19 @@ public class StatisticsVO {
     /**
      * The total of all rounds.
      */
-    private final int total;
+    private final long total;
     /**
      * The first users wins.
      */
-    private final int first;
+    private final long first;
     /**
      * The second users wins.
      */
-    private final int second;
+    private final long second;
     /**
      * The total of draws.
      */
-    private final int draws;
+    private final long draws;
 
     /**
      * Default constructor.
@@ -49,10 +49,10 @@ public class StatisticsVO {
      * @param secondRounds the second users wins
      * @param totalDraws   the total of draws
      */
-    public StatisticsVO(final int totalRounds,
-                        final int firstRounds,
-                        final int secondRounds,
-                        final int totalDraws) {
+    public StatisticsVO(final long totalRounds,
+                        final long firstRounds,
+                        final long secondRounds,
+                        final long totalDraws) {
         this.total = totalRounds;
         this.first = firstRounds;
         this.second = secondRounds;
@@ -64,7 +64,7 @@ public class StatisticsVO {
      *
      * @return the total of all rounds.
      */
-    public int getTotal() {
+    public long getTotal() {
         return total;
     }
 
@@ -73,7 +73,7 @@ public class StatisticsVO {
      *
      * @return the total wins of the first user.
      */
-    public int getFirst() {
+    public long getFirst() {
         return first;
     }
 
@@ -82,7 +82,7 @@ public class StatisticsVO {
      *
      * @return the total wins of the second user.
      */
-    public int getSecond() {
+    public long getSecond() {
         return second;
     }
 
@@ -91,7 +91,7 @@ public class StatisticsVO {
      *
      * @return the total draws.
      */
-    public int getDraws() {
+    public long getDraws() {
         return draws;
     }
 }
