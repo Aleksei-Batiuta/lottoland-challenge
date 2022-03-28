@@ -72,11 +72,11 @@ public class LogEntryData {
      * @param timeUnit   duration time unit
      */
     public LogEntryData(
-            String methodName,
-            String[] parameters,
-            Object[] arguments,
-            Instant startTime,
-            ChronoUnit timeUnit) {
+            final String methodName,
+            final String[] parameters,
+            final Object[] arguments,
+            final Instant startTime,
+            final ChronoUnit timeUnit) {
         this.method = methodName;
         this.args = toMap(parameters, arguments);
         this.start = startTime;
@@ -90,7 +90,8 @@ public class LogEntryData {
      * @param args   method parameter arguments
      * @return map
      */
-    private static Map<String, Object> toMap(String[] params, Object[] args) {
+    private static Map<String, Object> toMap(final String[] params,
+                                             final Object[] args) {
         Map<String, Object> values;
         if (Objects.nonNull(params) && Objects.nonNull(args)
                 && params.length == args.length) {

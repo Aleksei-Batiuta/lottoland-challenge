@@ -41,7 +41,7 @@ public class RoundEntityRepository extends BaseEntityRepository<RoundEntity> {
      * @param entity entity
      */
     @Override
-    protected void deleteImpl(RoundEntity entity) {
+    protected void deleteImpl(final RoundEntity entity) {
         entity.setDeleted(true);
     }
 

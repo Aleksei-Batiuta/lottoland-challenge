@@ -153,7 +153,7 @@ public final class RoundEntityRepositoryTest extends BaseTest {
          * @param userId User ID
          * @return new instance
          */
-        private RoundEntity newRound(Long userId) {
+        private RoundEntity newRound(final Long userId) {
             final StatusEnum[] statusEnums = StatusEnum.values();
             final int statusEnumSize = statusEnums.length;
 
@@ -168,23 +168,19 @@ public final class RoundEntityRepositoryTest extends BaseTest {
             final SignEnum player1;
 
             switch (statusEnum) {
-                case WIN: {
+                case WIN:
                     player1 = PAPER;
                     break;
-                }
-                case LOSS: {
+                case LOSS:
                     player1 = SCISSORS;
                     break;
-                }
-                case DRAW: {
+                case DRAW:
                     player1 = ROCK;
                     break;
-                }
-                default: {
+                default:
                     fail(() -> "Unexpected status: " + statusEnum);
                     // this is extra code for IDE and checkstyle
                     throw new IllegalArgumentException("Incorrect test data");
-                }
             }
             return new RoundEntity(
                     userId,
@@ -218,7 +214,7 @@ public final class RoundEntityRepositoryTest extends BaseTest {
          * @param userId user ID
          * @return test data
          */
-        private List<RoundEntity> testUserData(Long userId) {
+        private List<RoundEntity> testUserData(final Long userId) {
             List<RoundEntity> data = new ArrayList<>();
             for (int i = 0; i < ROUNDS_FOR_EACH_USER; i++) {
                 data.add(newRound(userId));
@@ -237,7 +233,7 @@ public final class RoundEntityRepositoryTest extends BaseTest {
         )
 
         @MethodSource("testUser1Data")
-        void create1User(RoundEntity round) {
+        void create1User(final RoundEntity round) {
             RoundEntity actual = repository.save(round);
             assertNotNull(actual, "Unexpected result");
         }
@@ -252,7 +248,7 @@ public final class RoundEntityRepositoryTest extends BaseTest {
                 name = "createUser2[{index}]: first={0}"
         )
         @MethodSource("testUser2Data")
-        void createUser2(RoundEntity round) {
+        void createUser2(final RoundEntity round) {
             RoundEntity actual = repository.save(round);
             assertNotNull(actual, "Unexpected result");
         }
@@ -267,7 +263,7 @@ public final class RoundEntityRepositoryTest extends BaseTest {
                 name = "update[{index}]: first={0}"
         )
         @MethodSource("testData")
-        void update(RoundEntity round) {
+        void update(final RoundEntity round) {
             DataException dataException = assertThrows(
                     DataException.class,
                     () -> repository.update(round)
@@ -331,7 +327,7 @@ public final class RoundEntityRepositoryTest extends BaseTest {
         @DisplayName("TC#07: Checks to delete one round is impossible")
         @ParameterizedTest(name = "delete[{index}]: first={0}")
         @MethodSource("testData")
-        void delete(RoundEntity round) {
+        void delete(final RoundEntity round) {
             if (round == null) {
                 deleteNull(round);
             } else {
@@ -356,7 +352,7 @@ public final class RoundEntityRepositoryTest extends BaseTest {
             }
         }
 
-        private void deleteNull(RoundEntity round) {
+        private void deleteNull(final RoundEntity round) {
             DataException dataException = assertThrows(
                     DataException.class,
                     () -> repository.delete(round)
@@ -424,7 +420,7 @@ public final class RoundEntityRepositoryTest extends BaseTest {
         @DisplayName("TC#12: Checks all data to correct amount by status")
         @ParameterizedTest(name = "getRoundsByStatus[{index}]: first={0}")
         @MethodSource("testStatusEnums")
-        void getRoundsByStatus(StatusEnum statusEnum) {
+        void getRoundsByStatus(final StatusEnum statusEnum) {
             Collection<RoundEntity> roundsByStatus =
                     repository.getAllRoundsByStatus(statusEnum);
             assertNotNull(
@@ -471,7 +467,7 @@ public final class RoundEntityRepositoryTest extends BaseTest {
         )
         @MethodSource("testStatusEnums")
         @DisplayName("TC#14: Checks data to correct total count of status")
-        void getTotalRoundsByStatus(StatusEnum statusEnum) {
+        void getTotalRoundsByStatus(final StatusEnum statusEnum) {
             int totalRoundsByStatus =
                     repository.getTotalRoundsByStatus(statusEnum);
             int expected;

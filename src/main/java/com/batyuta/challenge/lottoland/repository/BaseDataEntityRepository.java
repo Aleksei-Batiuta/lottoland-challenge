@@ -18,7 +18,9 @@
 package com.batyuta.challenge.lottoland.repository;
 
 import com.batyuta.challenge.lottoland.concurrency.LockedData;
+import com.batyuta.challenge.lottoland.config.SortComparatorFactory;
 import com.batyuta.challenge.lottoland.model.BaseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 
 import java.util.ArrayList;
@@ -43,6 +45,11 @@ public abstract class BaseDataEntityRepository<T extends BaseEntity<T>>
      * This is entity table.
      */
     private final List<T> entities = new ArrayList<>();
+    /**
+     * Sort Comparator Factory.
+     */
+    @Autowired
+    private SortComparatorFactory sortComparatorFactory;
 
     /**
      * Getter of entities.
@@ -60,7 +67,7 @@ public abstract class BaseDataEntityRepository<T extends BaseEntity<T>>
      * @param <S>    entity type class
      * @return saved entity
      */
-    protected <S extends T> S saveImpl(S entity) {
+    protected <S extends T> S saveImpl(final S entity) {
         if (entity == null) {
             return null;
         }
@@ -74,7 +81,7 @@ public abstract class BaseDataEntityRepository<T extends BaseEntity<T>>
      *
      * @param entity entity
      */
-    protected void deleteImpl(T entity) {
+    protected void deleteImpl(final T entity) {
         write(
                 () -> {
                     entities.remove(entity);
@@ -97,10 +104,10 @@ public abstract class BaseDataEntityRepository<T extends BaseEntity<T>>
      * Sorts entities.
      *
      * @param entityList entities
-     * @param sort     sort type.
+     * @param sort       sort type.
      * @return sorted entity list
      */
-    protected List<T> sort(Stream<T> entityList, Sort sort) {
+    protected List<T> sort(final Stream<T> entityList, final Sort sort) {
         return entityList
                 .sorted(
                         (o1, o2) -> compare(sort, o1, o2)
@@ -121,8 +128,9 @@ public abstract class BaseDataEntityRepository<T extends BaseEntity<T>>
      * @param o2   the second entity
      * @return compare result
      */
-    private int compare(Sort sort, T o1, T o2) {
-        SortComparator<T> comparator = new SortComparator<>(sort);
+    private int compare(final Sort sort, final T o1, final T o2) {
+        SortComparator<T> comparator =
+                sortComparatorFactory.sortComparator(sort);
         return comparator.compare(o1, o2);
     }
 }

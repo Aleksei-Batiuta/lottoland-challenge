@@ -50,7 +50,7 @@ public abstract class BaseEntityRepository<T extends BaseEntity<T>>
      * @return entities
      */
     @Override
-    public Iterable<T> findAll(Sort sort) {
+    public Iterable<T> findAll(final Sort sort) {
         Stream<T> entities = getEntities();
         return sort(entities, sort);
     }
@@ -62,7 +62,7 @@ public abstract class BaseEntityRepository<T extends BaseEntity<T>>
      * @return entities
      */
     @Override
-    public Page<T> findAll(Pageable pageable) {
+    public Page<T> findAll(final Pageable pageable) {
         // todo: this method should be implemented in the future
         throw new UnsupportedOperationException();
     }
@@ -85,7 +85,7 @@ public abstract class BaseEntityRepository<T extends BaseEntity<T>>
      * @return saved entity
      */
     @Override
-    public <S extends T> S save(S entity) {
+    public <S extends T> S save(final S entity) {
         return write(() -> saveImpl(entity));
     }
 
@@ -97,7 +97,7 @@ public abstract class BaseEntityRepository<T extends BaseEntity<T>>
      * @return saved entities
      */
     @Override
-    public <S extends T> Iterable<S> saveAll(Iterable<S> entities) {
+    public <S extends T> Iterable<S> saveAll(final Iterable<S> entities) {
         return write(
                 () -> {
                     ArrayList<S> result = new ArrayList<>();
@@ -115,7 +115,7 @@ public abstract class BaseEntityRepository<T extends BaseEntity<T>>
      * @throws DataException if entity does not exist
      */
     @Override
-    public Optional<T> findById(Long id) {
+    public Optional<T> findById(final Long id) {
         Optional<T> read = read(
                 () -> getEntities()
                         .filter(entity -> Objects.equals(entity.getId(), id))
@@ -134,7 +134,7 @@ public abstract class BaseEntityRepository<T extends BaseEntity<T>>
      * @return <code>true</code> if it exists
      */
     @Override
-    public boolean existsById(Long id) {
+    public boolean existsById(final Long id) {
         return read(
                 () -> getEntities()
                         .anyMatch(entity -> Objects.equals(entity.getId(), id))
@@ -148,7 +148,7 @@ public abstract class BaseEntityRepository<T extends BaseEntity<T>>
      * @return entities
      */
     @Override
-    public Iterable<T> findAllById(Iterable<Long> entityIds) {
+    public Iterable<T> findAllById(final Iterable<Long> entityIds) {
         return read(() -> findByIdImpl(entityIds));
     }
 
@@ -158,7 +158,7 @@ public abstract class BaseEntityRepository<T extends BaseEntity<T>>
      * @param entityIds entity IDs
      * @return entities
      */
-    private List<T> findByIdImpl(Iterable<Long> entityIds) {
+    private List<T> findByIdImpl(final Iterable<Long> entityIds) {
         Stream<Long> ids =
                 StreamSupport.stream(entityIds.spliterator(), false);
         return getEntities()
@@ -187,7 +187,7 @@ public abstract class BaseEntityRepository<T extends BaseEntity<T>>
      * @param id entity ID
      */
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(final Long id) {
         findById(id)
                 .ifPresent(this::deleteImpl);
     }
@@ -198,7 +198,7 @@ public abstract class BaseEntityRepository<T extends BaseEntity<T>>
      * @param entity entity
      */
     @Override
-    public void delete(T entity) {
+    public void delete(final T entity) {
         if (entity == null) {
             throw new DataException("error.data.entity.null");
         }
@@ -214,7 +214,7 @@ public abstract class BaseEntityRepository<T extends BaseEntity<T>>
      * @param entityIds entities IDs
      */
     @Override
-    public void deleteAllById(Iterable<? extends Long> entityIds) {
+    public void deleteAllById(final Iterable<? extends Long> entityIds) {
         write(() -> {
             Stream<? extends Long> ids =
                     StreamSupport.stream(entityIds.spliterator(), false);
@@ -236,7 +236,7 @@ public abstract class BaseEntityRepository<T extends BaseEntity<T>>
      * @param entities entities
      */
     @Override
-    public void deleteAll(Iterable<? extends T> entities) {
+    public void deleteAll(final Iterable<? extends T> entities) {
         write(() -> {
             for (T entity : entities) {
                 deleteImpl(entity);
@@ -261,7 +261,7 @@ public abstract class BaseEntityRepository<T extends BaseEntity<T>>
      *
      * @param entity entity
      */
-    public void update(T entity) {
+    public void update(final T entity) {
         throw new DataException("error.unsupported.operation");
     }
 }

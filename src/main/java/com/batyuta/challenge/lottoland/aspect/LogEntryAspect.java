@@ -24,6 +24,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.CodeSignature;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
@@ -52,7 +53,8 @@ public class LogEntryAspect {
      * @param pretty  output JSON pretty format flag
      * @return String view of message
      */
-    private static String toString(LogEntryData message, boolean pretty) {
+    private static String toString(final LogEntryData message,
+                                   final boolean pretty) {
         if (message != null) {
             try {
                 if (pretty) {
@@ -76,41 +78,45 @@ public class LogEntryAspect {
      * @param level   logging level
      * @param message message
      */
-    static void log(Logger logger, Level level, String message) {
+    static void log(final Logger logger,
+                    final Level level,
+                    final String message) {
         switch (level) {
-            case DEBUG: {
+            case DEBUG:
                 logger.debug(message);
                 break;
-            }
-            case TRACE: {
+            case TRACE:
                 logger.trace(message);
                 break;
-            }
-            case WARN: {
+            case WARN:
                 logger.warn(message);
                 break;
-            }
-            case ERROR: {
+            case ERROR:
                 logger.error(message);
                 break;
-            }
-            default: {
+            default:
                 logger.info(message);
-            }
         }
     }
 
     /**
      * AspectJ entry point.
+     */
+    @Pointcut("@annotation("
+            + "com.batyuta.challenge.lottoland.annotation.LogEntry"
+            + ")")
+    public void methodsToBeProfiled() {
+    }
+
+    /**
+     * AspectJ around pointcut.
      *
      * @param point point
      * @return result
      * @throws Throwable if exception was appeared
      */
-    @Around("@annotation("
-            + "com.batyuta.challenge.lottoland.annotation.LogEntry"
-            + ")")
-    public Object log(ProceedingJoinPoint point) throws Throwable {
+    @Around("methodsToBeProfiled()")
+    public Object log(final ProceedingJoinPoint point) throws Throwable {
         CodeSignature codeSignature =
                 (CodeSignature) point.getSignature();
         MethodSignature methodSignature =

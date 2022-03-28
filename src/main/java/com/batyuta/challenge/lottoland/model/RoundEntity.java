@@ -176,7 +176,7 @@ public class RoundEntity extends BaseEntity<RoundEntity> {
      * @return compare result
      */
     @Override
-    public int compareTo(RoundEntity o) {
+    public int compareTo(final RoundEntity o) {
         Comparator<RoundEntity> comparator =
                 Comparator.nullsFirst(
                         Comparator.comparing(BaseEntity::getId)

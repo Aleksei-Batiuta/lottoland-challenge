@@ -22,6 +22,12 @@ body {
     background: #69a50788;
     color: #ffffff;
     width: 100%;
+    display: table;
+}
+
+.footer-context {
+    width: 100%;
+    display: table-row;
 }
 
 .footer p {
@@ -77,6 +83,17 @@ a:active {
     background-size: 150px;
     width: 100px;
     padding: 24px;
+    float: right;
+    display: table-cell;
+}
+
+.copyrights {
+    background: transparent;
+    float: left;
+    display: table-cell;
+}
+.version {
+    background: transparent;
     float: right;
     display: table-cell;
 }

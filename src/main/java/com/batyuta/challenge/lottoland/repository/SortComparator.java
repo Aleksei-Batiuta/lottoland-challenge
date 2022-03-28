@@ -17,8 +17,8 @@
 
 package com.batyuta.challenge.lottoland.repository;
 
-import com.batyuta.challenge.lottoland.exception.DataException;
-import org.apache.commons.beanutils.BeanUtilsBean;
+import com.batyuta.challenge.lottoland.annotation.LogEntry;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 
 import java.util.Comparator;
@@ -28,42 +28,26 @@ import java.util.Comparator;
  *
  * @param <T> Objects type class to compare
  */
+//@Component("sortComparator")
 public class SortComparator<T extends Comparable<? super T>>
         implements Comparator<T> {
     /**
      * Sort type.
      */
     private final Sort sort;
+    /**
+     * Property Value bean.
+     */
+    @Autowired
+    private PropertyValueUtilsBean propertyBean;
 
     /**
      * Default constructor.
      *
      * @param sortType sort type
      */
-    public SortComparator(Sort sortType) {
+    public SortComparator(final Sort sortType) {
         this.sort = sortType;
-    }
-
-    /**
-     * Gets property value.
-     *
-     * @param order property declaration in order
-     * @param o     object
-     * @param <P>   object type class
-     * @return property value
-     */
-    private static <P extends Comparable<? super P>> P getProperty(
-            Sort.Order order, Object o) {
-        try {
-            return (P) BeanUtilsBean.getInstance()
-                    .getNestedProperty(o, order.getProperty());
-        } catch (Exception e) {
-            throw new DataException(
-                    "error.unsupported.operation",
-                    e,
-                    e.getMessage()
-            );
-        }
     }
 
     /**
@@ -74,7 +58,8 @@ public class SortComparator<T extends Comparable<? super T>>
      * @return compare result
      */
     @Override
-    public int compare(T o1, T o2) {
+    @LogEntry
+    public int compare(final T o1, final T o2) {
         return getSortComparator(sort).compare(o1, o2);
     }
 
@@ -84,7 +69,7 @@ public class SortComparator<T extends Comparable<? super T>>
      * @param orders sort type
      * @return comparator
      */
-    private Comparator<T> getSortComparator(Sort orders) {
+    private Comparator<T> getSortComparator(final Sort orders) {
         Comparator<T> comparator = null;
         if (orders != null) {
             for (Sort.Order order : orders) {
@@ -111,7 +96,7 @@ public class SortComparator<T extends Comparable<? super T>>
      * @return comparator
      */
     private <P extends Comparable<? super P>> Comparator<T>
-    getSortOrderComparator(Sort.Order order) {
+    getSortOrderComparator(final Sort.Order order) {
         Comparator<P> orderComparator;
         if (order.isDescending()) {
             orderComparator = Comparator.reverseOrder();
@@ -120,23 +105,20 @@ public class SortComparator<T extends Comparable<? super T>>
         }
 
         Comparator<T> comparator = Comparator.comparing(
-                o -> getProperty(order, o),
+                o -> propertyBean.getProperty(order, o),
                 orderComparator
         );
 
         Comparator<T> nullHandlingComparator;
         switch (order.getNullHandling()) {
-            case NULLS_FIRST: {
+            case NULLS_FIRST:
                 nullHandlingComparator = Comparator.nullsFirst(comparator);
                 break;
-            }
-            case NULLS_LAST: {
+            case NULLS_LAST:
                 nullHandlingComparator = Comparator.nullsLast(comparator);
                 break;
-            }
-            default: {
-                nullHandlingComparator = Comparator.naturalOrder();
-            }
+            default:
+                nullHandlingComparator = Comparator.nullsFirst(comparator);
         }
         return nullHandlingComparator;
     }

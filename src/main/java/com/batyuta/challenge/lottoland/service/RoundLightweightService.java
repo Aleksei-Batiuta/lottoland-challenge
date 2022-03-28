@@ -48,6 +48,7 @@ public final class RoundLightweightService
             return null;
         }
         return new RoundVO(
+                entity.getId(),
                 entity.getUserid(),
                 entity.getPlayer1(),
                 entity.getPlayer2(),

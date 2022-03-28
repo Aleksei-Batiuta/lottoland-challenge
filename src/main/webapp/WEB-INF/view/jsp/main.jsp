@@ -63,7 +63,11 @@
         <jsp:include page="${body}.jsp"/>
     </div>
     <div class="footer">
-        <p><a href="<frm:message key="project.url"/>"><frm:message key="project.author"/>©</a> 2022</p>
+        <div class="footer-context">
+            <div class="copyrights"><p><a href="<frm:message key="project.url"/>">©<frm:message key="project.author"/></a>&nbsp;2022</p>
+            </div>
+            <div class="version"><p><frm:message key="project.version"/></p></div>
+        </div>
     </div>
 </div>
 </body>

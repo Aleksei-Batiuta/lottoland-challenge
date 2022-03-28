@@ -20,7 +20,6 @@ package com.batyuta.challenge.lottoland.service;
 import com.batyuta.challenge.lottoland.enums.SignEnum;
 import com.batyuta.challenge.lottoland.enums.StatusEnum;
 import com.batyuta.challenge.lottoland.exception.DataException;
-import com.batyuta.challenge.lottoland.model.BaseEntity;
 import com.batyuta.challenge.lottoland.model.RoundEntity;
 import com.batyuta.challenge.lottoland.model.UserEntity;
 import com.batyuta.challenge.lottoland.repository.RoundEntityRepository;
@@ -90,7 +89,6 @@ public class ApplicationService {
      *
      * @param user user
      * @return updated user entity
-     * @see com.batyuta.challenge.lottoland.repository.BaseEntityRepository#save(BaseEntity) to details
      */
     public UserEntity saveUser(final UserEntity user) {
         return userService.save(user);

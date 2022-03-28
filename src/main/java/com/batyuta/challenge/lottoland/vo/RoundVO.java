@@ -27,6 +27,10 @@ import lombok.ToString;
 @ToString
 public class RoundVO extends BaseVO {
     /**
+     * Round ID.
+     */
+    private final long id;
+    /**
      * User ID.
      */
     private final long userId;
@@ -46,19 +50,31 @@ public class RoundVO extends BaseVO {
     /**
      * Default Constructor.
      *
+     * @param roundId     round ID
      * @param user        user ID
      * @param player1Enum choice of player 1
      * @param player2Enum choice of player 2
      * @param statusEnum  status
      */
-    public RoundVO(final long user,
+    public RoundVO(final long roundId,
+                   final long user,
                    final SignEnum player1Enum,
                    final SignEnum player2Enum,
                    final StatusEnum statusEnum) {
+        this.id = roundId;
         this.userId = user;
         this.player1 = player1Enum;
         this.player2 = player2Enum;
         this.status = statusEnum;
+    }
+
+    /**
+     * Getter of round ID.
+     *
+     * @return round ID
+     */
+    public long getId() {
+        return id;
     }
 
     /**

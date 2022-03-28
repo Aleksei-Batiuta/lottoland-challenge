@@ -57,13 +57,13 @@ public class WebMvcEndpointHandler {
      */
     @Bean
     public WebMvcEndpointHandlerMapping webEndpointServletHandlerMapping(
-            WebEndpointsSupplier webEndpointsSupplier,
-            ServletEndpointsSupplier servletEndpointsSupplier,
-            ControllerEndpointsSupplier controllerEndpointsSupplier,
-            EndpointMediaTypes endpointMediaTypes,
-            CorsEndpointProperties corsProperties,
-            WebEndpointProperties webEndpointProperties,
-            Environment environment) {
+            final WebEndpointsSupplier webEndpointsSupplier,
+            final ServletEndpointsSupplier servletEndpointsSupplier,
+            final ControllerEndpointsSupplier controllerEndpointsSupplier,
+            final EndpointMediaTypes endpointMediaTypes,
+            final CorsEndpointProperties corsProperties,
+            final WebEndpointProperties webEndpointProperties,
+            final Environment environment) {
         List<ExposableEndpoint<?>> allEndpoints = new ArrayList<>();
         Collection<ExposableWebEndpoint> webEndpoints =
                 webEndpointsSupplier.getEndpoints();
@@ -90,8 +90,9 @@ public class WebMvcEndpointHandler {
     }
 
     private boolean shouldRegisterLinksMapping(
-            WebEndpointProperties webEndpointProperties,
-            Environment environment, String basePath) {
+            final WebEndpointProperties webEndpointProperties,
+            final Environment environment,
+            final String basePath) {
         return
                 webEndpointProperties.getDiscovery().isEnabled() && (
                         StringUtils.hasText(basePath)

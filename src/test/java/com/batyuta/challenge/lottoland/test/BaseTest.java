@@ -32,7 +32,7 @@ public abstract class BaseTest {
      * @param <T>      object type
      * @return list of objects
      */
-    protected <T> List<T> toList(Iterable<T> iterable) {
+    protected <T> List<T> toList(final Iterable<T> iterable) {
         return StreamSupport.stream(iterable.spliterator(), false)
                 .collect(Collectors.toList());
     }

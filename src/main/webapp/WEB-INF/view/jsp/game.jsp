@@ -42,7 +42,8 @@
                     <c:otherwise>
                         <c:forEach items="${page.data}" varStatus="index">
                             <tr>
-                                <td>${page.data.size() - index.index}</td>
+                                    <%--                                <td>${page.data.size() - index.index}</td>--%>
+                                <td>${index.current.id}</td>
                                 <td><frm:message key="${index.current.player1.messageKey}"/></td>
                                 <td><frm:message key="${index.current.player2.messageKey}"/></td>
                                 <td><frm:message key="${index.current.status.messageKey}"/></td>
