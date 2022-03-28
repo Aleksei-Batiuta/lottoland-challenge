@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BaseDataEntityRepository.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Lottoland Challenge</a> &gt; <a href="index.source.html" class="el_package">com.batyuta.challenge.lottoland.repository</a> &gt; <span class="el_source">BaseDataEntityRepository.java</span></div><h1>BaseDataEntityRepository.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2022 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.batyuta.challenge.lottoland.repository;
+
+import com.batyuta.challenge.lottoland.concurrency.LockedData;
+import com.batyuta.challenge.lottoland.config.SortComparatorFactory;
+import com.batyuta.challenge.lottoland.model.BaseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+/**
+ * Thread safe abstractrepository implementation.
+ *
+ * @param &lt;T&gt; repository entities class
+ */
+<span class="fc" id="L38">public abstract class BaseDataEntityRepository&lt;T extends BaseEntity&lt;T&gt;&gt;</span>
+        extends LockedData {
+    /**
+     * This is entity table index.
+     */
+<span class="fc" id="L43">    private final AtomicLong index = new AtomicLong(0L);</span>
+    /**
+     * This is entity table.
+     */
+<span class="fc" id="L47">    private final List&lt;T&gt; entities = new ArrayList&lt;&gt;();</span>
+    /**
+     * Sort Comparator Factory.
+     */
+    @Autowired
+    private SortComparatorFactory sortComparatorFactory;
+
+    /**
+     * Getter of entities.
+     *
+     * @return entities
+     */
+    protected Stream&lt;T&gt; getEntities() {
+<span class="fc" id="L60">        return read(entities::stream);</span>
+    }
+
+    /**
+     * Implementation of save operation.
+     *
+     * @param entity entity
+     * @param &lt;S&gt;    entity type class
+     * @return saved entity
+     */
+    protected &lt;S extends T&gt; S saveImpl(final S entity) {
+<span class="pc bpc" id="L71" title="1 of 2 branches missed.">        if (entity == null) {</span>
+<span class="nc" id="L72">            return null;</span>
+        }
+<span class="fc" id="L74">        setId(entity);</span>
+<span class="fc" id="L75">        entities.add(entity);</span>
+<span class="fc" id="L76">        return entity;</span>
+    }
+
+    /**
+     * Implementation of delete operation.
+     *
+     * @param entity entity
+     */
+    protected void deleteImpl(final T entity) {
+<span class="nc" id="L85">        write(</span>
+                () -&gt; {
+<span class="nc" id="L87">                    entities.remove(entity);</span>
+<span class="nc" id="L88">                    return null;</span>
+                }
+        );
+<span class="nc" id="L91">    }</span>
+
+    /**
+     * Updates Entity ID before save operation.
+     *
+     * @param entity entity
+     * @param &lt;S&gt;    entity type class
+     */
+    private &lt;S extends T&gt; void setId(final S entity) {
+<span class="fc" id="L100">        entity.setId(index.incrementAndGet());</span>
+<span class="fc" id="L101">    }</span>
+
+    /**
+     * Sorts entities.
+     *
+     * @param entityList entities
+     * @param sort       sort type.
+     * @return sorted entity list
+     */
+    protected List&lt;T&gt; sort(final Stream&lt;T&gt; entityList, final Sort sort) {
+<span class="fc" id="L111">        return entityList</span>
+<span class="fc" id="L112">                .sorted(</span>
+<span class="fc" id="L113">                        (o1, o2) -&gt; compare(sort, o1, o2)</span>
+                )
+<span class="fc" id="L115">                .collect(</span>
+<span class="fc" id="L116">                        Collectors.collectingAndThen(</span>
+<span class="fc" id="L117">                                Collectors.toList(),</span>
+                                Collections::unmodifiableList
+                        )
+                );
+    }
+
+    /**
+     * Compares two entities by sort type.
+     *
+     * @param sort sort type
+     * @param o1   the first entity
+     * @param o2   the second entity
+     * @return compare result
+     */
+    private int compare(final Sort sort, final T o1, final T o2) {
+<span class="fc" id="L132">        SortComparator&lt;T&gt; comparator =</span>
+<span class="fc" id="L133">                sortComparatorFactory.sortComparator(sort);</span>
+<span class="fc" id="L134">        return comparator.compare(o1, o2);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
