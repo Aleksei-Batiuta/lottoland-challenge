@@ -33,7 +33,7 @@
     Application should be as WAR to
     run on Docker Container correctly
     -->
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
     <name>Lottoland Challenge</name>
     <description>The Test Challenge from Lottoland</description>
     <url>https://Aleksei-Batiuta.github.io/${project.artifactId}/</url>
