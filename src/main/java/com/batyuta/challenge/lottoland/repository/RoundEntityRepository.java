@@ -21,6 +21,8 @@ import com.batyuta.challenge.lottoland.annotation.LogEntry;
 import com.batyuta.challenge.lottoland.enums.StatusEnum;
 import com.batyuta.challenge.lottoland.model.RoundEntity;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
@@ -33,7 +35,7 @@ import java.util.stream.Stream;
  * Round repository implementation class.
  */
 @Repository
-public class RoundEntityRepository extends BaseEntityRepository<RoundEntity> {
+public class RoundEntityRepository extends BaseEntityRepository<RoundEntity> implements PagingAndSortingRepository<RoundEntity, Long> {
 
     /**
      * Marks Round as deleted.

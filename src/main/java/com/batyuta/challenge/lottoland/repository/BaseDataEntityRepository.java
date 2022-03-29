@@ -71,7 +71,9 @@ public abstract class BaseDataEntityRepository<T extends BaseEntity<T>>
         if (entity == null) {
             return null;
         }
-        setId(entity);
+        if (entity.getId() == BaseEntity.NEW_ENTITY_ID) {
+            setId(entity);
+        }
         entities.add(entity);
         return entity;
     }

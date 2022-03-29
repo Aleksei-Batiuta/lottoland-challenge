@@ -57,6 +57,7 @@ public class ApplicationTest {
      */
 //    @LocalServerPort
     private static final int SERVER_PORT = 8080;
+    public static final String ROOT_OLD_PATH = "/old";
     /**
      * Mock Model View Controller.
      */
@@ -72,7 +73,7 @@ public class ApplicationTest {
     public void root() throws Exception {
         this.mockMvc
                 .perform(
-                        get("/")
+                        get(ROOT_OLD_PATH +"/")
                 )
                 .andDo(print())
                 .andExpect(status().isOk());
@@ -88,7 +89,7 @@ public class ApplicationTest {
 
         // Given
         HttpUriRequest request =
-                new HttpGet("http://localhost:" + SERVER_PORT + "/");
+                new HttpGet("http://localhost:" + SERVER_PORT +ROOT_OLD_PATH + "/");
 
         // When
         HttpResponse httpResponse = HttpClientBuilder.create()
@@ -112,7 +113,7 @@ public class ApplicationTest {
     public void statistics() throws Exception {
         this.mockMvc
                 .perform(
-                        get("/statistics")
+                        get(ROOT_OLD_PATH +"/statistics")
                 )
                 .andDo(print())
                 .andExpect(status().isOk());
@@ -128,7 +129,7 @@ public class ApplicationTest {
 
         // Given
         HttpUriRequest request =
-                new HttpGet("http://localhost:" + SERVER_PORT + "/statistics");
+                new HttpGet("http://localhost:" + SERVER_PORT + ROOT_OLD_PATH +"/statistics");
 
         // When
         HttpResponse httpResponse = HttpClientBuilder.create()
@@ -152,7 +153,7 @@ public class ApplicationTest {
     public void newRound() throws Exception {
         this.mockMvc
                 .perform(
-                        post("/new")
+                        post(ROOT_OLD_PATH +"/new")
                 )
                 .andDo(print())
                 .andExpect(status().is3xxRedirection());
@@ -168,7 +169,7 @@ public class ApplicationTest {
 
         // Given
         HttpUriRequest request =
-                new HttpPost("http://localhost:" + SERVER_PORT + "/new");
+                new HttpPost("http://localhost:" + SERVER_PORT + ROOT_OLD_PATH +"/new");
 
         // When
         HttpResponse httpResponse = HttpClientBuilder.create()
@@ -192,7 +193,7 @@ public class ApplicationTest {
     public void resetGame() throws Exception {
         this.mockMvc
                 .perform(
-                        post("/reset")
+                        post(ROOT_OLD_PATH +"/reset")
                 )
                 .andDo(print())
                 .andExpect(status().is3xxRedirection());
@@ -208,7 +209,7 @@ public class ApplicationTest {
 
         // Given
         HttpUriRequest request =
-                new HttpPost("http://localhost:" + SERVER_PORT + "/reset");
+                new HttpPost("http://localhost:" + SERVER_PORT + ROOT_OLD_PATH +"/reset");
 
         // When
         HttpResponse httpResponse = HttpClientBuilder.create()
@@ -232,7 +233,7 @@ public class ApplicationTest {
     public void error() throws Exception {
         this.mockMvc
                 .perform(
-                        get("/error")
+                        get(ROOT_OLD_PATH +"/error")
                 )
                 .andDo(print())
                 .andExpect(status().is4xxClientError());
@@ -248,7 +249,7 @@ public class ApplicationTest {
 
         // Given
         HttpUriRequest request =
-                new HttpGet("http://localhost:" + SERVER_PORT + "/error");
+                new HttpGet("http://localhost:" + SERVER_PORT + ROOT_OLD_PATH +"/error");
 
         // When
         HttpResponse httpResponse = HttpClientBuilder.create()

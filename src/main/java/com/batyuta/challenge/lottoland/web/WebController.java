@@ -41,7 +41,9 @@ import java.util.HashMap;
  * The main WEB controller.
  */
 @Controller
+@RequestMapping(WebController.CONTROLLER_PATH)
 public class WebController {
+    public static final String CONTROLLER_PATH = "/old";
     /**
      * Application Main Service.
      */
@@ -104,7 +106,7 @@ public class WebController {
     public String newRound(final HttpServletRequest httpRequest) {
         UserVO userVO = getOrCreateUserVO(httpRequest);
         RoundEntity round = applicationService.newRoundByUserId(userVO.getId());
-        return "redirect:/";
+        return "redirect:"+CONTROLLER_PATH + "/";
     }
 
     /**
@@ -118,7 +120,7 @@ public class WebController {
         UserVO userVO = getOrCreateUserVO(httpRequest);
         applicationService.deleteAllRoundsByUserId(userVO.getId());
 
-        return "redirect:/";
+        return "redirect:" + CONTROLLER_PATH + "/";
     }
 
     /**

@@ -1,3 +1,4 @@
+<%@ page import="com.batyuta.challenge.lottoland.web.WebController" %>
 <%@ taglib prefix="frm" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%--
   ~ Copyright 2022 the original author or authors.
@@ -18,11 +19,12 @@
 <div class="menu-context">
     <div class="menu-item">
         <ul>
+
             <li class='${page.body == "game"? "active": ""}'>
-                <a href="${pageContext.request.contextPath}/"><frm:message key="title.game"/></a>
+                <a href="${pageContext.request.contextPath}<%=WebController.CONTROLLER_PATH %>/"><frm:message key="title.game"/></a>
             </li>
             <li class='${page.body == "statistics"? "active": ""}'>
-                <a href="${pageContext.request.contextPath}/statistics"><frm:message key="title.statistics"/></a>
+                <a href="${pageContext.request.contextPath}<%=WebController.CONTROLLER_PATH %>/statistics"><frm:message key="title.statistics"/></a>
             </li>
             <li class='${(empty page or page.body == "exception")? "active": "hidden"}'>
                 <a href="${pageContext.request.contextPath}/error"><frm:message key="title.error"/></a>

@@ -20,6 +20,8 @@ package com.batyuta.challenge.lottoland.repository;
 import com.batyuta.challenge.lottoland.exception.DataException;
 import com.batyuta.challenge.lottoland.model.BaseEntity;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -62,9 +64,17 @@ public abstract class BaseEntityRepository<T extends BaseEntity<T>>
      * @return entities
      */
     @Override
-    public Page<T> findAll(final Pageable pageable) {
-        // todo: this method should be implemented in the future
-        throw new UnsupportedOperationException();
+    public Page<T> findAll(Pageable pageable) {
+        if (pageable.isUnpaged()) {
+            pageable = PageRequest.of(0, 10);
+        }        // todo: this method should be implemented in the future
+        List<T> list =
+                sort(getEntities(), pageable.getSort());
+        int total = list.size();
+        if (pageable.getOffset() <= total) {
+            list = list.subList((int)pageable.getOffset(), Math.min((int)(pageable.getPageSize()+pageable.getOffset()), total));
+        }
+        return new PageImpl<>(list, pageable, total);
     }
 
     /**

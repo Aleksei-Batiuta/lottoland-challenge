@@ -12,3 +12,6 @@ steps.txt
 /release.properties
 /pom.xml.releaseBackup
 /settings.xml
+package-lock.json
+/src/main/resources/static/built/
+/node_modules/

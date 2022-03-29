@@ -54,9 +54,12 @@ public class UserEntity extends NamedEntity<UserEntity> {
      */
     @Override
     public int compareTo(final UserEntity o) {
+        Comparator<UserEntity> cmprtr = Comparator
+                .comparing(BaseEntity::getId);
+        cmprtr = cmprtr.thenComparing(UserEntity::getName);
         Comparator<UserEntity> comparator =
                 Comparator.nullsFirst(
-                        Comparator.comparing(BaseEntity::getId)
+                        cmprtr
                 );
         return comparator.compare(this, o);
     }

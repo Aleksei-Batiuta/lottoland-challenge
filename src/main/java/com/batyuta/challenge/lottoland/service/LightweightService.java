@@ -19,10 +19,15 @@ package com.batyuta.challenge.lottoland.service;
 
 import com.batyuta.challenge.lottoland.model.BaseEntity;
 import com.batyuta.challenge.lottoland.vo.BaseVO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 /**
  * Lightweight Service Interface.
@@ -79,5 +84,57 @@ public interface LightweightService<T extends BaseEntity, V extends BaseVO> {
                                 Collections::unmodifiableList
                         )
                 );
+    }
+
+    /**
+     * Converts collection of views to entity collection.
+     *
+     * @param entities entities
+     * @return views
+     */
+    default List<V> getViews(Iterable<T> entities) {
+        return StreamSupport.stream(entities.spliterator(), false)
+                .map(this::toView)
+                .collect(
+                        Collectors.collectingAndThen(
+                                Collectors.toList(),
+                                Collections::unmodifiableList
+                        )
+                );
+    }
+    /**
+     * Converts collection of views to entity collection.
+     *
+     * @param entities entities
+     * @return views
+     */
+    default Page<V> getViews(Page<T> entities) {
+        List<V> viewList = StreamSupport.stream(entities.spliterator(), false)
+                .map(this::toView)
+                .collect(
+                        Collectors.collectingAndThen(
+                                Collectors.toList(),
+                                Collections::unmodifiableList
+                        )
+                );
+        return new PageImpl<>(viewList, entities.getPageable(), entities.getTotalElements());
+    }
+
+    /**
+     * Converts collection of views to entity collection.
+     *
+     * @param entities entities
+     * @return views
+     */
+    default Page<V> getPage(Iterable<T> entities) {
+        List<V> viewList = StreamSupport.stream(entities.spliterator(), false)
+                .map(this::toView)
+                .collect(
+                        Collectors.collectingAndThen(
+                                Collectors.toList(),
+                                Collections::unmodifiableList
+                        )
+                );
+        return new PageImpl<>(viewList);
     }
 }

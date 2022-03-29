@@ -36,7 +36,7 @@ public abstract class BaseEntity<T> extends LockedData
     /**
      * New Entity ID.
      */
-    public static final long NEW_ENTITY_ID = -1L;
+    public static final long NEW_ENTITY_ID = 0L;
     /**
      * Entity ID.
      */
