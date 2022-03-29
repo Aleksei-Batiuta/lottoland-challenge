@@ -1,7 +1,7 @@
 /*
  * Copyright 2022 the original author or authors.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -15,20 +15,22 @@
  * limitations under the License.
  */
 'use strict';
+import {CreateDialog} from "./createDialog";
+import {RoundList} from "./roundList";
+
 const React = require('react');
 const ReactDOM = require('react-dom');
 const when = require('when');
 const client = require('./client');
 const follow = require('./follow'); // function to hop multiple links by "rel"
-const stompClient = require('./websocket-listener');
+// const stompClient = require('./websocket-listener');
 const root = '/api';
 
 class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            employees: [], attributes: [], page: 1, pageSize: 2, links: {}
-            , loggedInManager: this.props.loggedInManager
+            rounds: [], attributes: [], page: 1, pageSize: 2, links: {}
         };
         this.updatePageSize = this.updatePageSize.bind(this);
         this.onCreate = this.onCreate.bind(this);
@@ -41,11 +43,11 @@ class App extends React.Component {
 
     loadFromServer(pageSize) {
         follow(client, root, [
-            {rel: 'employees', params: {size: pageSize}}]
-        ).then(employeeCollection => {
+            {rel: 'rounds', params: {size: pageSize}}]
+        ).then(roundCollection => {
             return client({
                 method: 'GET',
-                path: employeeCollection.entity._links.profile.href,
+                path: roundCollection.entity._links.profile.href,
                 headers: {'Accept': 'application/schema+json'}
             }).then(schema => {
                 /**
@@ -61,23 +63,23 @@ class App extends React.Component {
                     }
                 });
                 this.schema = schema.entity;
-                this.links = employeeCollection.entity._links;
-                return employeeCollection;
+                this.links = roundCollection.entity._links;
+                return roundCollection;
             });
-        }).then(employeeCollection => {
-            this.page = employeeCollection.entity.page;
-            return employeeCollection.entity._embedded.employees.map(employee =>
+        }).then(roundCollection => {
+            this.page = roundCollection.entity.page;
+            return roundCollection.entity._embedded.rounds.map(employee =>
                 client({
                     method: 'GET',
                     path: employee._links.self.href
                 })
             );
-        }).then(employeePromises => {
-            return when.all(employeePromises);
-        }).done(employees => {
+        }).then(roundPromises => {
+            return when.all(roundPromises);
+        }).done(rounds => {
             this.setState({
                 page: this.page,
-                employees: employees,
+                employees: rounds,
                 attributes: Object.keys(this.schema.properties),
                 pageSize: pageSize,
                 links: this.links
@@ -85,37 +87,37 @@ class App extends React.Component {
         });
     }
 
-    onCreate(newEmployee) {
-        follow(client, root, ['employees']).done(response => {
+    onCreate(newRounds) {
+        follow(client, root, ['rounds']).done(response => {
             client({
                 method: 'POST',
                 path: response.entity._links.self.href,
-                entity: newEmployee,
+                entity: newRounds,
                 headers: {'Content-Type': 'application/json'}
             })
         })
     }
 
-    onUpdate(employee, updatedEmployee) {
-        if (employee.entity.manager.name === this.state.loggedInManager) {
-            updatedEmployee["manager"] = employee.entity.manager;
+    onUpdate(round, updatedRound) {
+        if (round.entity.manager.name === this.state.loggedInManager) {
+            updatedRound["manager"] = round.entity.manager;
             client({
                 method: 'PUT',
-                path: employee.entity._links.self.href,
-                entity: updatedEmployee,
+                path: round.entity._links.self.href,
+                entity: updatedRound,
                 headers: {
                     'Content-Type': 'application/json',
-                    'If-Match': employee.headers.Etag
+                    'If-Match': round.headers.Etag
                 }
             }).done(response => {
                 /* Let the websocket handler update the state */
             }, response => {
                 if (response.status.code === 403) {
                     alert('ACCESS DENIED: You are not authorized to update ' +
-                        employee.entity._links.self.href);
+                        round.entity._links.self.href);
                 }
                 if (response.status.code === 412) {
-                    alert('DENIED: Unable to update ' + employee.entity._links.self.href +
+                    alert('DENIED: Unable to update ' + round.entity._links.self.href +
                         '. Your copy is stale.');
                 }
             });
@@ -124,14 +126,14 @@ class App extends React.Component {
         }
     }
 
-    onDelete(employee) {
-        client({method: 'DELETE', path: employee.entity._links.self.href}
+    onDelete(round) {
+        client({method: 'DELETE', path: round.entity._links.self.href}
         ).done(response => {/* let the websocket handle updating the UI */
             },
             response => {
                 if (response.status.code === 403) {
                     alert('ACCESS DENIED: You are not authorized to delete ' +
-                        employee.entity._links.self.href);
+                        round.entity._links.self.href);
                 }
             });
     }
@@ -140,21 +142,21 @@ class App extends React.Component {
         client({
             method: 'GET',
             path: navUri
-        }).then(employeeCollection => {
-            this.links = employeeCollection.entity._links;
-            this.page = employeeCollection.entity.page;
-            return employeeCollection.entity._embedded.employees.map(employee =>
+        }).then(roundCollection => {
+            this.links = roundCollection.entity._links;
+            this.page = roundCollection.entity.page;
+            return roundCollection.entity._embedded.employees.map(round =>
                 client({
                     method: 'GET',
-                    path: employee._links.self.href
+                    path: round._links.self.href
                 })
             );
-        }).then(employeePromises => {
-            return when.all(employeePromises);
-        }).done(employees => {
+        }).then(roundPromises => {
+            return when.all(roundPromises);
+        }).done(rounds => {
             this.setState({
                 page: this.page,
-                employees: employees,
+                rounds: rounds,
                 attributes: Object.keys(this.schema.properties),
                 pageSize: this.state.pageSize,
                 links: this.links
@@ -170,7 +172,7 @@ class App extends React.Component {
 
     refreshAndGoToLastPage(message) {
         follow(client, root, [{
-            rel: 'employees',
+            rel: 'rounds',
             params: {size: this.state.pageSize}
         }]).done(response => {
             if (response.entity._links.last !== undefined) {
@@ -183,26 +185,26 @@ class App extends React.Component {
 
     refreshCurrentPage(message) {
         follow(client, root, [{
-            rel: 'employees',
+            rel: 'rounds',
             params: {
                 size: this.state.pageSize,
                 page: this.state.page.number
             }
-        }]).then(employeeCollection => {
-            this.links = employeeCollection.entity._links;
-            this.page = employeeCollection.entity.page;
-            return employeeCollection.entity._embedded.employees.map(employee => {
+        }]).then(roundCollection => {
+            this.links = roundCollection.entity._links;
+            this.page = roundCollection.entity.page;
+            return roundCollection.entity._embedded.employees.map(round => {
                 return client({
                     method: 'GET',
-                    path: employee._links.self.href
+                    path: round._links.self.href
                 })
             });
-        }).then(employeePromises => {
-            return when.all(employeePromises);
-        }).then(employees => {
+        }).then(roundPromises => {
+            return when.all(roundPromises);
+        }).then(rounds => {
             this.setState({
                 page: this.page,
-                employees: employees,
+                rounds: rounds,
                 attributes: Object.keys(this.schema.properties),
                 pageSize: this.state.pageSize,
                 links: this.links
@@ -212,19 +214,20 @@ class App extends React.Component {
 
     componentDidMount() {
         this.loadFromServer(this.state.pageSize);
-        stompClient.register([
-            {route: '/topic/newEmployee', callback: this.refreshAndGoToLastPage},
-            {route: '/topic/updateEmployee', callback: this.refreshCurrentPage},
-            {route: '/topic/deleteEmployee', callback: this.refreshCurrentPage}
-        ]);
+        // stompClient.register([
+        //     {route: '/topic/newEmployee', callback: this.refreshAndGoToLastPage},
+        //     {route: '/topic/updateEmployee', callback: this.refreshCurrentPage},
+        //     {route: '/topic/deleteEmployee', callback: this.refreshCurrentPage}
+        // ]);
     }
 
     render() {
         return (
             <div>
-                <CreateDialog attributes={this.state.attributes} onCreate={this.onCreate}/>
-                <EmployeeList page={this.state.page}
-                              employees={this.state.employees}
+                <CreateDialog attributes={this.state.attributes}
+                              onCreate={this.onCreate}/>
+                <RoundList page={this.state.page}
+                              rounds={this.state.rounds}
                               links={this.state.links}
                               pageSize={this.state.pageSize}
                               attributes={this.state.attributes}
@@ -234,222 +237,6 @@ class App extends React.Component {
                               updatePageSize={this.updatePageSize}
                               loggedInManager={this.state.loggedInManager}/>
             </div>
-        )
-    }
-}
-
-class CreateDialog extends React.Component {
-    constructor(props) {
-        super(props);
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    handleSubmit(e) {
-        e.preventDefault();
-        const newEmployee = {};
-        this.props.attributes.forEach(attribute => {
-            newEmployee[attribute] = ReactDOM.findDOMNode(this.refs[attribute]).value.trim();
-        });
-        this.props.onCreate(newEmployee);
-        this.props.attributes.forEach(attribute => {
-            ReactDOM.findDOMNode(this.refs[attribute]).value = ''; // clear out the dialog's inputs
-        });
-        window.location = "#";
-    }
-
-    render() {
-        const inputs = this.props.attributes.map((attribute, index) =>
-            <p key={index}>
-                <input type="text" placeholder={attribute} ref={attribute} className="field"/>
-            </p>
-        );
-        return (
-            <div>
-                <a href="#createEmployee">Create</a>
-                <div id="createEmployee" className="modalDialog">
-                    <div>
-                        <a href="#" title="Close" className="close">X</a>
-                        <h2>Create new employee</h2>
-                        <form>
-                            {inputs}
-                            <button onClick={this.handleSubmit}>Create</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        )
-    }
-}
-
-class UpdateDialog extends React.Component {
-    constructor(props) {
-        super(props);
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    handleSubmit(e) {
-        e.preventDefault();
-        const updatedEmployee = {};
-        this.props.attributes.forEach(attribute => {
-            updatedEmployee[attribute] = ReactDOM.findDOMNode(this.refs[attribute]).value.trim();
-        });
-        this.props.onUpdate(this.props.employee, updatedEmployee);
-        window.location = "#";
-    }
-
-    render() {
-            const inputs = this.props.attributes.map((attribute, index) =>
-            <p key={index}>
-                <input type="text" placeholder={attribute}
-                       defaultValue={this.props.employee.entity[attribute]}
-                       ref={attribute} className="field"/>
-            </p>
-        );
-        const dialogId = "updateEmployee-" + this.props.employee.entity._links.self.href;
-        const isManagerCorrect = this.props.employee.entity.manager !== undefined
-            && this.props.employee.entity.manager.name !== undefined
-            && this.props.employee.entity.manager.name === this.props.loggedInManager;
-        if (isManagerCorrect === false) {
-            return (
-                <div>
-                    <a>Not Your Employee</a>
-                </div>
-            )
-        } else {
-            return (
-                <div>
-                    <a href={"#" + dialogId}>Update</a>
-                    <div id={dialogId} className="modalDialog">
-                        <div>
-                            <a href="#" title="Close" className="close">X</a>
-                            <h2>Update an employee</h2>
-                            <form>
-                                {inputs}
-                                <button onClick={this.handleSubmit}>Update</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            )
-        }
-    }
-}
-
-class EmployeeList extends React.Component {
-    constructor(props) {
-        super(props);
-        this.handleNavFirst = this.handleNavFirst.bind(this);
-        this.handleNavPrev = this.handleNavPrev.bind(this);
-        this.handleNavNext = this.handleNavNext.bind(this);
-        this.handleNavLast = this.handleNavLast.bind(this);
-        this.handleInput = this.handleInput.bind(this);
-    }
-
-    handleInput(e) {
-        e.preventDefault();
-        const pageSize = ReactDOM.findDOMNode(this.refs.pageSize).value;
-        if (/^[0-9]+$/.test(pageSize)) {
-            this.props.updatePageSize(pageSize);
-        } else {
-            ReactDOM.findDOMNode(this.refs.pageSize).value = pageSize.substring(0, pageSize.length - 1);
-        }
-    }
-
-    handleNavFirst(e) {
-        e.preventDefault();
-        this.props.onNavigate(this.props.links.first.href);
-    }
-
-    handleNavPrev(e) {
-        e.preventDefault();
-        this.props.onNavigate(this.props.links.prev.href);
-    }
-
-    handleNavNext(e) {
-        e.preventDefault();
-        this.props.onNavigate(this.props.links.next.href);
-    }
-
-    handleNavLast(e) {
-        e.preventDefault();
-        this.props.onNavigate(this.props.links.last.href);
-    }
-
-    render() {
-        const pageInfo = this.props.page.hasOwnProperty("number") ?
-            <h3>Employees - Page {this.props.page.number + 1} of {this.props.page.totalPages}</h3> : null;
-        const employees = this.props.employees.map(employee =>
-            <Employee key={employee.entity._links.self.href}
-                      employee={employee}
-                      attributes={this.props.attributes}
-                      onUpdate={this.props.onUpdate}
-                      onDelete={this.props.onDelete}
-                      loggedInManager={this.props.loggedInManager}/>
-        );
-        const navLinks = [];
-        if ("first" in this.props.links) {
-            navLinks.push(<button key="first" onClick={this.handleNavFirst}>&lt;&lt;</button>);
-        }
-        if ("prev" in this.props.links) {
-            navLinks.push(<button key="prev" onClick={this.handleNavPrev}>&lt;</button>);
-        }
-        if ("next" in this.props.links) {
-            navLinks.push(<button key="next" onClick={this.handleNavNext}>&gt;</button>);
-        }
-        if ("last" in this.props.links) {
-            navLinks.push(<button key="last" onClick={this.handleNavLast}>&gt;&gt;</button>);
-        }
-        return (
-            <div>
-                {pageInfo}
-                <input ref="pageSize" defaultValue={this.props.pageSize} onInput={this.handleInput}/>
-                <table>
-                    <tbody>
-                    <tr>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Description</th>
-                        <th>Manager</th>
-                        <th colSpan='2'></th>
-                    </tr>
-                    {employees}
-                    </tbody>
-                </table>
-                <div>
-                    {navLinks}
-                </div>
-            </div>
-        )
-    }
-}
-
-class Employee extends React.Component {
-    constructor(props) {
-        super(props);
-        this.handleDelete = this.handleDelete.bind(this);
-    }
-
-    handleDelete() {
-        this.props.onDelete(this.props.employee);
-    }
-
-    render() {
-        return (
-            <tr>
-                <td>{this.props.employee.entity.firstName}</td>
-                <td>{this.props.employee.entity.lastName}</td>
-                <td>{this.props.employee.entity.description}</td>
-                <td>{this.props.employee.entity.manager? this.props.employee.entity.manager.name : "Error"}</td>
-                <td>
-                    <UpdateDialog employee={this.props.employee}
-                                  attributes={this.props.attributes}
-                                  onUpdate={this.props.onUpdate}
-                                  loggedInManager={this.props.loggedInManager}/>
-                </td>
-                <td>
-                    <button onClick={this.handleDelete}>Delete</button>
-                </td>
-            </tr>
         )
     }
 }

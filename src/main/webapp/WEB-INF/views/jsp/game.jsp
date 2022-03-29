@@ -22,8 +22,8 @@
             <thead>
             <tr>
                 <th><frm:message key="label.id"/></th>
-                <th><frm:message key="label.player.1"/></th>
-                <th><frm:message key="label.player.2"/></th>
+                <th><frm:message key="label.player1"/></th>
+                <th><frm:message key="label.player2"/></th>
                 <th><frm:message key="label.round.result"/></th>
             </tr>
             </thead>
