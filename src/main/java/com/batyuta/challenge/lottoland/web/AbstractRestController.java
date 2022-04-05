@@ -22,7 +22,6 @@ import com.batyuta.challenge.lottoland.model.BaseEntity;
 import com.batyuta.challenge.lottoland.service.AbstractEntityService;
 import com.batyuta.challenge.lottoland.service.LightweightService;
 import com.batyuta.challenge.lottoland.vo.BaseVO;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -34,7 +33,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -50,9 +51,9 @@ public abstract class AbstractRestController<T extends BaseEntity<T>, V extends 
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public Page<V> findAll(@RequestParam(required = false) Integer page,
-                           @RequestParam(required = false) Integer size,
-                           @RequestParam(required = false) String sortString) {
+    public List<EntityModel<V>> findAll(@RequestParam(required = false) Integer page,
+                                        @RequestParam(required = false) Integer size,
+                                        @RequestParam(required = false) String sortString) {
         Sort sort = null;
         if (sortString != null) {
             String[] split = sortString.split(",");
@@ -68,7 +69,7 @@ public abstract class AbstractRestController<T extends BaseEntity<T>, V extends 
         return findAll(page, size, sort);
     }
 
-    protected Page<V> findAll(Integer page, Integer size, Sort sort) {
+    protected List<EntityModel<V>> findAll(Integer page, Integer size, Sort sort) {
         Pageable pageable = null;
         if (page != null) {
             if (size != null) {
@@ -86,7 +87,12 @@ public abstract class AbstractRestController<T extends BaseEntity<T>, V extends 
         if (pageable == null) {
             pageable = Pageable.unpaged();
         }
-        return lightweightService.getViews(service.findAll(pageable));
+        Pageable finalPageable = pageable;
+        return lightweightService
+                .getViews(service.findAll(pageable))
+                .stream()
+                .map(v->getEntityModel(v, finalPageable))
+                .collect(Collectors.toList());
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)

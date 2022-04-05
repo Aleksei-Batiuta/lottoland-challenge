@@ -17,11 +17,17 @@
 
 package com.batyuta.challenge.lottoland.config;
 
+import com.batyuta.challenge.lottoland.enums.I18n;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+
+import java.util.Locale;
+import java.util.Properties;
+
+import static com.batyuta.challenge.lottoland.enums.I18n.CLASSPATH_MESSAGES;
 
 /**
  * Locale Custom Configuration.
@@ -29,6 +35,7 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 @Configuration
 @EnableAutoConfiguration
 public class LocaleConfiguration {
+
     /**
      * Custom configuration of {@link MessageSource}.
      * Sets the localized message location,
@@ -39,10 +46,10 @@ public class LocaleConfiguration {
      */
     @Bean
     public MessageSource messageSource() {
-        ReloadableResourceBundleMessageSource messageSource =
-                new ReloadableResourceBundleMessageSource();
-        messageSource.setBasename("classpath:/messages/messages");
-        messageSource.setDefaultEncoding("UTF-8");
+        ExposedResourceMessageBundleSource messageSource =
+                new ExposedResourceMessageBundleSource();
+        messageSource.setBasename(CLASSPATH_MESSAGES);
+        messageSource.setDefaultEncoding(I18n.ENCODING_MESSAGES);
         messageSource.setUseCodeAsDefaultMessage(true);
         return messageSource;
     }

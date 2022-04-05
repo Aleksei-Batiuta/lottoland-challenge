@@ -17,6 +17,9 @@
 
 package com.batyuta.challenge.lottoland.enums;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * The status enums. It's used for visualization of
  * comparing test cases
@@ -87,6 +90,7 @@ public enum StatusEnum implements I18n {
      *
      * @return value
      */
+    @JsonIgnore
     public int getStatus() {
         return status;
     }

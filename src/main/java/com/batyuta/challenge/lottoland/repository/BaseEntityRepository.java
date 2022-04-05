@@ -53,7 +53,7 @@ public abstract class BaseEntityRepository<T extends BaseEntity<T>>
      */
     @Override
     public Iterable<T> findAll(final Sort sort) {
-        Stream<T> entities = getEntities();
+        Stream<T> entities = getEntities().filter(entity->!isDeleted(entity));
         return sort(entities, sort);
     }
 
@@ -65,17 +65,19 @@ public abstract class BaseEntityRepository<T extends BaseEntity<T>>
      */
     @Override
     public Page<T> findAll(Pageable pageable) {
-        if (pageable.isUnpaged()) {
+        if (pageable == null || pageable.isUnpaged()) {
             pageable = PageRequest.of(0, 10);
         }        // todo: this method should be implemented in the future
         List<T> list =
-                sort(getEntities(), pageable.getSort());
+                sort(getEntities().filter(entity->!isDeleted(entity)), pageable.getSort());
         int total = list.size();
         if (pageable.getOffset() <= total) {
             list = list.subList((int)pageable.getOffset(), Math.min((int)(pageable.getPageSize()+pageable.getOffset()), total));
         }
         return new PageImpl<>(list, pageable, total);
     }
+
+    protected abstract boolean isDeleted(T entity);
 
     /**
      * Gets all entities form repository as is.
@@ -84,7 +86,7 @@ public abstract class BaseEntityRepository<T extends BaseEntity<T>>
      */
     @Override
     public Iterable<T> findAll() {
-        return getEntities().collect(Collectors.toList());
+        return getEntities().filter(entity->!isDeleted(entity)).collect(Collectors.toList());
     }
 
     /**

@@ -151,4 +151,14 @@ public class RoundEntityRepository extends BaseEntityRepository<RoundEntity> imp
             final StatusEnum status) {
         return getRounds(null, null, status, null);
     }
+
+    @LogEntry
+    public void deleteByUserId(Long userId) {
+        deleteAll(findByUserId(userId));
+    }
+
+    @Override
+    protected boolean isDeleted(RoundEntity entity) {
+        return entity==null||entity.isDeleted();
+    }
 }

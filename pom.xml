@@ -309,7 +309,7 @@
             </resource>
             <!-- Resources for App message localization -->
             <resource>
-                <directory>src/main/resources/messages</directory>
+                <directory>src/main/resources/static/messages</directory>
                 <filtering>true</filtering>
                 <targetPath>${project.build.outputDirectory}/messages</targetPath>
             </resource>

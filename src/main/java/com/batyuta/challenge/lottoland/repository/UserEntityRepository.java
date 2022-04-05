@@ -25,4 +25,8 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class UserEntityRepository extends BaseEntityRepository<UserEntity> {
+    @Override
+    protected boolean isDeleted(UserEntity entity) {
+        return entity == null;
+    }
 }

@@ -14,20 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-'use strict';
-const SockJS = require('sockjs-client');
-require('stompjs');
 
-function register(registrations) {
-    const socket = SockJS('/stomp');
-    const stompClient = Stomp.over(socket);
-    stompClient.connect({}, function (frame) {
-        registrations.forEach(function (registration) {
-            stompClient.subscribe(registration.route, registration.callback);
-        });
-    });
+package com.batyuta.challenge.lottoland.config;
+
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+
+import java.util.Locale;
+import java.util.Properties;
+
+public class ExposedResourceMessageBundleSource extends ReloadableResourceBundleMessageSource {
+    public Properties getMessages(Locale locale) {
+        return getMergedProperties(locale).getProperties();
+    }
 }
-
-module.exports = {
-    register: register
-};

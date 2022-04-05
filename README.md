@@ -76,6 +76,10 @@ The Test Challenge from Lottoland [The Latest Example](https://lottoland-challen
     ```
     docker run -p 8080:8080 -e "SPRING_PROFILES_ACTIVE=debug" -t alekseibatiuta/lottoland-challenge:0.28
     ```
+7. i18n before Java 9
+    ```
+    native2ascii -encoding UTF-8 src/main/resources/static/messages/messages_sk.template.txt src/main/resources/static/messages/messages_sk.properties
+    ```
 
 # Test Cases
 
