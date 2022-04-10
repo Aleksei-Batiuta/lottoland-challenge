@@ -19,9 +19,9 @@ package com.batyuta.challenge.lottoland.repository;
 
 import com.batyuta.challenge.lottoland.exception.DataException;
 import com.batyuta.challenge.lottoland.model.BaseEntity;
+import com.batyuta.challenge.lottoland.utils.PageableUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -53,28 +53,65 @@ public abstract class BaseEntityRepository<T extends BaseEntity<T>>
      */
     @Override
     public Iterable<T> findAll(final Sort sort) {
-        Stream<T> entities = getEntities().filter(entity->!isDeleted(entity));
+        Stream<T> entities = getEntities().filter(entity -> !isDeleted(entity));
         return sort(entities, sort);
     }
 
     /**
      * Gets entity page from repository.
      *
-     * @param pageable page config
+     * @param pageSettings page config
      * @return entities
      */
     @Override
-    public Page<T> findAll(Pageable pageable) {
-        if (pageable == null || pageable.isUnpaged()) {
-            pageable = PageRequest.of(0, 10);
-        }        // todo: this method should be implemented in the future
-        List<T> list =
-                sort(getEntities().filter(entity->!isDeleted(entity)), pageable.getSort());
-        int total = list.size();
-        if (pageable.getOffset() <= total) {
-            list = list.subList((int)pageable.getOffset(), Math.min((int)(pageable.getPageSize()+pageable.getOffset()), total));
+    public Page<T> findAll(final Pageable pageSettings) {
+        Pageable pageable = pageSettings;
+        if (pageable == null) {
+            pageable = Pageable.unpaged();
         }
-        return new PageImpl<>(list, pageable, total);
+        List<T> list = sort(
+                getEntities().filter(
+                        entity -> !isDeleted(entity)
+                ),
+                pageable.getSort()
+        );
+        int total = list.size();
+        pageable = PageableUtils.fixPageable(pageable, total);
+        return subList(list, pageable, total);
+    }
+
+    /**
+     * Cutting list to necessary size.
+     *
+     * @param inputList    input
+     * @param pageSettings page settings
+     * @param total        total elements in DB
+     * @return sub list
+     */
+    protected Page<T> subList(final List<T> inputList,
+                              final Pageable pageSettings,
+                              final int total) {
+        Pageable pageable = pageSettings;
+        List<T> list = inputList;
+        if (pageable == null) {
+            pageable = Pageable.unpaged();
+        }
+        if (!pageable.isUnpaged()) {
+            list = list.subList(
+                    (int) pageable.getOffset(),
+                    Math.min(
+                            (int) (pageable.getPageSize()
+                                    + pageable.getOffset()),
+                            total
+                    )
+            );
+        }
+
+        return new PageImpl<>(
+                Collections.unmodifiableList(list),
+                pageable,
+                total
+        );
     }
 
     protected abstract boolean isDeleted(T entity);
@@ -86,7 +123,11 @@ public abstract class BaseEntityRepository<T extends BaseEntity<T>>
      */
     @Override
     public Iterable<T> findAll() {
-        return getEntities().filter(entity->!isDeleted(entity)).collect(Collectors.toList());
+        return getEntities()
+                .filter(
+                        entity -> !isDeleted(entity)
+                )
+                .collect(Collectors.toList());
     }
 
     /**

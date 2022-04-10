@@ -32,7 +32,13 @@ import java.util.ResourceBundle;
  */
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public interface I18n {
+    /**
+     * I18N message files path.
+     */
     String CLASSPATH_MESSAGES = "classpath:/messages/messages";
+    /**
+     * Default encoding.
+     */
     String ENCODING_MESSAGES = "UTF-8";
 
     /**
@@ -45,18 +51,21 @@ public interface I18n {
 
     /**
      * Getter of name field.
+     *
      * @return name
      */
     @JsonProperty
-    default String getName (){
+    default String getName() {
         return name();
     }
 
     /**
      * Getter of name field.
+     *
      * @return name
      */
     String name();
+
     /**
      * Localization for standalone runs.
      *

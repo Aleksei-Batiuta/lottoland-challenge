@@ -1,0 +1,47 @@
+application:
+  title: '@project.name@'
+  version: '@project.version@'
+logging:
+  general:
+    level: INFO
+  level:
+    com:
+      batyuta:
+        challenge:
+          lottoland: ${logging.general.level}
+    org:
+      springframework: ${logging.general.level}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+server:
+  error:
+    path: /exception
+    whitelabel:
+      enabled: false
+spring:
+  data:
+    rest:
+      base-path: /api
+  jpa:
+    open-in-view: false
+  messages:
+    basename: messages/messages
+  mvc:
+    pathmatch:
+      matching-strategy: ant-path-matcher
+  output:
+    ansi:
+      enabled: always
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: https://example.com/.well-known/jwks.json
+  web:
+    resources:
+      cache:
+        cachecontrol:
+          max-age: 12h

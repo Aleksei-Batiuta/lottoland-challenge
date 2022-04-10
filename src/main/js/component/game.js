@@ -15,19 +15,35 @@
  * limitations under the License.
  */
 
+import RestService from "../service/restService";
+
 const React = require("react");
 const {RoundList} = require("./roundList");
 const {Msg} = require("./msg");
 
-export class Game extends React.Component { // <1>
+export class Game extends React.Component {
+
     constructor(props) {
         super(props);
 
-        this.state = {rounds: []};
+        this.state = {
+            rounds: [],
+            pagination: {
+                page: 0,
+                size: 10,
+                sort: 'desc,id'
+            }
+        };
+        this.restService = RestService.getInstance();
 
         this.refresh = this.refresh.bind(this);
         this.generate = this.generate.bind(this);
         this.cleanRounds = this.cleanRounds.bind(this);
+        this.setError = this.setError.bind(this);
+    }
+
+    setError(error) { // <2>
+        this.setState({errorMessage: error});
     }
 
     componentDidMount() { // <2>
@@ -35,9 +51,18 @@ export class Game extends React.Component { // <1>
     }
 
     render() { // <3>
+        if (this.state?.errorMessage !== undefined) {
+            setTimeout(() => {
+                this.setError(undefined);
+                //this.refresh(0, 10, 'desc,id');
+            }, 2000);
+        }
+
+        let errorMessage = this.state.errorMessage?.message;
         return (
             <div>
-                <RoundList rounds={this.state.rounds}/>
+                {errorMessage && <div className="error"> {errorMessage} </div>}
+                <RoundList rounds={this.state.rounds} refreshTable={this.refresh}/>
                 <div className="button-panel">
                     <div className="button">
                         <button onClick={this.generate}><Msg msgKey='label.play.round'/></button>
@@ -50,46 +75,61 @@ export class Game extends React.Component { // <1>
         )
     }
 
-    refresh() {
-        fetch("/api/rounds/?page=1&size=10&sortString=desc%2Cid", {
-            method: 'GET',
-            headers: new Headers(),
-        })
-            .then(
-                (res) => res.json()
-            )
-            .then(
-                (data) => {
-                    this.setState({rounds: data});
-                    console.log(data);
-                }
-            )
-            .catch((err) => console.log(err))
-            .finally();
+    refresh(page, size, sort) {
+        page = page !== undefined
+            ? page
+            : this.state.pagination?.page
+                ? this.state.pagination.page
+                : 0;
+        size = size !== undefined
+            ? size
+            : this.state.pagination?.size
+                ? this.state.pagination.size
+                : 10;
+        sort = sort !== undefined
+            ? sort
+            : this.state.pagination?.sort
+                ? this.state.pagination.sort
+                : 'desc,id';
+
+        this.state.pagination.page = page;
+        this.state.pagination.size = size;
+        this.state.pagination.sort = sort;
+        this.restService.findAllRounds(
+            page,
+            size,
+            sort,
+            (data) => {
+                this.setState({rounds: data});
+            },
+            (error) => {
+                this.state.pagination.page = undefined;
+                this.state.pagination.size = undefined;
+                this.state.pagination.sort = undefined;
+                this.setError(error);
+            }
+        )
     }
 
     generate() {
-        fetch(
-            "/api/rounds/generate/1",
-            {
-                method: 'POST',
-                headers: new Headers(),
+        this.restService.newRound(
+            () => {
+                this.refresh()
+            },
+            (error) => {
+                this.setError(error);
             }
         )
-            .then(
-                () => this.refresh(this)
-            )
-            .catch((err) => console.log(err));
     }
 
     cleanRounds() {
-        fetch("/api/rounds/delete/1", {
-            method: 'DELETE',
-            headers: new Headers(),
-        })
-            .then(
-                () => this.refresh(this)
-            )
-            .catch((err) => console.log(err));
+        this.restService.cleanRounds(
+            () => {
+                this.refresh()
+            },
+            (error) => {
+                this.setError(error);
+            }
+        )
     }
 }

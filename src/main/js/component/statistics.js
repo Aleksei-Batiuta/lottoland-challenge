@@ -17,9 +17,7 @@
 
 const React = require("react");
 
-// import {Chart} from "./chart";
-
-const {Chart} = require("react-google-charts");
+import {Chart} from "./chart";
 import {Msg} from "./msg";
 import RestService from "../service/restService";
 
@@ -29,10 +27,9 @@ export class Statistics extends React.Component {
         this.props = props;
         this.state = {
             chartData: [
-                ["Name", "Data"],
-                ["First", 1],
-                ["Second", 1],
-                ["Draws", 1]
+                ["#69a507", 1],
+                ["#a50769", 1],
+                ["#0769a5", 1]
             ],
             data: {
                 total: 3,
@@ -53,29 +50,17 @@ export class Statistics extends React.Component {
 
     refresh() {
         // <2>
-        this.restService.getStatistics((data)=> {
+        this.restService.getStatistics((data) => {
             const chartData = [
-                ["Name", "Data"],
-                ["First", data.first],
-                ["Second", data.second],
-                ["Draws", data.draws]
+                ["#69a507", data.first],
+                ["#a50769", data.second],
+                ["#0769a5", data.draws]
             ];
             this.setState({chartData: chartData, data: data});
         })
     }
 
     render() {
-        const options = {
-            backgroundColor: 'transparent',
-            legend: {
-                position: 'none'
-            },
-            slices: {
-                0: {color: '#69a507'},
-                1: {color: '#a50769'},
-                2: {color: '#0769a5'}
-            }
-        };
         let tableContext;
         if (this.state.data.total === 0) {
             tableContext =
@@ -93,12 +78,7 @@ export class Statistics extends React.Component {
                 <tr>
                     <td rowSpan="3">
                         <div id="chart">
-                        <Chart
-                            chartVersion="current"
-                            chartType="PieChart"
-                            data={this.state.chartData}
-                            options={options}
-                        />
+                            <Chart data={this.state.chartData}/>
                         </div>
                     </td>
                     <td>

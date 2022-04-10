@@ -38,6 +38,15 @@ public class UserEntity extends NamedEntity<UserEntity> {
     /**
      * Default Constructor.
      *
+     * @param userName username
+     */
+    public UserEntity(final String userName) {
+        this(NEW_ENTITY_ID, userName);
+    }
+
+    /**
+     * Default Constructor.
+     *
      * @param userId   user ID
      * @param userName username
      */

@@ -20,13 +20,12 @@ package com.batyuta.challenge.lottoland.repository;
 import com.batyuta.challenge.lottoland.annotation.LogEntry;
 import com.batyuta.challenge.lottoland.enums.StatusEnum;
 import com.batyuta.challenge.lottoland.model.RoundEntity;
-import org.springframework.data.domain.Sort;
+import com.batyuta.challenge.lottoland.utils.PageableUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -35,7 +34,9 @@ import java.util.stream.Stream;
  * Round repository implementation class.
  */
 @Repository
-public class RoundEntityRepository extends BaseEntityRepository<RoundEntity> implements PagingAndSortingRepository<RoundEntity, Long> {
+public class RoundEntityRepository
+        extends BaseEntityRepository<RoundEntity>
+        implements PagingAndSortingRepository<RoundEntity, Long> {
 
     /**
      * Marks Round as deleted.
@@ -50,16 +51,18 @@ public class RoundEntityRepository extends BaseEntityRepository<RoundEntity> imp
     /**
      * Gets rounds.
      *
-     * @param userId    user ID
-     * @param isDeleted deleted flag
-     * @param status    round status
-     * @param sort      order
+     * @param userId       user ID
+     * @param isDeleted    deleted flag
+     * @param status       round status
+     * @param pageSettings page setting
      * @return rounds
      */
-    public List<RoundEntity> getRounds(final Long userId,
+    @LogEntry
+    public Page<RoundEntity> getRounds(final Long userId,
                                        final Boolean isDeleted,
                                        final StatusEnum status,
-                                       final Sort sort) {
+                                       final Pageable pageSettings) {
+        Pageable pageable = pageSettings;
         Stream<RoundEntity> roundsStream = getEntities()
                 .filter(Objects::nonNull);
         if (userId != null) {
@@ -75,7 +78,15 @@ public class RoundEntityRepository extends BaseEntityRepository<RoundEntity> imp
                     .filter(round -> round.getStatus() == status);
         }
 
-        return Collections.unmodifiableList(sort(roundsStream, sort));
+        if (pageable == null) {
+            pageable = Pageable.unpaged();
+        }
+
+        List<RoundEntity> list =
+                sort(roundsStream, pageable.getSort());
+        int total = list.size();
+        pageable = PageableUtils.fixPageable(pageable, total);
+        return subList(list, pageable, total);
     }
 
     /**
@@ -85,19 +96,18 @@ public class RoundEntityRepository extends BaseEntityRepository<RoundEntity> imp
      * @param status round status
      * @return count of deleted rounds
      */
-    public Integer deleteRounds(final Long userId,
-                                final StatusEnum status) {
+    public Long deleteRounds(final Long userId,
+                             final StatusEnum status) {
         return write(
                 () -> {
-                    Collection<RoundEntity> roundsList =
-                            getRounds(
-                                    userId,
-                                    false,
-                                    status,
-                                    null
-                            );
+                    Page<RoundEntity> roundsList = getRounds(
+                            userId,
+                            false,
+                            status,
+                            null
+                    );
                     this.deleteAll(roundsList);
-                    return roundsList.size();
+                    return roundsList.getTotalElements();
                 }
         );
     }
@@ -108,24 +118,25 @@ public class RoundEntityRepository extends BaseEntityRepository<RoundEntity> imp
      * @param userId user ID
      * @return count of deleted rounds
      */
-    @LogEntry
-    public int deleteAllByUserId(final Long userId) {
+    public long deleteAllByUserId(final Long userId) {
         return deleteRounds(userId, null);
     }
 
+
     /**
-     * Gets rounds by user ID.
+     * Gets entity page from repository.
      *
-     * @param userId user ID
-     * @return rounds
+     * @param userId   user ID
+     * @param pageable page config
+     * @return entities
      */
-    @LogEntry
-    public Collection<RoundEntity> findByUserId(final Long userId) {
+    public Page<RoundEntity> findAllByUserId(final Long userId,
+                                             final Pageable pageable) {
         return getRounds(
                 userId,
                 false,
                 null,
-                Sort.by(Sort.Direction.DESC, "id")
+                pageable
         );
     }
 
@@ -135,9 +146,9 @@ public class RoundEntityRepository extends BaseEntityRepository<RoundEntity> imp
      * @param status status of rounds
      * @return number of total played rounds
      */
-    @LogEntry
-    public int getTotalRoundsByStatus(final StatusEnum status) {
-        return getAllRoundsByStatus(status).size();
+    public Long getTotalRoundsByStatus(final StatusEnum status) {
+        Page<RoundEntity> allRoundsByStatus = getAllRoundsByStatus(status);
+        return allRoundsByStatus.getTotalElements();
     }
 
     /**
@@ -146,19 +157,31 @@ public class RoundEntityRepository extends BaseEntityRepository<RoundEntity> imp
      * @param status status of rounds
      * @return number of total played rounds
      */
-    @LogEntry
-    public Collection<RoundEntity> getAllRoundsByStatus(
+    public Page<RoundEntity> getAllRoundsByStatus(
             final StatusEnum status) {
         return getRounds(null, null, status, null);
     }
 
-    @LogEntry
-    public void deleteByUserId(Long userId) {
-        deleteAll(findByUserId(userId));
+    /**
+     * Deletes all user's rounds.
+     *
+     * @param userId user ID
+     * @return count of deleted items
+     */
+    public Long deleteByUserId(final Long userId) {
+        Page<RoundEntity> allByUserId = findAllByUserId(userId, null);
+        deleteAll(allByUserId);
+        return allByUserId.getTotalElements();
     }
 
+    /**
+     * Check round to deleted state.
+     *
+     * @param entity round entity
+     * @return <code>true</code> if round already deleted
+     */
     @Override
-    protected boolean isDeleted(RoundEntity entity) {
-        return entity==null||entity.isDeleted();
+    protected boolean isDeleted(final RoundEntity entity) {
+        return entity == null || entity.isDeleted();
     }
 }

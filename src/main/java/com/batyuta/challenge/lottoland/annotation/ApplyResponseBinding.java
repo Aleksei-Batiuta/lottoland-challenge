@@ -15,39 +15,18 @@
  * limitations under the License.
  */
 
-package com.batyuta.challenge.lottoland.vo;
+package com.batyuta.challenge.lottoland.annotation;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Base View class.
+ * Annotation to use response wrapper
+ * {@link com.batyuta.challenge.lottoland.web.RestResponseAdvise}.
  */
-public abstract class BaseVO {
-    /**
-     * View ID.
-     */
-    private final Long id;
-
-    /**
-     * Default no-arguments Constructor.
-     */
-    public BaseVO() {
-        this(-1L);
-    }
-
-    /**
-     * Default constructor.
-     *
-     * @param voId view ID
-     */
-    public BaseVO(final Long voId) {
-        this.id = voId;
-    }
-
-    /**
-     * Getter of VO ID.
-     *
-     * @return ID
-     */
-    public Long getId() {
-        return id;
-    }
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface ApplyResponseBinding {
 }

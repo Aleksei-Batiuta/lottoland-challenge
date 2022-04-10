@@ -25,6 +25,10 @@ import org.springframework.core.NestedRuntimeException;
  */
 public abstract class BaseException extends NestedRuntimeException {
     /**
+     * Error i18n key.
+     */
+    private final String key;
+    /**
      * Argument which can be used in format.
      */
     private final Object[] args;
@@ -40,6 +44,7 @@ public abstract class BaseException extends NestedRuntimeException {
                          final Throwable cause,
                          final Object... arguments) {
         super(msg, cause);
+        this.key = msg;
         this.args =
                 arguments.length == 0
                         ? new Object[]{""}
@@ -53,5 +58,14 @@ public abstract class BaseException extends NestedRuntimeException {
      */
     public Object[] getArgs() {
         return args;
+    }
+
+    /**
+     * Getter of i18n key.
+     *
+     * @return key
+     */
+    public String getKey() {
+        return key;
     }
 }

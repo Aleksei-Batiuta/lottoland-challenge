@@ -20,7 +20,6 @@ package com.batyuta.challenge.lottoland.test;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.junit.jupiter.api.DisplayName;
@@ -36,7 +35,6 @@ import java.io.IOException;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -51,13 +49,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @DisplayName("Simple HTTP request test cases")
 public class ApplicationTest {
-
+    /**
+     * Root path.
+     */
+    public static final String ROOT_PATH = "/";
     /**
      * Test Server port.
      */
 //    @LocalServerPort
     private static final int SERVER_PORT = 8080;
-    public static final String ROOT_OLD_PATH = "/old";
     /**
      * Mock Model View Controller.
      */
@@ -73,7 +73,7 @@ public class ApplicationTest {
     public void root() throws Exception {
         this.mockMvc
                 .perform(
-                        get(ROOT_OLD_PATH +"/")
+                        get(ROOT_PATH)
                 )
                 .andDo(print())
                 .andExpect(status().isOk());
@@ -89,7 +89,7 @@ public class ApplicationTest {
 
         // Given
         HttpUriRequest request =
-                new HttpGet("http://localhost:" + SERVER_PORT +ROOT_OLD_PATH + "/");
+                new HttpGet("http://localhost:" + SERVER_PORT + ROOT_PATH);
 
         // When
         HttpResponse httpResponse = HttpClientBuilder.create()
@@ -101,126 +101,6 @@ public class ApplicationTest {
                 "Invalid HTTP response code",
                 httpResponse.getStatusLine().getStatusCode(),
                 equalTo(HttpStatus.SC_OK)
-        );
-    }
-
-    /**
-     * Test access to statistics page.
-     *
-     * @throws Exception if error appears
-     */
-    @Test
-    public void statistics() throws Exception {
-        this.mockMvc
-                .perform(
-                        get(ROOT_OLD_PATH +"/statistics")
-                )
-                .andDo(print())
-                .andExpect(status().isOk());
-    }
-
-    /**
-     * Test statistics JSP page.
-     *
-     * @throws IOException if error appears
-     */
-    @Test
-    public void statisticsJsp() throws IOException {
-
-        // Given
-        HttpUriRequest request =
-                new HttpGet("http://localhost:" + SERVER_PORT + ROOT_OLD_PATH +"/statistics");
-
-        // When
-        HttpResponse httpResponse = HttpClientBuilder.create()
-                .build()
-                .execute(request);
-
-        // Then
-        assertThat(
-                "Invalid HTTP response code",
-                httpResponse.getStatusLine().getStatusCode(),
-                equalTo(HttpStatus.SC_OK)
-        );
-    }
-
-    /**
-     * Test access to new round page.
-     *
-     * @throws Exception if error appears
-     */
-    @Test
-    public void newRound() throws Exception {
-        this.mockMvc
-                .perform(
-                        post(ROOT_OLD_PATH +"/new")
-                )
-                .andDo(print())
-                .andExpect(status().is3xxRedirection());
-    }
-
-    /**
-     * Test new JSP page.
-     *
-     * @throws IOException if error appears
-     */
-    @Test
-    public void newJsp() throws IOException {
-
-        // Given
-        HttpUriRequest request =
-                new HttpPost("http://localhost:" + SERVER_PORT + ROOT_OLD_PATH +"/new");
-
-        // When
-        HttpResponse httpResponse = HttpClientBuilder.create()
-                .build()
-                .execute(request);
-
-        // Then
-        assertThat(
-                "Invalid HTTP response code",
-                httpResponse.getStatusLine().getStatusCode(),
-                equalTo(HttpStatus.SC_MOVED_TEMPORARILY)
-        );
-    }
-
-    /**
-     * Test access to reset game page.
-     *
-     * @throws Exception if error appears
-     */
-    @Test
-    public void resetGame() throws Exception {
-        this.mockMvc
-                .perform(
-                        post(ROOT_OLD_PATH +"/reset")
-                )
-                .andDo(print())
-                .andExpect(status().is3xxRedirection());
-    }
-
-    /**
-     * Test reset JSP page.
-     *
-     * @throws IOException if error appears
-     */
-    @Test
-    public void resetJsp() throws IOException {
-
-        // Given
-        HttpUriRequest request =
-                new HttpPost("http://localhost:" + SERVER_PORT + ROOT_OLD_PATH +"/reset");
-
-        // When
-        HttpResponse httpResponse = HttpClientBuilder.create()
-                .build()
-                .execute(request);
-
-        // Then
-        assertThat(
-                "Invalid HTTP response code",
-                httpResponse.getStatusLine().getStatusCode(),
-                equalTo(HttpStatus.SC_MOVED_TEMPORARILY)
         );
     }
 
@@ -233,35 +113,10 @@ public class ApplicationTest {
     public void error() throws Exception {
         this.mockMvc
                 .perform(
-                        get(ROOT_OLD_PATH +"/error")
+                        get(ROOT_PATH + "error")
                 )
                 .andDo(print())
                 .andExpect(status().is4xxClientError());
-    }
-
-    /**
-     * Test error JSP page.
-     *
-     * @throws IOException if error appears
-     */
-    @Test
-    public void errorJsp() throws IOException {
-
-        // Given
-        HttpUriRequest request =
-                new HttpGet("http://localhost:" + SERVER_PORT + ROOT_OLD_PATH +"/error");
-
-        // When
-        HttpResponse httpResponse = HttpClientBuilder.create()
-                .build()
-                .execute(request);
-
-        // Then
-        assertThat(
-                "Invalid HTTP response code",
-                httpResponse.getStatusLine().getStatusCode(),
-                equalTo(HttpStatus.SC_CONFLICT)
-        );
     }
 
     /**
@@ -273,7 +128,7 @@ public class ApplicationTest {
     public void cssTest() throws Exception {
         this.mockMvc
                 .perform(
-                        get("/main.css")
+                        get(ROOT_PATH + "css/main.css")
                 )
                 .andDo(print())
                 .andExpect(status().isOk());
@@ -289,7 +144,7 @@ public class ApplicationTest {
 
         this.mockMvc
                 .perform(
-                        get("/lottoland.png")
+                        get(ROOT_PATH + "image/lottoland.png")
                 )
                 .andExpect(status().isOk());
     }
@@ -304,22 +159,7 @@ public class ApplicationTest {
 
         this.mockMvc
                 .perform(
-                        get("/favicon.ico")
-                )
-                .andExpect(status().isOk());
-    }
-
-    /**
-     * Test gcharts.js.
-     *
-     * @throws Exception if error appears
-     */
-    @Test
-    public void googleChartsJsTest() throws Exception {
-
-        this.mockMvc
-                .perform(
-                        get("/js/gcharts.js")
+                        get(ROOT_PATH + "favicon.ico")
                 )
                 .andExpect(status().isOk());
     }

@@ -32,8 +32,12 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import java.lang.reflect.Method;
 import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * AspectJ method call logging.
@@ -44,7 +48,8 @@ public class LogEntryAspect {
     /**
      * JSON mapper.
      */
-    private static final ObjectMapper JSON_MAPPER = new ObjectMapper();
+    private static final ObjectMapper JSON_MAPPER =
+            new ObjectMapper().findAndRegisterModules();
 
     /**
      * Log Message to JSON serialization.
@@ -55,17 +60,51 @@ public class LogEntryAspect {
      */
     private static String toString(final LogEntryData message,
                                    final boolean pretty) {
-        if (message != null) {
+        return toString(message, pretty, 0);
+    }
+    /**
+     * Log Object to JSON serialization.
+     *
+     * @param object object
+     * @param pretty  output JSON pretty format flag
+     * @param depth  depth of call
+     * @return String view of message
+     */
+    private static String toString(final Object object,
+                                   final boolean pretty,
+                                   final int depth) {
+        if (object != null) {
             try {
+                if (object instanceof ServletResponse
+                        || object instanceof ServletRequest) {
+                    // Skips getters of Writer and Reader!
+                    return object.toString();
+                }
                 if (pretty) {
                     return JSON_MAPPER
                             .writerWithDefaultPrettyPrinter()
-                            .writeValueAsString(message);
+                            .writeValueAsString(object);
                 }
                 return JSON_MAPPER
-                        .writeValueAsString(message);
+                        .writeValueAsString(object);
             } catch (JsonProcessingException e) {
-                return message.toString();
+                if (object instanceof LogEntryData && depth == 0) {
+                    LogEntryData message = (LogEntryData) object;
+                    Map<String, Object> args = message.getArgs();
+                    Map<String, String> result = new HashMap<>();
+                    if (args != null) {
+                        args.forEach((key, value) ->
+                                result.put(key, toString(value, pretty, 1))
+                        );
+                        args.putAll(result);
+                    }
+                    message.setResult(
+                            toString(message.getResult(), pretty, 1)
+                    );
+                    return toString(message, pretty, 1);
+                } else {
+                    return object.toString();
+                }
             }
         }
         return null;
@@ -133,14 +172,21 @@ public class LogEntryAspect {
                         Instant.now(),
                         annotation.unit()
                 );
-        Object response = point.proceed();
-        logEntryMessage.setResult(response);
-        logEntryMessage.setEnd(Instant.now());
-        log(
-                logger,
-                annotation.value(),
-                toString(logEntryMessage, annotation.prettyFormatted())
-        );
+        Object response;
+        try {
+            response = point.proceed();
+            logEntryMessage.setResult(response);
+        } catch (Throwable throwable) {
+            logEntryMessage.setResult(throwable);
+            throw throwable;
+        } finally {
+            logEntryMessage.setEnd(Instant.now());
+            log(
+                    logger,
+                    annotation.value(),
+                    toString(logEntryMessage, annotation.prettyFormatted())
+            );
+        }
         return response;
     }
 }

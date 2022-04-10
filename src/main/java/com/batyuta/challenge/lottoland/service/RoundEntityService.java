@@ -27,65 +27,29 @@ import org.springframework.stereotype.Service;
 
 import java.util.Random;
 
+/**
+ * Round's Entity Service.
+ */
 @Service
 public class RoundEntityService extends AbstractEntityService<RoundEntity> {
     /**
      * Random instance.
      */
     private static final Random RANDOM = new Random();
+    /**
+     * Round Entity repository.
+     */
+    private final RoundEntityRepository roundRepository;
 
-    public RoundEntityService(RoundEntityRepository repository) {
+    /**
+     * Default constructor.
+     *
+     * @param repository Round Entity Repository
+     */
+    public RoundEntityService(final RoundEntityRepository repository) {
         super(repository);
+        roundRepository = repository;
     }
-
-    @Override
-    protected RoundEntity update(RoundEntity destination, RoundEntity source) {
-        // todo: it should be reviewed
-        return source;
-    }
-
-    /**
-     * Generates a new round and saves it.
-     *
-     * @param userId user ID
-     * @return generated round
-     */
-    public Page<RoundEntity> generate(final Long userId) {
-        SignEnum player1;
-        SignEnum player2;
-        if (getRandomNumberUsingNextInt(0, 1) == 1) {
-            player1 = getRandom();
-            player2 = SignEnum.ROCK;
-        } else {
-            player1 = SignEnum.ROCK;
-            player2 = getRandom();
-
-        }
-
-        RoundEntity save = save(
-                new RoundEntity(
-                        userId,
-                        player1,
-                        player2,
-                        StatusEnum.valueOf(
-                                player1.compareToEnum(player2)
-                        )
-                )
-        );
-
-        return findAll((Pageable) null);
-    }
-
-    /**
-     * Gets random Sign.
-     *
-     * @return random Sign
-     */
-    private SignEnum getRandom() {
-        SignEnum[] values = SignEnum.values();
-        return values[getRandomNumberUsingNextInt(0, values.length - 1)];
-    }
-
 
     /**
      * Gets random integer.
@@ -99,23 +63,114 @@ public class RoundEntityService extends AbstractEntityService<RoundEntity> {
         return RANDOM.nextInt(max - min + 1) + min;
     }
 
-    public void deleteByUserId(Long userId) {
-        ((RoundEntityRepository)repository).deleteByUserId(userId);
+    /**
+     * Update implementation.
+     *
+     * @param destination destination entity
+     * @param source      source entity
+     * @return updated entity
+     */
+    @Override
+    protected RoundEntity updateImpl(final RoundEntity destination,
+                                     final RoundEntity source) {
+        return source;
     }
 
+    /**
+     * Generates a new round and saves it.
+     *
+     * @param userId user ID
+     * @return generated round
+     */
+    public RoundEntity generate(final Long userId) {
+        SignEnum player1;
+        SignEnum player2;
+        if (getRandomNumberUsingNextInt(0, 1) == 1) {
+            player1 = getRandom();
+            player2 = SignEnum.ROCK;
+        } else {
+            player1 = SignEnum.ROCK;
+            player2 = getRandom();
+
+        }
+
+        return save(
+                new RoundEntity(
+                        userId,
+                        player1,
+                        player2,
+                        StatusEnum.valueOf(
+                                player1.compareToEnum(player2)
+                        )
+                )
+        );
+    }
+
+    /**
+     * Gets random Sign.
+     *
+     * @return random Sign
+     */
+    private SignEnum getRandom() {
+        SignEnum[] values = SignEnum.values();
+        return values[getRandomNumberUsingNextInt(0, values.length - 1)];
+    }
+
+    /**
+     * Deletes all rounds by user ID.
+     *
+     * @param userId user ID
+     * @return count of deleted rounds
+     */
+    public Long deleteByUserId(final Long userId) {
+        return roundRepository.deleteByUserId(userId);
+    }
+
+    /**
+     * Find all Rounds.
+     *
+     * @return count
+     */
     public long getTotalRounds() {
-        return ((RoundEntityRepository)repository).getTotalRoundsByStatus(null);
+        return roundRepository.getTotalRoundsByStatus(null);
     }
 
+    /**
+     * Find all {@link StatusEnum#WIN} Rounds.
+     *
+     * @return count
+     */
     public long getFirstRounds() {
-        return ((RoundEntityRepository)repository).getTotalRoundsByStatus(StatusEnum.WIN);
+        return roundRepository.getTotalRoundsByStatus(StatusEnum.WIN);
     }
 
+    /**
+     * Find all {@link StatusEnum#LOSS} Rounds.
+     *
+     * @return count
+     */
     public long getSecondRounds() {
-        return ((RoundEntityRepository)repository).getTotalRoundsByStatus(StatusEnum.LOSS);
+        return roundRepository.getTotalRoundsByStatus(StatusEnum.LOSS);
     }
 
+    /**
+     * Find all {@link StatusEnum#DRAW} Rounds.
+     *
+     * @return count
+     */
     public long getDraws() {
-        return ((RoundEntityRepository)repository).getTotalRoundsByStatus(StatusEnum.DRAW);
+        return roundRepository.getTotalRoundsByStatus(StatusEnum.DRAW);
+    }
+
+    /**
+     * Gets entity page from repository.
+     *
+     * @param userId   user ID
+     * @param pageable page config
+     * @return entities
+     */
+    public Page<RoundEntity> findAllByUserId(final Long userId,
+                                             final Pageable pageable) {
+        return roundRepository.findAllByUserId(userId, pageable);
     }
 }

@@ -92,6 +92,7 @@ a:active {
     float: left;
     display: table-cell;
 }
+
 .version {
     background: transparent;
     float: right;
@@ -111,21 +112,41 @@ a:active {
     width: 100%;
 }
 
+.pagination-panel {
+    width: 100%;
+}
+
+.pagination {
+    display: table-cell;
+    padding: 6px;
+    margin: 3px;
+    float: right;
+    border: 1px solid #69a50788;
+    border-radius: 6px;
+}
+
 button {
     background-color: #69a507;
     color: #ffffff;
-    padding: 6px 24px;
+    padding: 3px 12px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     border: 1px solid transparent;
-    border-radius: 6px;
+    border-radius: 3px;
 }
 
 button:hover {
     background-color: #ffffff;
     color: #69a507;
     border: 1px solid #69a507;
+}
+
+.pagination button:disabled,
+.pagination button[disabled] {
+    border: 1px solid #69a50788;
+    background-color: #69a50788;
+    color: #666666;
 }
 
 ul {
@@ -167,7 +188,7 @@ li.hidden a {
 }
 
 .scroll-table-body {
-    height: 240px;
+    height: 50vh;
     overflow-x: auto;
     margin-top: 0px;
     margin-bottom: 20px;
@@ -246,4 +267,12 @@ li.hidden a {
 
 .chart {
     background: transparent;
+}
+
+.error {
+    padding: 10px;
+    color: #D8000C;
+    background-color: #FFD2D2;
+    border: #D8000C 1em;
+    border-radius: .5em;
 }

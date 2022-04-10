@@ -24,6 +24,7 @@ const {Msg} = require("../component/msg");
 
 const TAB_GAME = 'game';
 const TAB_STATISTICS = 'statistics';
+
 export class Main extends React.Component { // <1>
     constructor(props) {
         super(props);
@@ -66,24 +67,24 @@ export class Main extends React.Component { // <1>
         return (
             <div className="main">
                 <div className="menu">
-                <div className="menu-context">
-                    <div className="menu-item">
-                        <ul>
+                    <div className="menu-context">
+                        <div className="menu-item">
+                            <ul>
 
-                            <li className={gameMenuClassName}>
-                                <a href="#" onClick={() => this.switchToGame()}>
-                                    <Msg msgKey='title.game'/>
-                                </a>
-                            </li>
-                            <li className={statisticsMenuClassName}>
-                                <a href="#" onClick={() => this.switchToStatistics()}>
-                                    <Msg msgKey='title.statistics'/>
-                                </a>
-                            </li>
-                        </ul>
+                                <li className={gameMenuClassName}>
+                                    <a href="#" onClick={() => this.switchToGame()}>
+                                        <Msg msgKey='title.game'/>
+                                    </a>
+                                </li>
+                                <li className={statisticsMenuClassName}>
+                                    <a href="#" onClick={() => this.switchToStatistics()}>
+                                        <Msg msgKey='title.statistics'/>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div className="logo"/>
                     </div>
-                    <div className="logo"/>
-                </div>
                 </div>
                 <div className="context">
                     {page}

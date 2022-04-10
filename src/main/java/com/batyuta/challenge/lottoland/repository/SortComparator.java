@@ -18,6 +18,7 @@
 package com.batyuta.challenge.lottoland.repository;
 
 import com.batyuta.challenge.lottoland.annotation.LogEntry;
+import org.slf4j.event.Level;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 
@@ -58,7 +59,7 @@ public class SortComparator<T extends Comparable<? super T>>
      * @return compare result
      */
     @Override
-    @LogEntry
+    @LogEntry(Level.TRACE)
     public int compare(final T o1, final T o2) {
         return getSortComparator(sort).compare(o1, o2);
     }

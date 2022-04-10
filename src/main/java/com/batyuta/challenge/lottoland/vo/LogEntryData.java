@@ -18,6 +18,7 @@
 package com.batyuta.challenge.lottoland.vo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Data;
@@ -32,6 +33,7 @@ import java.util.Objects;
  * The View Object class for Logger.
  */
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({"method", "args", "result", "duration"})
 public class LogEntryData {
     /**

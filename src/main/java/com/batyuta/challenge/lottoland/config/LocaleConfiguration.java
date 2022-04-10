@@ -22,10 +22,6 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.support.ReloadableResourceBundleMessageSource;
-
-import java.util.Locale;
-import java.util.Properties;
 
 import static com.batyuta.challenge.lottoland.enums.I18n.CLASSPATH_MESSAGES;
 

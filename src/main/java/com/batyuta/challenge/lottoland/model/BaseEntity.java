@@ -18,6 +18,7 @@
 package com.batyuta.challenge.lottoland.model;
 
 import com.batyuta.challenge.lottoland.concurrency.LockedData;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -66,6 +67,7 @@ public abstract class BaseEntity<T> extends LockedData
      * @return <code>true</code> if {@link UserEntity#getId()} equals to
      * {@link UserEntity#NEW_ENTITY_ID}
      */
+    @JsonIgnore
     public boolean isNew() {
         return this.id == NEW_ENTITY_ID;
     }

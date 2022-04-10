@@ -31,12 +31,12 @@ export class Msg extends React.Component {
 
     refresh() {
         this.msgService.t(
-                this.msgKey,
-                this.msgOptions,
-                (msgText) => {
-                    this.setState({msg: msgText});
-                }
-            );
+            this.msgKey,
+            this.msgOptions,
+            (msgText) => {
+                this.setState({msg: msgText});
+            }
+        );
     }
 
     componentDidMount() {
@@ -45,7 +45,7 @@ export class Msg extends React.Component {
 
     render() {
         let msg = this.state.msg;
-        if(msg===null) {
+        if (msg === null) {
             msg = '';
         }
         return msg

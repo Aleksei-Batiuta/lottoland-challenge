@@ -37,6 +37,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.event.annotation.BeforeTestClass;
 
@@ -294,14 +295,14 @@ public final class RoundEntityRepositoryTest extends BaseTest {
         @Test
         @DisplayName("TC#05: Checks to data of first user have been created")
         void getRoundsByUser1IdBeforeDelete() {
-            Collection<RoundEntity> roundsByUserId =
-                    repository.findByUserId(USER_1_ID);
+            Page<RoundEntity> roundsByUserId =
+                    repository.findAllByUserId(USER_1_ID, null);
             assertNotNull(roundsByUserId, "Unexpected result");
             assertFalse(roundsByUserId.isEmpty(), "Empty data");
 
             assertEquals(
                     ROUNDS_FOR_EACH_USER,
-                    roundsByUserId.size(),
+                    roundsByUserId.getTotalElements(),
                     "Count of rounds is not the same before delete one"
             );
         }
@@ -377,8 +378,8 @@ public final class RoundEntityRepositoryTest extends BaseTest {
         @Test
         @DisplayName("TC#09: Checks data of first user after delete")
         void getRoundsByUser1IdAfterDelete() {
-            Collection<RoundEntity> roundsByUserId =
-                    repository.findByUserId(USER_1_ID);
+            Page<RoundEntity> roundsByUserId =
+                    repository.findAllByUserId(USER_1_ID, null);
             assertNotNull(roundsByUserId, "Unexpected result");
             assertTrue(roundsByUserId.isEmpty(), "Empty data");
         }
@@ -388,13 +389,13 @@ public final class RoundEntityRepositoryTest extends BaseTest {
                 "TC#10: Checks data of second user after delete data of first"
         )
         void getRoundsByUser2IdAfterDelete() {
-            Collection<RoundEntity> roundsAll =
-                    repository.findByUserId(USER_2_ID);
+            Page<RoundEntity> roundsAll =
+                    repository.findAllByUserId(USER_2_ID, null);
             assertNotNull(roundsAll, "Unexpected result");
             assertFalse(roundsAll.isEmpty(), "Empty data");
             assertEquals(
                     ROUNDS_FOR_EACH_USER,
-                    roundsAll.size(),
+                    roundsAll.getTotalElements(),
                     "Count of rounds is not the same before delete one"
             );
         }
@@ -406,7 +407,7 @@ public final class RoundEntityRepositoryTest extends BaseTest {
             assertNotNull(roundsAll, "Unexpected result");
             assertFalse(roundsAll.isEmpty(), "Empty data");
             assertEquals(
-                    ROUNDS_FOR_EACH_USER * USER_COUNT,
+                    ROUNDS_FOR_EACH_USER,
                     roundsAll.size(),
                     "Count of rounds is not the same before delete one"
             );
@@ -421,7 +422,7 @@ public final class RoundEntityRepositoryTest extends BaseTest {
         @ParameterizedTest(name = "getRoundsByStatus[{index}]: first={0}")
         @MethodSource("testStatusEnums")
         void getRoundsByStatus(final StatusEnum statusEnum) {
-            Collection<RoundEntity> roundsByStatus =
+            Page<RoundEntity> roundsByStatus =
                     repository.getAllRoundsByStatus(statusEnum);
             assertNotNull(
                     roundsByStatus,
@@ -441,7 +442,7 @@ public final class RoundEntityRepositoryTest extends BaseTest {
             );
             assertEquals(
                     expected,
-                    roundsByStatus.size(),
+                    roundsByStatus.getTotalElements(),
                     () -> "Unexpected count for " + statusEnum
             );
         }
@@ -468,9 +469,9 @@ public final class RoundEntityRepositoryTest extends BaseTest {
         @MethodSource("testStatusEnums")
         @DisplayName("TC#14: Checks data to correct total count of status")
         void getTotalRoundsByStatus(final StatusEnum statusEnum) {
-            int totalRoundsByStatus =
+            long totalRoundsByStatus =
                     repository.getTotalRoundsByStatus(statusEnum);
-            int expected;
+            long expected;
             if (statusEnum == null) {
                 expected = roundCountByStatus.values().stream()
                         .map(AtomicInteger::get)
@@ -510,8 +511,8 @@ public final class RoundEntityRepositoryTest extends BaseTest {
          */
         @BeforeTestClass
         public void before() {
-            Collection<RoundEntity> rounds =
-                    repository.findByUserId(USER_3_ID);
+            Page<RoundEntity> rounds =
+                    repository.findAllByUserId(USER_3_ID, null);
             assertNotNull(rounds, "Unexpected result");
             assertTrue(rounds.isEmpty(), "Empty data");
         }
@@ -535,8 +536,8 @@ public final class RoundEntityRepositoryTest extends BaseTest {
         @Execution(CONCURRENT)
         void getAll() {
             for (int i = 0; i < REPEAT_COUNT; i++) {
-                Collection<RoundEntity> rounds =
-                        repository.findByUserId(USER_3_ID);
+                Page<RoundEntity> rounds =
+                        repository.findAllByUserId(USER_3_ID, null);
                 assertNotNull(rounds, "Unexpected result");
             }
         }

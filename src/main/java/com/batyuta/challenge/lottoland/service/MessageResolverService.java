@@ -26,20 +26,39 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 
+/**
+ * i18n service.
+ */
 @Service
 public class MessageResolverService {
+    /**
+     * Message Source.
+     */
     private final MessageSource messageSource;
 
-    public MessageResolverService(MessageSource sources) {
+    /**
+     * Default constructor.
+     * @param sources message source
+     */
+    public MessageResolverService(final MessageSource sources) {
         this.messageSource = sources;
     }
 
-    public Map<String, String> getMessages(Locale locale) {
-        Properties properties = ((ExposedResourceMessageBundleSource) messageSource)
+    /**
+     * Gets all key-value pairs for locale.
+     * @param locale locale
+     * @return key-value pairs
+     */
+    public Map<String, String> getMessages(final Locale locale) {
+        Properties properties =
+                ((ExposedResourceMessageBundleSource) messageSource)
                 .getMessages(locale);
         Map<String, String> messagesMap = new HashMap<>();
         for (Map.Entry<Object, Object> entry : properties.entrySet()) {
-            messagesMap.put(entry.getKey().toString(), entry.getValue().toString());
+            messagesMap.put(
+                    entry.getKey().toString(),
+                    entry.getValue().toString()
+            );
         }
         return messagesMap;
     }

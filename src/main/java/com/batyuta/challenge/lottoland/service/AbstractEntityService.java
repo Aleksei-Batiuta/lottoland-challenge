@@ -25,39 +25,109 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.Optional;
 
-public abstract class AbstractEntityService <T extends BaseEntity<T>> {
-    protected final PagingAndSortingRepository<T, Long> repository;
+/**
+ * Abstract entities service.
+ *
+ * @param <T> Entity class
+ */
+public abstract class AbstractEntityService<T extends BaseEntity<T>> {
+    /**
+     * Entity repository.
+     */
+    private final PagingAndSortingRepository<T, Long> repository;
 
-    public AbstractEntityService(PagingAndSortingRepository<T, Long> repository) {
-        this.repository = repository;
+    /**
+     * Default constructor.
+     *
+     * @param sortingRepository Entity repository.
+     */
+    public AbstractEntityService(
+            final PagingAndSortingRepository<T, Long> sortingRepository) {
+        this.repository = sortingRepository;
     }
 
-    public Page<T> findAll(Pageable pageable) {
+    /**
+     * Getter of entity repository.
+     *
+     * @return repository
+     */
+    public PagingAndSortingRepository<T, Long> getRepository() {
+        return repository;
+    }
+
+    /**
+     * Find all entities.
+     *
+     * @param pageable page settings
+     * @return entities
+     */
+    public Page<T> findAll(final Pageable pageable) {
         return repository.findAll(pageable);
     }
 
-    public Optional<T> findById(Long id) {
+    /**
+     * Find entity by ID.
+     *
+     * @param id entity ID
+     * @return entity
+     */
+    public Optional<T> findById(final Long id) {
         return repository.findById(id);
     }
 
-    public T save(T entity) {
+    /**
+     * Save entity into repository.
+     *
+     * @param entity entity
+     * @return saved entity
+     */
+    public T save(final T entity) {
         return repository.save(entity);
     }
 
-    public T replace(T entity) {
+    /**
+     * Replace entity.
+     *
+     * @param entity entity
+     * @return entity
+     */
+    public T replace(final T entity) {
         repository.deleteById(entity.getId());
         return repository.save(entity);
     }
 
-    public void deleteById(Long id) {
+    /**
+     * Delete entity by ID.
+     *
+     * @param id entity ID
+     */
+    public void deleteById(final Long id) {
         repository.deleteById(id);
     }
 
-    public T update(T entity) {
+    /**
+     * Update entity.
+     *
+     * @param entity entity
+     * @return updated entity
+     */
+    public T update(final T entity) {
         Optional<T> repositoryEntity = repository.findById(entity.getId());
-        T t = repositoryEntity.orElseThrow(()->new DataException("error.data.entity.not.found", entity.getId()));
-        return update(t, entity);
+        T t = repositoryEntity.orElseThrow(
+                () -> new DataException(
+                        "error.data.entity.not.found",
+                        entity.getId()
+                )
+        );
+        return updateImpl(t, entity);
     }
 
-    protected abstract T update(T destination, T source);
+    /**
+     * Update implementation.
+     *
+     * @param destination destination entity
+     * @param source      source entity
+     * @return updated entity
+     */
+    protected abstract T updateImpl(T destination, T source);
 }

@@ -36,7 +36,7 @@ public @interface LogEntry {
      *
      * @return level
      */
-    Level value() default Level.DEBUG;
+    Level value() default Level.TRACE;
 
     /**
      * Duration time logging unit.
