@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RoundEntityRepository.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Lottoland Challenge</a> &gt; <a href="index.source.html" class="el_package">com.batyuta.challenge.lottoland.repository</a> &gt; <span class="el_source">RoundEntityRepository.java</span></div><h1>RoundEntityRepository.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2022 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.batyuta.challenge.lottoland.repository;
+
+import com.batyuta.challenge.lottoland.annotation.LogEntry;
+import com.batyuta.challenge.lottoland.enums.StatusEnum;
+import com.batyuta.challenge.lottoland.model.RoundEntity;
+import com.batyuta.challenge.lottoland.utils.PageableUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Stream;
+
+/**
+ * Round repository implementation class.
+ */
+@Repository
+<span class="fc" id="L37">public class RoundEntityRepository</span>
+        extends BaseEntityRepository&lt;RoundEntity&gt;
+        implements PagingAndSortingRepository&lt;RoundEntity, Long&gt; {
+
+    /**
+     * Marks Round as deleted.
+     *
+     * @param entity entity
+     */
+    @Override
+    protected void deleteImpl(final RoundEntity entity) {
+<span class="fc" id="L48">        entity.setDeleted(true);</span>
+<span class="fc" id="L49">    }</span>
+
+    /**
+     * Gets rounds.
+     *
+     * @param userId       user ID
+     * @param isDeleted    deleted flag
+     * @param status       round status
+     * @param pageSettings page setting
+     * @return rounds
+     */
+    @LogEntry
+    public Page&lt;RoundEntity&gt; getRounds(final Long userId,
+                                       final Boolean isDeleted,
+                                       final StatusEnum status,
+                                       final Pageable pageSettings) {
+<span class="fc" id="L65">        Pageable pageable = pageSettings;</span>
+<span class="fc" id="L66">        Stream&lt;RoundEntity&gt; roundsStream = getEntities()</span>
+<span class="fc" id="L67">                .filter(Objects::nonNull);</span>
+<span class="fc bfc" id="L68" title="All 2 branches covered.">        if (userId != null) {</span>
+<span class="fc" id="L69">            roundsStream = roundsStream</span>
+<span class="fc" id="L70">                    .filter(round -&gt; Objects.equals(round.getUserid(), userId));</span>
+        }
+<span class="fc bfc" id="L72" title="All 2 branches covered.">        if (isDeleted != null) {</span>
+<span class="fc" id="L73">            roundsStream = roundsStream</span>
+<span class="fc bfc" id="L74" title="All 2 branches covered.">                    .filter(round -&gt; round.isDeleted() == isDeleted);</span>
+        }
+<span class="fc bfc" id="L76" title="All 2 branches covered.">        if (status != null) {</span>
+<span class="fc" id="L77">            roundsStream = roundsStream</span>
+<span class="fc bfc" id="L78" title="All 2 branches covered.">                    .filter(round -&gt; round.getStatus() == status);</span>
+        }
+
+<span class="pc bpc" id="L81" title="1 of 2 branches missed.">        if (pageable == null) {</span>
+<span class="fc" id="L82">            pageable = Pageable.unpaged();</span>
+        }
+
+<span class="fc" id="L85">        List&lt;RoundEntity&gt; list =</span>
+<span class="fc" id="L86">                sort(roundsStream, pageable.getSort());</span>
+<span class="fc" id="L87">        int total = list.size();</span>
+<span class="fc" id="L88">        pageable = PageableUtils.fixPageable(pageable, total);</span>
+<span class="fc" id="L89">        return subList(list, pageable, total);</span>
+    }
+
+    /**
+     * Deletes rounds.
+     *
+     * @param userId user ID
+     * @param status round status
+     * @return count of deleted rounds
+     */
+    public Long deleteRounds(final Long userId,
+                             final StatusEnum status) {
+<span class="fc" id="L101">        return write(</span>
+                () -&gt; {
+<span class="fc" id="L103">                    Page&lt;RoundEntity&gt; roundsList = getRounds(</span>
+                            userId,
+<span class="fc" id="L105">                            false,</span>
+                            status,
+                            null
+                    );
+<span class="fc" id="L109">                    this.deleteAll(roundsList);</span>
+<span class="fc" id="L110">                    return roundsList.getTotalElements();</span>
+                }
+        );
+    }
+
+    /**
+     * Deletes all rounds by user ID.
+     *
+     * @param userId user ID
+     * @return count of deleted rounds
+     */
+    public long deleteAllByUserId(final Long userId) {
+<span class="fc" id="L122">        return deleteRounds(userId, null);</span>
+    }
+
+
+    /**
+     * Gets entity page from repository.
+     *
+     * @param userId   user ID
+     * @param pageable page config
+     * @return entities
+     */
+    public Page&lt;RoundEntity&gt; findAllByUserId(final Long userId,
+                                             final Pageable pageable) {
+<span class="fc" id="L135">        return getRounds(</span>
+                userId,
+<span class="fc" id="L137">                false,</span>
+                null,
+                pageable
+        );
+    }
+
+    /**
+     * Gets total played rounds by status.
+     *
+     * @param status status of rounds
+     * @return number of total played rounds
+     */
+    public Long getTotalRoundsByStatus(final StatusEnum status) {
+<span class="fc" id="L150">        Page&lt;RoundEntity&gt; allRoundsByStatus = getAllRoundsByStatus(status);</span>
+<span class="fc" id="L151">        return allRoundsByStatus.getTotalElements();</span>
+    }
+
+    /**
+     * Gets total played rounds by status.
+     *
+     * @param status status of rounds
+     * @return number of total played rounds
+     */
+    public Page&lt;RoundEntity&gt; getAllRoundsByStatus(
+            final StatusEnum status) {
+<span class="fc" id="L162">        return getRounds(null, null, status, null);</span>
+    }
+
+    /**
+     * Deletes all user's rounds.
+     *
+     * @param userId user ID
+     * @return count of deleted items
+     */
+    public Long deleteByUserId(final Long userId) {
+<span class="nc" id="L172">        Page&lt;RoundEntity&gt; allByUserId = findAllByUserId(userId, null);</span>
+<span class="nc" id="L173">        deleteAll(allByUserId);</span>
+<span class="nc" id="L174">        return allByUserId.getTotalElements();</span>
+    }
+
+    /**
+     * Check round to deleted state.
+     *
+     * @param entity round entity
+     * @return &lt;code&gt;true&lt;/code&gt; if round already deleted
+     */
+    @Override
+    protected boolean isDeleted(final RoundEntity entity) {
+<span class="pc bpc" id="L185" title="1 of 4 branches missed.">        return entity == null || entity.isDeleted();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

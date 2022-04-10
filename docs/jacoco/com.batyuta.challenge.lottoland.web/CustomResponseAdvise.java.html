@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CustomResponseAdvise.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Lottoland Challenge</a> &gt; <a href="index.source.html" class="el_package">com.batyuta.challenge.lottoland.web</a> &gt; <span class="el_source">CustomResponseAdvise.java</span></div><h1>CustomResponseAdvise.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2022 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.batyuta.challenge.lottoland.web;
+
+import com.batyuta.challenge.lottoland.annotation.ApplyResponseBinding;
+import com.batyuta.challenge.lottoland.annotation.LogEntry;
+import com.batyuta.challenge.lottoland.vo.RestResponse;
+import org.slf4j.event.Level;
+import org.springframework.core.MethodParameter;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.server.ServerHttpRequest;
+import org.springframework.http.server.ServerHttpResponse;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.http.HttpServletRequest;
+
+@ControllerAdvice(annotations = RestController.class)
+<span class="fc" id="L39">public class CustomResponseAdvise implements ResponseBodyAdvice&lt;Object&gt; {</span>
+    @Override
+    public boolean supports(MethodParameter returnType, Class&lt;? extends HttpMessageConverter&lt;?&gt;&gt; converterType) {
+<span class="nc bnc" id="L42" title="All 2 branches missed.">        return (returnType.getContainingClass().isAnnotationPresent(RestController.class)</span>
+<span class="nc bnc" id="L43" title="All 2 branches missed.">                || returnType.getContainingClass().isAnnotationPresent(ControllerAdvice.class))</span>
+<span class="nc bnc" id="L44" title="All 2 branches missed.">                &amp;&amp; returnType.getContainingClass().isAnnotationPresent(ApplyResponseBinding.class)</span>
+                ;
+    }
+
+    @LogEntry(Level.DEBUG)
+    @Override
+    public Object beforeBodyWrite(Object o, MethodParameter methodParameter, MediaType mediaType, Class aClass, ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
+<span class="nc bnc" id="L51" title="All 2 branches missed.">            if (!(o instanceof RestResponse)) {</span>
+<span class="nc bnc" id="L52" title="All 2 branches missed.">                if (methodParameter.getMethod().isAnnotationPresent(ResponseStatus.class)) {</span>
+<span class="nc" id="L53">                    ResponseStatus responseStatus = methodParameter.getMethod().getAnnotation(ResponseStatus.class);</span>
+<span class="nc" id="L54">                    o = RestResponse.status(o, responseStatus.value());</span>
+<span class="nc" id="L55">                } else {</span>
+<span class="nc" id="L56">                    o = RestResponse.ok(o);</span>
+                }
+            }
+<span class="nc" id="L59">        return o;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

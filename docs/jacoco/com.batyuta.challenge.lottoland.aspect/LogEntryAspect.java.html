@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LogEntryAspect.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Lottoland Challenge</a> &gt; <a href="index.source.html" class="el_package">com.batyuta.challenge.lottoland.aspect</a> &gt; <span class="el_source">LogEntryAspect.java</span></div><h1>LogEntryAspect.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2022 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.batyuta.challenge.lottoland.aspect;
+
+import com.batyuta.challenge.lottoland.annotation.LogEntry;
+import com.batyuta.challenge.lottoland.vo.LogEntryData;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.reflect.CodeSignature;
+import org.aspectj.lang.reflect.MethodSignature;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.event.Level;
+import org.springframework.stereotype.Component;
+
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import java.lang.reflect.Method;
+import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * AspectJ method call logging.
+ */
+@Aspect
+@Component
+<span class="fc" id="L47">public class LogEntryAspect {</span>
+    /**
+     * JSON mapper.
+     */
+<span class="fc" id="L51">    private static final ObjectMapper JSON_MAPPER =</span>
+<span class="fc" id="L52">            new ObjectMapper().findAndRegisterModules();</span>
+
+    /**
+     * Log Message to JSON serialization.
+     *
+     * @param message message
+     * @param pretty  output JSON pretty format flag
+     * @return String view of message
+     */
+    private static String toString(final LogEntryData message,
+                                   final boolean pretty) {
+<span class="fc" id="L63">        return toString(message, pretty, 0);</span>
+    }
+    /**
+     * Log Object to JSON serialization.
+     *
+     * @param object object
+     * @param pretty  output JSON pretty format flag
+     * @param depth  depth of call
+     * @return String view of message
+     */
+    private static String toString(final Object object,
+                                   final boolean pretty,
+                                   final int depth) {
+<span class="pc bpc" id="L76" title="1 of 2 branches missed.">        if (object != null) {</span>
+            try {
+<span class="pc bpc" id="L78" title="2 of 4 branches missed.">                if (object instanceof ServletResponse</span>
+                        || object instanceof ServletRequest) {
+                    // Skips getters of Writer and Reader!
+<span class="nc" id="L81">                    return object.toString();</span>
+                }
+<span class="pc bpc" id="L83" title="1 of 2 branches missed.">                if (pretty) {</span>
+<span class="nc" id="L84">                    return JSON_MAPPER</span>
+<span class="nc" id="L85">                            .writerWithDefaultPrettyPrinter()</span>
+<span class="nc" id="L86">                            .writeValueAsString(object);</span>
+                }
+<span class="fc" id="L88">                return JSON_MAPPER</span>
+<span class="fc" id="L89">                        .writeValueAsString(object);</span>
+<span class="nc" id="L90">            } catch (JsonProcessingException e) {</span>
+<span class="nc bnc" id="L91" title="All 4 branches missed.">                if (object instanceof LogEntryData &amp;&amp; depth == 0) {</span>
+<span class="nc" id="L92">                    LogEntryData message = (LogEntryData) object;</span>
+<span class="nc" id="L93">                    Map&lt;String, Object&gt; args = message.getArgs();</span>
+<span class="nc" id="L94">                    Map&lt;String, String&gt; result = new HashMap&lt;&gt;();</span>
+<span class="nc bnc" id="L95" title="All 2 branches missed.">                    if (args != null) {</span>
+<span class="nc" id="L96">                        args.forEach((key, value) -&gt;</span>
+<span class="nc" id="L97">                                result.put(key, toString(value, pretty, 1))</span>
+                        );
+<span class="nc" id="L99">                        args.putAll(result);</span>
+                    }
+<span class="nc" id="L101">                    message.setResult(</span>
+<span class="nc" id="L102">                            toString(message.getResult(), pretty, 1)</span>
+                    );
+<span class="nc" id="L104">                    return toString(message, pretty, 1);</span>
+                } else {
+<span class="nc" id="L106">                    return object.toString();</span>
+                }
+            }
+        }
+<span class="nc" id="L110">        return null;</span>
+    }
+
+    /**
+     * Log message.
+     *
+     * @param logger  logger
+     * @param level   logging level
+     * @param message message
+     */
+    static void log(final Logger logger,
+                    final Level level,
+                    final String message) {
+<span class="pc bpc" id="L123" title="4 of 5 branches missed.">        switch (level) {</span>
+            case DEBUG:
+<span class="nc" id="L125">                logger.debug(message);</span>
+<span class="nc" id="L126">                break;</span>
+            case TRACE:
+<span class="fc" id="L128">                logger.trace(message);</span>
+<span class="fc" id="L129">                break;</span>
+            case WARN:
+<span class="nc" id="L131">                logger.warn(message);</span>
+<span class="nc" id="L132">                break;</span>
+            case ERROR:
+<span class="nc" id="L134">                logger.error(message);</span>
+<span class="nc" id="L135">                break;</span>
+            default:
+<span class="nc" id="L137">                logger.info(message);</span>
+        }
+<span class="fc" id="L139">    }</span>
+
+    /**
+     * AspectJ entry point.
+     */
+    @Pointcut(&quot;@annotation(&quot;
+            + &quot;com.batyuta.challenge.lottoland.annotation.LogEntry&quot;
+            + &quot;)&quot;)
+    public void methodsToBeProfiled() {
+<span class="nc" id="L148">    }</span>
+
+    /**
+     * AspectJ around pointcut.
+     *
+     * @param point point
+     * @return result
+     * @throws Throwable if exception was appeared
+     */
+    @Around(&quot;methodsToBeProfiled()&quot;)
+    public Object log(final ProceedingJoinPoint point) throws Throwable {
+<span class="fc" id="L159">        CodeSignature codeSignature =</span>
+<span class="fc" id="L160">                (CodeSignature) point.getSignature();</span>
+<span class="fc" id="L161">        MethodSignature methodSignature =</span>
+<span class="fc" id="L162">                (MethodSignature) point.getSignature();</span>
+<span class="fc" id="L163">        Method method = methodSignature.getMethod();</span>
+<span class="fc" id="L164">        LogEntry annotation = method.getAnnotation(LogEntry.class);</span>
+<span class="fc" id="L165">        Logger logger = LoggerFactory.getLogger(method.getDeclaringClass());</span>
+
+<span class="fc" id="L167">        LogEntryData logEntryMessage =</span>
+                new LogEntryData(
+<span class="fc" id="L169">                        method.getName(),</span>
+<span class="fc" id="L170">                        codeSignature.getParameterNames(),</span>
+<span class="fc" id="L171">                        point.getArgs(),</span>
+<span class="fc" id="L172">                        Instant.now(),</span>
+<span class="fc" id="L173">                        annotation.unit()</span>
+                );
+        Object response;
+        try {
+<span class="fc" id="L177">            response = point.proceed();</span>
+<span class="fc" id="L178">            logEntryMessage.setResult(response);</span>
+<span class="nc" id="L179">        } catch (Throwable throwable) {</span>
+<span class="nc" id="L180">            logEntryMessage.setResult(throwable);</span>
+<span class="nc" id="L181">            throw throwable;</span>
+        } finally {
+<span class="fc" id="L183">            logEntryMessage.setEnd(Instant.now());</span>
+<span class="fc" id="L184">            log(</span>
+                    logger,
+<span class="fc" id="L186">                    annotation.value(),</span>
+<span class="fc" id="L187">                    toString(logEntryMessage, annotation.prettyFormatted())</span>
+            );
+        }
+<span class="fc" id="L190">        return response;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

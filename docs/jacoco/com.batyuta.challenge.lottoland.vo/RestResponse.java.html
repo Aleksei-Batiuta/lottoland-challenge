@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RestResponse.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Lottoland Challenge</a> &gt; <a href="index.source.html" class="el_package">com.batyuta.challenge.lottoland.vo</a> &gt; <span class="el_source">RestResponse.java</span></div><h1>RestResponse.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2022 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.batyuta.challenge.lottoland.vo;
+
+import com.batyuta.challenge.lottoland.converter.HttpStatusSerializer;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import lombok.Data;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+
+import java.time.LocalDateTime;
+
+/**
+ * Rest response wrapper.
+ *
+ * @param &lt;T&gt; body type
+ */
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonPropertyOrder({&quot;status&quot;, &quot;headers&quot;, &quot;body&quot;, &quot;timestamp&quot;})
+<span class="nc bnc" id="L38" title="All 36 branches missed.">@Data</span>
+public final class RestResponse&lt;T&gt; {
+    /**
+     * Response timestamp.
+     */
+    @JsonFormat(
+            shape = JsonFormat.Shape.STRING,
+            pattern = &quot;dd-MM-yyyy hh:mm:ss&quot;
+    )
+<span class="nc" id="L47">    private final LocalDateTime timestamp;</span>
+    /**
+     * Response body.
+     */
+<span class="nc" id="L51">    private final T body;</span>
+    /**
+     * Response HTTP headers.
+     */
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+<span class="nc" id="L56">    private final HttpHeaders headers;</span>
+    /**
+     * Response HTTP status.
+     */
+    @JsonSerialize(using = HttpStatusSerializer.class)
+<span class="nc" id="L61">    private final HttpStatus status;</span>
+
+    /**
+     * Default constructor.
+     *
+     * @param tBody      response body
+     * @param httpStatus response HTTP status
+     */
+    private RestResponse(final T tBody,
+                         final HttpStatus httpStatus) {
+<span class="fc" id="L71">        this(tBody, null, httpStatus);</span>
+<span class="fc" id="L72">    }</span>
+
+    /**
+     * Default constructor.
+     *
+     * @param tBody       response body
+     * @param httpHeaders response HTTP headers
+     * @param httpStatus  response HTTP status
+     */
+    private RestResponse(final T tBody,
+                         final HttpHeaders httpHeaders,
+<span class="fc" id="L83">                         final HttpStatus httpStatus) {</span>
+<span class="fc" id="L84">        this.body = tBody;</span>
+<span class="fc" id="L85">        this.headers = httpHeaders;</span>
+<span class="fc" id="L86">        this.status = httpStatus;</span>
+<span class="fc" id="L87">        this.timestamp = LocalDateTime.now();</span>
+<span class="fc" id="L88">    }</span>
+
+    /**
+     * Build response.
+     *
+     * @param body   response body.
+     * @param status HTTP response status
+     * @param &lt;T&gt;    body type
+     * @return response wrapper
+     */
+    public static &lt;T&gt; RestResponse&lt;T&gt; status(final T body,
+                                             final HttpStatus status) {
+<span class="fc" id="L100">        return new RestResponse&lt;&gt;(body, status);</span>
+    }
+
+    /**
+     * Build {@link HttpStatus#OK} response.
+     *
+     * @param body response body
+     * @param &lt;T&gt;  body type
+     * @return response wrapper
+     */
+    public static &lt;T&gt; RestResponse&lt;T&gt; ok(final T body) {
+<span class="nc" id="L111">        return new RestResponse&lt;&gt;(body, HttpStatus.OK);</span>
+    }
+
+    /**
+     * Build {@link HttpStatus#INTERNAL_SERVER_ERROR} response.
+     *
+     * @param ex exception
+     * @return response wrapper
+     */
+    public static RestResponse&lt;ErrorBody&gt; internalServerError(
+            final Throwable ex) {
+<span class="nc" id="L122">        return new RestResponse&lt;&gt;(</span>
+                new ErrorBody(ex),
+                HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
+
+    /**
+     * Build {@link HttpStatus#FORBIDDEN} response.
+     *
+     * @param ex exception
+     * @return response wrapper
+     */
+    public static RestResponse&lt;ErrorBody&gt; forbidden(
+            final Throwable ex) {
+<span class="nc" id="L136">        return new RestResponse&lt;&gt;(new ErrorBody(ex), HttpStatus.FORBIDDEN);</span>
+    }
+
+    /**
+     * Build {@link HttpStatus#BAD_REQUEST} response.
+     *
+     * @param message message text.
+     * @param ex      exception
+     * @return response wrapper
+     */
+    public static RestResponse&lt;ErrorBody&gt; badRequest(
+            final String message, final Throwable ex) {
+<span class="nc" id="L148">        return new RestResponse&lt;&gt;(</span>
+                new ErrorBody(message, ex),
+                HttpStatus.BAD_REQUEST
+        );
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

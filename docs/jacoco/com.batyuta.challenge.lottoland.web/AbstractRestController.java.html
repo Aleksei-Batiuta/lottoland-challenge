@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractRestController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Lottoland Challenge</a> &gt; <a href="index.source.html" class="el_package">com.batyuta.challenge.lottoland.web</a> &gt; <span class="el_source">AbstractRestController.java</span></div><h1>AbstractRestController.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2022 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.batyuta.challenge.lottoland.web;
+
+import com.batyuta.challenge.lottoland.exception.DataException;
+import com.batyuta.challenge.lottoland.model.BaseEntity;
+import com.batyuta.challenge.lottoland.model.UserEntity;
+import com.batyuta.challenge.lottoland.service.AbstractEntityService;
+import com.batyuta.challenge.lottoland.service.LightweightService;
+import com.batyuta.challenge.lottoland.utils.PageableUtils;
+import com.batyuta.challenge.lottoland.vo.BaseVO;
+import com.batyuta.challenge.lottoland.vo.RoundVO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
+public abstract class AbstractRestController&lt;T extends BaseEntity&lt;T&gt;, V extends BaseVO&gt; {
+    public static final String CSRF = &quot;X-XSRF-TOKEN&quot;;
+    protected final AbstractEntityService&lt;T&gt; service;
+    protected final LightweightService&lt;T, V&gt; lightweightService;
+
+<span class="fc" id="L52">    public AbstractRestController(AbstractEntityService&lt;T&gt; entityService, LightweightService&lt;T, V&gt; lightweightService) {</span>
+<span class="fc" id="L53">        this.service = entityService;</span>
+<span class="fc" id="L54">        this.lightweightService = lightweightService;</span>
+<span class="fc" id="L55">    }</span>
+
+    @RequestMapping(value = &quot;/&quot;, method = RequestMethod.GET)
+    public Page&lt;V&gt; findAll(@RequestHeader(value = CSRF, required = false) UserEntity user,
+                                 @RequestParam(required = false) Integer page,
+                                 @RequestParam(required = false) Integer size,
+                                 @RequestParam(required = false) Sort sort) {
+<span class="nc" id="L62">        Pageable pageable = buildPageable(page, size, sort);</span>
+<span class="nc" id="L63">        return lightweightService</span>
+<span class="nc" id="L64">                .getViews(service.findAll(pageable));</span>
+    }
+
+    protected Pageable buildPageable(Integer page, Integer size, Sort sort) {
+<span class="nc" id="L68">        Pageable pageable = null;</span>
+<span class="nc bnc" id="L69" title="All 2 branches missed.">        if (page != null) {</span>
+<span class="nc bnc" id="L70" title="All 2 branches missed.">            if (size != null) {</span>
+<span class="nc bnc" id="L71" title="All 2 branches missed.">                if (sort != null) {</span>
+<span class="nc" id="L72">                    pageable = PageRequest.of(page, size, sort);</span>
+                } else {
+<span class="nc" id="L74">                    pageable = PageRequest.of(page, size);</span>
+                }
+            }
+        } else {
+<span class="nc bnc" id="L78" title="All 2 branches missed.">            if (size != null) {</span>
+<span class="nc" id="L79">                pageable = Pageable.ofSize(size);</span>
+            }
+        }
+<span class="nc bnc" id="L82" title="All 2 branches missed.">        if (pageable == null) {</span>
+<span class="nc" id="L83">            pageable = Pageable.unpaged();</span>
+        }
+<span class="nc" id="L85">        return pageable;</span>
+    }
+
+    @RequestMapping(value = &quot;/{id}&quot;, method = RequestMethod.GET)
+    public EntityModel&lt;V&gt; findById(@PathVariable Long id) {
+<span class="nc" id="L90">        Optional&lt;T&gt; byId = service.findById(id);</span>
+<span class="nc bnc" id="L91" title="All 2 branches missed.">        if (byId.isPresent()) {</span>
+<span class="nc" id="L92">            V view = lightweightService.toView(byId.get());</span>
+<span class="nc" id="L93">            return getEntityModel(view, Pageable.unpaged());</span>
+
+        } else {
+<span class="nc" id="L96">            throw new DataException(&quot;error.data.entity.not.found&quot;, id);</span>
+        }
+    }
+
+    @RequestMapping(value = &quot;/&quot;, method = RequestMethod.POST)
+    public EntityModel&lt;V&gt; save(@RequestBody V view) {
+<span class="nc" id="L102">        T entity = lightweightService.toEntity(view);</span>
+<span class="nc" id="L103">        view = lightweightService.toView(service.save(entity));</span>
+<span class="nc" id="L104">        return getEntityModel(view, Pageable.unpaged());</span>
+    }
+
+    @RequestMapping(value = &quot;/{id}&quot;, method = RequestMethod.PUT)
+    public EntityModel&lt;V&gt; put(@RequestParam Long id,
+                              @RequestBody V view) {
+<span class="nc" id="L110">        T entity = lightweightService.toEntity(view);</span>
+<span class="nc" id="L111">        entity.setId(id);</span>
+<span class="nc" id="L112">        view = lightweightService.toView(service.replace(entity));</span>
+<span class="nc" id="L113">        return getEntityModel(view, Pageable.unpaged());</span>
+    }
+
+    @RequestMapping(value = &quot;/{id}&quot;, method = RequestMethod.DELETE)
+    public void delete(@PathVariable Long id) {
+<span class="nc" id="L118">        service.deleteById(id);</span>
+<span class="nc" id="L119">    }</span>
+
+    @RequestMapping(value = &quot;/{id}&quot;, method = RequestMethod.PATCH)
+    public EntityModel&lt;V&gt; patch(@PathVariable Long id, @RequestBody V view) {
+<span class="nc" id="L123">        T entity = lightweightService.toEntity(view);</span>
+<span class="nc" id="L124">        entity.setId(id);</span>
+<span class="nc" id="L125">        view = lightweightService.toView(service.update(entity));</span>
+<span class="nc" id="L126">        return getEntityModel(view, Pageable.unpaged());</span>
+    }
+
+    protected EntityModel&lt;V&gt; getEntityModel(V view, Pageable pageable) {
+<span class="nc" id="L130">        Long viewId = view.getId();</span>
+<span class="nc" id="L131">        EntityModel&lt;V&gt; model = EntityModel.of(</span>
+                view,
+<span class="nc" id="L133">                linkTo(methodOn(this.getClass()).findById(viewId)).withSelfRel());</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">        if (pageable.isUnpaged()) {</span>
+<span class="nc" id="L135">            pageable = PageRequest.of(0, 10);</span>
+        }
+<span class="nc" id="L137">        model.add(</span>
+<span class="nc" id="L138">                linkTo(methodOn(this.getClass()).findAll(null, pageable.getPageNumber(), pageable.getPageSize(), pageable.getSort())).withRel(&quot;all&quot;)</span>
+        );
+<span class="nc" id="L140">        return model;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
