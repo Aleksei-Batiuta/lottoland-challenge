@@ -17,14 +17,16 @@
 
 const React = require("react");
 
+// import {Chart} from "./chart";
+
 const {Chart} = require("react-google-charts");
 import {Msg} from "./msg";
+import RestService from "../service/restService";
 
 export class Statistics extends React.Component {
     constructor(props) {
         super(props);
         this.props = props;
-        console.log(this.props);
         this.state = {
             chartData: [
                 ["Name", "Data"],
@@ -39,6 +41,9 @@ export class Statistics extends React.Component {
                 draws: 1
             }
         };
+
+        this.restService = RestService.getInstance();
+
         this.refresh = this.refresh.bind(this);
     }
 
@@ -48,26 +53,15 @@ export class Statistics extends React.Component {
 
     refresh() {
         // <2>
-        fetch("/api/rounds/statistics", {
-            method: 'GET',
-            headers: new Headers(),
+        this.restService.getStatistics((data)=> {
+            const chartData = [
+                ["Name", "Data"],
+                ["First", data.first],
+                ["Second", data.second],
+                ["Draws", data.draws]
+            ];
+            this.setState({chartData: chartData, data: data});
         })
-            .then(
-                (res) => res.json()
-            )
-            .then(
-                (data) => {
-                    const chartData = [
-                        ["Name", "Data"],
-                        ["First", data.first],
-                        ["Second", data.second],
-                        ["Draws", data.draws]
-                    ];
-                    this.setState({chartData: chartData, data: data});
-                    console.log(data);
-                }
-            )
-            .catch((err) => console.log(err));
     }
 
     render() {
