@@ -28,13 +28,83 @@ export class Round extends React.Component {
 
     render() {
         let round = this.props.round;
+
+        let rowClassName = 'legend icon sprite bg-' + round.status.name.toLowerCase();
+        let player1ClassName = 'legend icon sprite bg-' + round.player1.name.toLowerCase();
+        let player2ClassName = 'legend icon sprite bg-' + round.player2.name.toLowerCase();
+        let resultClassName = rowClassName + ' ' + this.getResultClassName(round);
+
         return (
             <tr>
                 <td>{round.id}</td>
-                <td><Msg msgKey={round.player1.messageKey}/></td>
-                <td><Msg msgKey={round.player2.messageKey}/></td>
-                <td><Msg msgKey={round.status.messageKey}/></td>
+                <td>
+                    <div className="item">
+                        <div className={player1ClassName}/>
+                        <div className="name"><Msg msgKey={round.player1.messageKey}/></div>
+                    </div>
+                </td>
+                <td>
+                    <div className="item">
+                        <div className={player2ClassName}/>
+                        <div className="name"><Msg msgKey={round.player2.messageKey}/></div>
+                    </div>
+                </td>
+                <td>
+                    <div className="item">
+                        <div className={'legend-container'}>
+                        <div className={resultClassName}/></div>
+                        <div className={"name " + 'fg-'+round.status.name.toLowerCase()}><Msg msgKey={round.status.messageKey}/></div>
+                    </div>
+                </td>
             </tr>
         )
+    }
+
+    getResultClassName(round) {
+        let resultClassName = '';
+
+        let rockAndPaper = 's1x2';
+        let rockAndScissors = 's0x2';
+        let scissorsAndPaper = 's2x2';
+        let handShake = 's3x0';
+        switch (round.player1.name) {
+            case 'ROCK':
+                switch (round.player2.name) {
+                    case 'PAPER' :
+                        resultClassName += rockAndPaper;
+                        break;
+                    case 'SCISSORS' :
+                        resultClassName += rockAndScissors;
+                        break;
+                    default:
+                        resultClassName += handShake;
+                }
+                break;
+            case 'SCISSORS':
+                switch (round.player2.name) {
+                    case 'ROCK' :
+                        resultClassName += rockAndScissors;
+                        break;
+                    case 'PAPER' :
+                        resultClassName += scissorsAndPaper;
+                        break;
+                    default:
+                        resultClassName += handShake;
+                }
+                break;
+            case 'PAPER':
+                switch (round.player2.name) {
+                    case 'ROCK' :
+                        resultClassName += rockAndPaper;
+                        break;
+                    case 'SCISSORS' :
+                        resultClassName += scissorsAndPaper;
+                        break;
+                    default:
+                        resultClassName += handShake;
+                }
+                break;
+        }
+        return resultClassName;
     }
 }

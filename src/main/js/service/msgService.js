@@ -18,10 +18,23 @@
 import i18next from "i18next";
 import {initReactI18next} from "react-i18next";
 
-import detector from "i18next-browser-languagedetector";
+// import detector from "i18next-browser-languagedetector";
 import backend from "i18next-http-backend";
 import React from "react";
 
+export const LANGUAGES = [
+    {
+        value:'en',
+        label:'label.language.en',
+        name:'English'
+    },
+    {
+        value:'ru',
+        label:'label.language.ru',
+        name:'Русский'
+    }
+    ];
+export const LANGUAGE_DEFAULT = 'en';
 export default class MsgService {
     static instance = null;
     context = [];
@@ -30,6 +43,7 @@ export default class MsgService {
     constructor() {
         this.init();
         this.t = this.t.bind(this);
+        this.changeLanguage = this.changeLanguage.bind(this);
     }
 
     static getInstance() {
@@ -49,10 +63,20 @@ export default class MsgService {
         setter(this.i18n.t(msgKey, msgOptions));
     }
 
+    changeLanguage(language) {
+        return this.i18n.changeLanguage(language);
+    }
+
     refresh() {
         try {
-            this.context.map(
-                (o) => o.setter(this.i18n.t(o.key, o.options))
+            this.context.forEach(
+                (o) => {
+                    try {
+                        o.setter(this.i18n.t(o.key, o.options))
+                    } catch (e) {
+                        console.log(e);
+                    }
+                }
             );
         } finally {
             this.context = [];
@@ -63,10 +87,12 @@ export default class MsgService {
     init() {
         this.i18n
             .use(initReactI18next)
-            .use(detector)
+            // .use(detector)
             .use(backend)
             .init({
-                    fallbackLng: "en", // use en if detected lng is not available
+                    fallbackLng: LANGUAGE_DEFAULT, // use en if detected lng is not available
+                    lng: LANGUAGE_DEFAULT,
+                    preload: LANGUAGES.map(language => language.value),
                     debug: true,
                     interpolation: {
                         escapeValue: false // react already safes from xss

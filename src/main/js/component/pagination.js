@@ -16,6 +16,7 @@
  */
 
 import React from "react";
+import {Msg} from "./msg";
 
 export class Pagination extends React.Component {
 
@@ -93,13 +94,13 @@ export class Pagination extends React.Component {
                 </button>
                 {' '}
                 <span>
-          Page{' '}
+          <Msg msgKey='label.page'/>{' '}
                     <strong>
-            {number + 1} of {totalPages !== 0 ? totalPages : 1}
+            {number + 1} <Msg msgKey='label.page.of'/> {totalPages !== 0 ? totalPages : 1}
           </strong>{' '}
         </span>
                 <span>
-          | Go to page:{' '}
+          | <Msg msgKey='label.page.goto'/>:{' '}
                     <input
                         type="number"
                         value={number + 1}
@@ -109,7 +110,9 @@ export class Pagination extends React.Component {
                         }}
                         style={{width: '100px'}}
                     />
-        </span>{' '}
+                    {' '}
+        </span><span>
+                | <Msg msgKey='label.page.show'/>:{' '}
                 <select
                     value={size}
                     onChange={e => {
@@ -118,10 +121,11 @@ export class Pagination extends React.Component {
                 >
                     {[10, 20, 30, 40, 50].map(pageSize => (
                         <option key={pageSize} value={pageSize}>
-                            Show {pageSize}
+                             {pageSize}
                         </option>
                     ))}
                 </select>
+                </span>
             </div>
         )
     }

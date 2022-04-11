@@ -82,35 +82,35 @@ export class Statistics extends React.Component {
                         </div>
                     </td>
                     <td>
-                        <div className="legend-first">&nbsp;</div>
+                        <div className="legend bg-win">&nbsp;</div>
                     </td>
-                    <td><label htmlFor="first_wins">
+                    <td><label className="fg-win" htmlFor="first_wins">
                         <Msg msgKey="label.rounds.first"/>
                     </label></td>
                     <td>
-                        <output id="first_wins">{this.state.data.first}</output>
+                        <output id="first_wins" className="fg-win">{this.state.data.first}</output>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <div className="legend-second">&nbsp;</div>
+                        <div className="legend bg-loss">&nbsp;</div>
                     </td>
-                    <td><label htmlFor="second_wins">
+                    <td><label htmlFor="second_wins" className="fg-loss">
                         <Msg msgKey="label.rounds.second"/>
                     </label></td>
                     <td>
-                        <output id="second_wins">{this.state.data.second}</output>
+                        <output id="second_wins" className="fg-loss">{this.state.data.second}</output>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <div className="legend-draws">&nbsp;</div>
+                        <div className="legend bg-draw">&nbsp;</div>
                     </td>
-                    <td><label htmlFor="total_draws">
+                    <td><label htmlFor="total_draws" className="fg-draw">
                         <Msg msgKey="label.rounds.draws"/>
                     </label></td>
                     <td>
-                        <output id="total_draws">{this.state.data.draws}</output>
+                        <output id="total_draws" className="fg-draw">{this.state.data.draws}</output>
                     </td>
                 </tr>
                 </tbody>

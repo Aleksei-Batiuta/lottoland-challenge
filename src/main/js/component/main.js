@@ -16,9 +16,12 @@
  */
 'use strict';
 
+import {LANGUAGE_DEFAULT} from "../service/msgService";
+
 const React = require('react');
 import {Statistics} from "./statistics";
 import {Game} from "./game";
+import {LanguageSelect} from "./languageSelect";
 
 const {Msg} = require("../component/msg");
 
@@ -31,15 +34,16 @@ export class Main extends React.Component { // <1>
 
         this.game = React.createRef();
         this.statistics = React.createRef();
-        this.state = {active: TAB_GAME};
+        this.state = {active: TAB_GAME, refresh:true};
 
         this.activate = this.activate.bind(this);
         this.switchToGame = this.switchToGame.bind(this);
         this.switchToStatistics = this.switchToStatistics.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
 
     activate(t) {
-        this.setState({active: t})
+        this.setState({active: t, refresh:true})
     }
 
     switchToGame() {
@@ -97,6 +101,10 @@ export class Main extends React.Component { // <1>
                             </a>&nbsp;2022
                             </p>
                         </div>
+                        <div className="languages">
+                            <Msg msgKey='label.language'/>:{' '}
+                            <LanguageSelect handleChange={this.handleChange}/>
+                        </div>
                         <div className="version">
                             <p>
                                 <Msg msgKey="project.version"/>
@@ -106,5 +114,8 @@ export class Main extends React.Component { // <1>
                 </div>
             </div>
         )
+    }
+    handleChange(event) {
+        this.setState( {active: this.state.active, refresh:true });
     }
 }
