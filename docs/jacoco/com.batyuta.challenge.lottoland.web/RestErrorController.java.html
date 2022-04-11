@@ -42,32 +42,32 @@ import javax.servlet.http.HttpServletRequest;
      */
     @RequestMapping
     public RestResponse&lt;ErrorBody&gt; error(final HttpServletRequest request) {
-<span class="fc" id="L45">        HttpStatus status = getStatus(request);</span>
-<span class="pc bpc" id="L46" title="1 of 2 branches missed.">        if (status == HttpStatus.NO_CONTENT) {</span>
+<span class="nc" id="L45">        HttpStatus status = getStatus(request);</span>
+<span class="nc bnc" id="L46" title="All 2 branches missed.">        if (status == HttpStatus.NO_CONTENT) {</span>
 <span class="nc" id="L47">            return RestResponse.status(new ErrorBody(&quot;No Content&quot;), status);</span>
         }
-<span class="fc" id="L49">        Object message = request.getAttribute(&quot;message&quot;);</span>
-<span class="fc" id="L50">        return RestResponse.status(</span>
+<span class="nc" id="L49">        Object message = request.getAttribute(&quot;message&quot;);</span>
+<span class="nc" id="L50">        return RestResponse.status(</span>
                 new ErrorBody(
-<span class="pc bpc" id="L52" title="1 of 2 branches missed.">                        message != null</span>
+<span class="nc bnc" id="L52" title="All 2 branches missed.">                        message != null</span>
 <span class="nc" id="L53">                                ? message.toString()</span>
-<span class="fc" id="L54">                                : request.getServletPath()</span>
-<span class="pc bpc" id="L55" title="1 of 2 branches missed.">                                + (request.getQueryString() != null</span>
+<span class="nc" id="L54">                                : request.getServletPath()</span>
+<span class="nc bnc" id="L55" title="All 2 branches missed.">                                + (request.getQueryString() != null</span>
 <span class="nc" id="L56">                                ? &quot;?&quot; + request.getQueryString()</span>
-<span class="fc" id="L57">                                : &quot;&quot;)</span>
+<span class="nc" id="L57">                                : &quot;&quot;)</span>
                 ),
                 status
         );
     }
 
     private HttpStatus getStatus(final HttpServletRequest request) {
-<span class="fc" id="L64">        Integer statusCode = (Integer) request</span>
-<span class="fc" id="L65">                .getAttribute(RequestDispatcher.ERROR_STATUS_CODE);</span>
-<span class="pc bpc" id="L66" title="1 of 2 branches missed.">        if (statusCode == null) {</span>
+<span class="nc" id="L64">        Integer statusCode = (Integer) request</span>
+<span class="nc" id="L65">                .getAttribute(RequestDispatcher.ERROR_STATUS_CODE);</span>
+<span class="nc bnc" id="L66" title="All 2 branches missed.">        if (statusCode == null) {</span>
 <span class="nc" id="L67">            return HttpStatus.INTERNAL_SERVER_ERROR;</span>
         }
         try {
-<span class="fc" id="L70">            return HttpStatus.valueOf(statusCode);</span>
+<span class="nc" id="L70">            return HttpStatus.valueOf(statusCode);</span>
 <span class="nc" id="L71">        } catch (Exception ex) {</span>
 <span class="nc" id="L72">            return HttpStatus.INTERNAL_SERVER_ERROR;</span>
         }

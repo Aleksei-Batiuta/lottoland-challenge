@@ -6,10 +6,10 @@ Lottoland Challenge,com.batyuta.challenge.lottoland.enums,SignEnum.new SignEnum(
 Lottoland Challenge,com.batyuta.challenge.lottoland.enums,SignEnum.new SignEnum() {...},4,22,1,5,1,7,1,5,0,2
 Lottoland Challenge,com.batyuta.challenge.lottoland.enums,SignEnum.new SignEnum() {...},4,22,1,5,1,7,1,5,0,2
 Lottoland Challenge,com.batyuta.challenge.lottoland.vo,BaseVO,14,0,0,0,6,0,3,0,3,0
-Lottoland Challenge,com.batyuta.challenge.lottoland.vo,ErrorBody,178,25,32,2,7,9,27,3,10,3
+Lottoland Challenge,com.batyuta.challenge.lottoland.vo,ErrorBody,203,0,34,0,16,0,30,0,13,0
 Lottoland Challenge,com.batyuta.challenge.lottoland.vo,UserVO,23,0,0,0,5,0,3,0,3,0
 Lottoland Challenge,com.batyuta.challenge.lottoland.vo,RoundVO,56,0,0,0,11,0,6,0,6,0
-Lottoland Challenge,com.batyuta.challenge.lottoland.vo,RestResponse,218,27,36,0,9,9,29,3,11,3
+Lottoland Challenge,com.batyuta.challenge.lottoland.vo,RestResponse,245,0,36,0,18,0,32,0,14,0
 Lottoland Challenge,com.batyuta.challenge.lottoland.vo,LogEntryData,268,103,60,8,5,19,40,9,7,8
 Lottoland Challenge,com.batyuta.challenge.lottoland.vo,StatisticsVO,54,0,0,0,11,0,6,0,6,0
 Lottoland Challenge,com.batyuta.challenge.lottoland.service,AbstractEntityService,64,6,0,0,13,3,8,1,8,1
@@ -27,7 +27,7 @@ Lottoland Challenge,com.batyuta.challenge.lottoland.repository,SortComparator,57
 Lottoland Challenge,com.batyuta.challenge.lottoland.repository,BaseDataEntityRepository,16,76,2,2,5,20,4,7,2,7
 Lottoland Challenge,com.batyuta.challenge.lottoland.web,RestMessageController,14,6,2,0,4,3,2,1,1,1
 Lottoland Challenge,com.batyuta.challenge.lottoland.web,RestAbstractController,201,9,16,0,55,4,18,1,10,1
-Lottoland Challenge,com.batyuta.challenge.lottoland.web,RestErrorController,25,45,4,4,6,13,4,3,0,3
+Lottoland Challenge,com.batyuta.challenge.lottoland.web,RestErrorController,67,3,8,0,18,1,6,1,2,1
 Lottoland Challenge,com.batyuta.challenge.lottoland.web,RestExceptionHandler,48,10,0,0,13,5,4,1,4,1
 Lottoland Challenge,com.batyuta.challenge.lottoland.web,RestRoundController,85,8,2,0,18,3,5,1,4,1
 Lottoland Challenge,com.batyuta.challenge.lottoland.web,RestResponseAdvise,47,3,10,0,14,1,7,1,2,1
