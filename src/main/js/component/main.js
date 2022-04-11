@@ -55,7 +55,8 @@ export class Main extends React.Component { // <1>
     }
 
     render() {
-        let projectUrl = "#";
+        let authorUrl = document.getElementById('authorUrl').innerHTML;
+        let projectUrl = document.getElementById('projectUrl').innerHTML;
         let gameMenuClassName;
         let statisticsMenuClassName;
         let page;
@@ -96,7 +97,7 @@ export class Main extends React.Component { // <1>
                 <div className="footer">
                     <div className="footer-context">
                         <div className="copyrights">
-                            <p><a href={projectUrl}>©
+                            <p><a href={authorUrl}>©
                                 <Msg msgKey="project.author"/>
                             </a>&nbsp;2022
                             </p>
@@ -107,7 +108,9 @@ export class Main extends React.Component { // <1>
                         </div>
                         <div className="version">
                             <p>
-                                <Msg msgKey="project.version"/>
+                                <a href={projectUrl}>
+                                    <Msg msgKey="project.version"/>
+                                </a>
                             </p>
                         </div>
                     </div>

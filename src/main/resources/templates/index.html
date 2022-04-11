@@ -20,8 +20,11 @@
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
     <title th:text="#{project.name}"></title>
     <link href="./css/main.css" rel="stylesheet"/>
+
 </head>
 <body>
+<div style="display:none" id="authorUrl" th:text="#{project.author.url}"></div>
+<div style="display:none" id="projectUrl" th:text="#{project.url}"></div>
 <div id="react"></div>
 <script src="built/bundle.js"></script>
 </body>
