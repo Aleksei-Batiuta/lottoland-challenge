@@ -183,6 +183,40 @@
                             </configuration>
                         </execution>
                         <execution>
+                            <id>npm run lint</id>
+                            <goals>
+                                <goal>npm</goal>
+                            </goals>
+                            <phase>compile</phase>
+                            <configuration>
+                                <!-- To see the 'npx eslint . \-\-ext js,jsx \-\-fix' to fix -->
+                                <arguments>run lint</arguments>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>npm run prettier check</id>
+                            <goals>
+                                <goal>npm</goal>
+                            </goals>
+                            <phase>compile</phase>
+                            <configuration>
+                                <!-- To see the 'npx prettier \-\- write . ' to fix-->
+                                <arguments>run prettier:check</arguments>
+                            </configuration>
+                        </execution>
+                        <!--
+                        <execution>
+                            <id>npm run prettier:fix</id>
+                            <goals>
+                                <goal>npm</goal>
+                            </goals>
+                            <phase>process-sources</phase>
+                            <configuration>
+                                <arguments>run prettier:fix</arguments>
+                            </configuration>
+                        </execution>
+                        -->
+                        <execution>
                             <id>webpack build</id>
                             <goals>
                                 <goal>webpack</goal>

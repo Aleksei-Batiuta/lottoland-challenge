@@ -15,18 +15,20 @@
  * limitations under the License.
  */
 
-import React from "react";
+import React from 'react';
+import PropTypes from 'prop-types';
 
 export class Chart extends React.Component {
     constructor(props) {
         super(props);
-        this.setState({data: props});
+        Chart.propTypes = {
+            data: PropTypes.array
+        };
+        this.setState(props.data);
         this.refresh = this.refresh.bind(this);
     }
 
-    refresh() {
-
-    }
+    refresh() {}
 
     componentDidMount() {
         this.refresh();
@@ -36,7 +38,7 @@ export class Chart extends React.Component {
         if (total === 0) {
             return 0;
         }
-        return ((value / total) * 100);
+        return (value / total) * 100;
     }
 
     render() {
@@ -44,22 +46,26 @@ export class Chart extends React.Component {
         let total = 0;
         this.state.data?.forEach((element) => {
             total = total + element[1];
-        })
+        });
         let previousPercent = 0;
         this.state.data?.forEach((element, index) => {
             let currentPercent = this.calculatePercent(element[1], total);
             previousPercent = previousPercent + currentPercent;
-            conic += (index !== 0 ? ' ,' : '') + element[0] + (index !== 0 ? ' 0 ' : ' ')
-                + previousPercent.toFixed(0) + '%';
-        })
-        conic += ')'
+            conic +=
+                (index !== 0 ? ' ,' : '') +
+                element[0] +
+                (index !== 0 ? ' 0 ' : ' ') +
+                previousPercent.toFixed(0) +
+                '%';
+        });
+        conic += ')';
         let style = {
             background: conic,
             borderRadius: '50%',
             width: '10vw',
             height: '10vw',
             padding: '20px'
-        }
-        return <div className="chart" style={style}/>
+        };
+        return <div className="chart" style={style} />;
     }
 }

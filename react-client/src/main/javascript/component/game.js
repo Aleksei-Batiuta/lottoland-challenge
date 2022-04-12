@@ -15,14 +15,12 @@
  * limitations under the License.
  */
 
-import RestService from "../service/restService";
-
-const React = require("react");
-const {RoundList} = require("./roundList");
-const {Msg} = require("./msg");
+import RestService from '../service/restService';
+import React from 'react';
+import { RoundList } from './roundList';
+import { Msg } from './msg';
 
 export class Game extends React.Component {
-
     constructor(props) {
         super(props);
 
@@ -42,15 +40,15 @@ export class Game extends React.Component {
         this.setError = this.setError.bind(this);
     }
 
-    setError(error) { // <2>
-        this.setState({errorMessage: error});
+    setError(error) {
+        this.setState({ errorMessage: error });
     }
 
-    componentDidMount() { // <2>
+    componentDidMount() {
         this.refresh();
     }
 
-    render() { // <3>
+    render() {
         if (this.state?.errorMessage !== undefined) {
             setTimeout(() => {
                 this.setError(undefined);
@@ -62,33 +60,40 @@ export class Game extends React.Component {
         return (
             <div>
                 {errorMessage && <div className="error"> {errorMessage} </div>}
-                <RoundList rounds={this.state.rounds} refreshTable={this.refresh}/>
+                <RoundList rounds={this.state.rounds} refreshTable={this.refresh} />
                 <div className="button-panel">
                     <div className="button">
-                        <button onClick={this.generate}><Msg msgKey='label.play.round'/></button>
+                        <button onClick={this.generate}>
+                            <Msg msgKey="label.play.round" />
+                        </button>
                     </div>
                     <div className="button">
-                        <button onClick={this.cleanRounds}><Msg msgKey='label.restart.game'/></button>
+                        <button onClick={this.cleanRounds}>
+                            <Msg msgKey="label.restart.game" />
+                        </button>
                     </div>
                 </div>
             </div>
-        )
+        );
     }
 
     refresh(page, size, sort) {
-        page = page !== undefined
-            ? page
-            : this.state.pagination?.page
+        page =
+            page !== undefined
+                ? page
+                : this.state.pagination?.page
                 ? this.state.pagination.page
                 : 0;
-        size = size !== undefined
-            ? size
-            : this.state.pagination?.size
+        size =
+            size !== undefined
+                ? size
+                : this.state.pagination?.size
                 ? this.state.pagination.size
                 : 10;
-        sort = sort !== undefined
-            ? sort
-            : this.state.pagination?.sort
+        sort =
+            sort !== undefined
+                ? sort
+                : this.state.pagination?.sort
                 ? this.state.pagination.sort
                 : 'desc,id';
 
@@ -99,7 +104,7 @@ export class Game extends React.Component {
                 size: size,
                 sort: sort
             }
-        })
+        });
         this.restService.findAllRounds(
             page,
             size,
@@ -121,28 +126,28 @@ export class Game extends React.Component {
                 });
                 this.setError(error);
             }
-        )
+        );
     }
 
     generate() {
         this.restService.newRound(
             () => {
-                this.refresh()
+                this.refresh();
             },
             (error) => {
                 this.setError(error);
             }
-        )
+        );
     }
 
     cleanRounds() {
         this.restService.cleanRounds(
             () => {
-                this.refresh()
+                this.refresh();
             },
             (error) => {
                 this.setError(error);
             }
-        )
+        );
     }
 }

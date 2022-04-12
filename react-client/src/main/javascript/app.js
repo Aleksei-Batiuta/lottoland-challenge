@@ -16,9 +16,9 @@
  */
 'use strict';
 
-const React = require('react');
-const ReactDOM = require('react-dom');
-import {Main} from "./component/main";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Main } from './component/main';
 
 /**
  * The Application code.
@@ -26,8 +26,8 @@ import {Main} from "./component/main";
 ReactDOM.render(
     <React.StrictMode>
         <React.Suspense fallback="Loading...">
-            <Main/>
+            <Main />
         </React.Suspense>
     </React.StrictMode>,
     document.getElementById('react')
-)
+);

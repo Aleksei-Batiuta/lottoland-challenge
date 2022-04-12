@@ -15,25 +15,22 @@
  * limitations under the License.
  */
 
-import i18next from "i18next";
-import {initReactI18next} from "react-i18next";
-
-// import detector from "i18next-browser-languagedetector";
-import backend from "i18next-http-backend";
-import React from "react";
+import i18next from 'i18next';
+import { initReactI18next } from 'react-i18next';
+import backend from 'i18next-http-backend';
 
 export const LANGUAGES = [
     {
-        value:'en',
-        label:'label.language.en',
-        name:'English'
+        value: 'en',
+        label: 'label.language.en',
+        name: 'English'
     },
     {
-        value:'ru',
-        label:'label.language.ru',
-        name:'Русский'
+        value: 'ru',
+        label: 'label.language.ru',
+        name: 'Русский'
     }
-    ];
+];
 export const LANGUAGE_DEFAULT = 'en';
 export default class MsgService {
     static instance = null;
@@ -56,7 +53,7 @@ export default class MsgService {
     t(msgKey, msgOptions, setter) {
         if (!this.i18n.exists(msgKey)) {
             if (!this.i18n.isInitialized) {
-                this.context.push({key: msgKey, options: msgOptions, setter: setter})
+                this.context.push({ key: msgKey, options: msgOptions, setter: setter });
             }
             return console.log('Message key was not found!', msgKey);
         }
@@ -69,37 +66,35 @@ export default class MsgService {
 
     refresh() {
         try {
-            this.context.forEach(
-                (o) => {
-                    try {
-                        o.setter(this.i18n.t(o.key, o.options))
-                    } catch (e) {
-                        console.log(e);
-                    }
+            this.context.forEach((o) => {
+                try {
+                    o.setter(this.i18n.t(o.key, o.options));
+                } catch (e) {
+                    console.log(e);
                 }
-            );
+            });
         } finally {
             this.context = [];
         }
-
     }
 
     init() {
         this.i18n
             .use(initReactI18next)
-            // .use(detector)
             .use(backend)
-            .init({
-                    fallbackLng: LANGUAGE_DEFAULT, // use en if detected lng is not available
+            .init(
+                {
+                    fallbackLng: LANGUAGE_DEFAULT,
+                    // use en if detected lng is not available
                     lng: LANGUAGE_DEFAULT,
-                    preload: LANGUAGES.map(language => language.value),
+                    preload: LANGUAGES.map((language) => language.value),
                     debug: true,
                     interpolation: {
                         escapeValue: false // react already safes from xss
                     },
                     backend: {
                         loadPath: '/api/messages/?lang={{lng}}'
-                    },
+                    }
                 },
                 (error) => {
                     if (error) {

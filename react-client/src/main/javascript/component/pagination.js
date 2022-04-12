@@ -15,20 +15,32 @@
  * limitations under the License.
  */
 
-import React from "react";
-import {Msg} from "./msg";
+import React from 'react';
+import { Msg } from './msg';
+import PropTypes from 'prop-types';
 
 export class Pagination extends React.Component {
-
     constructor(props) {
         super(props);
+        Pagination.propTypes = {
+            options: PropTypes.shape({
+                first: PropTypes.bool,
+                last: PropTypes.bool,
+                empty: PropTypes.bool,
+                totalPages: PropTypes.number,
+                number: PropTypes.number,
+                size: PropTypes.number
+            }),
+            refreshTable: PropTypes.func
+        };
         this.state = {
             first: props.options?.first,
             last: props.options?.last,
             empty: props.options?.empty,
             totalPages: props.options?.totalPages,
             number: props.options?.number,
-            size: props.options?.size
+            size: props.options?.size,
+            refreshTable: props.refreshTable
         };
         this.update = this.update.bind(this);
         this.setNumber = this.setNumber.bind(this);
@@ -43,23 +55,39 @@ export class Pagination extends React.Component {
             empty: props.empty,
             totalPages: props.totalPages,
             number: props.number,
-            size: props.size
+            size: props.size,
+            refreshTable: props.refreshTable
         });
     }
 
     setNumber(page) {
-        this.state.number = page;
+        this.setState({
+            first: this.state.first,
+            last: this.state.last,
+            empty: this.state.empty,
+            totalPages: this.state.totalPages,
+            number: page,
+            size: this.state.size,
+            refreshTable: this.state.refreshTable
+        });
         this.refreshTable();
     }
 
     setPageSize(pageSize) {
-        this.state.size = pageSize;
-        this.state.number = 0;
+        this.setState({
+            first: this.state.first,
+            last: this.state.last,
+            empty: this.state.empty,
+            totalPages: this.state.totalPages,
+            number: 0,
+            size: pageSize,
+            refreshTable: this.state.refreshTable
+        });
         this.refreshTable();
     }
 
     refreshTable() {
-        this.props.refreshTable(this.state.number, this.state.size);
+        this.state.refreshTable(this.state.number, this.state.size);
     }
 
     render() {
@@ -73,8 +101,7 @@ export class Pagination extends React.Component {
         const setNumber = this.setNumber;
         const setPageSize = this.setPageSize;
 
-
-        const pageSizeOptions = [10, 20, 30, 40, 50].map(pageSize => (
+        const pageSizeOptions = [10, 20, 30, 40, 50].map((pageSize) => (
             <option key={pageSize} value={pageSize}>
                 {pageSize}
             </option>
@@ -83,55 +110,49 @@ export class Pagination extends React.Component {
             <div className="pagination">
                 <button onClick={() => setNumber(0)} disabled={first || empty}>
                     {'<<'}
-                </button>
-                {' '}
+                </button>{' '}
                 <button onClick={() => setNumber(number - 1)} disabled={first || empty}>
                     {'<'}
-                </button>
-                {' '}
+                </button>{' '}
                 <button onClick={() => setNumber(number + 1)} disabled={last || empty}>
                     {'>'}
-                </button>
-                {' '}
+                </button>{' '}
                 <button onClick={() => setNumber(totalPages - 1)} disabled={last || empty}>
                     {'>>'}
-                </button>
-                {' '}
+                </button>{' '}
                 <span>
-          <Msg msgKey='label.page'/>{' '}
+                    <Msg msgKey="label.page" />{' '}
                     <strong>
-            {number + 1} <Msg msgKey='label.page.of'/> {totalPages !== 0 ? totalPages : 1}
-          </strong>{' '}
-        </span>
+                        {number + 1} <Msg msgKey="label.page.of" />{' '}
+                        {totalPages !== 0 ? totalPages : 1}
+                    </strong>{' '}
+                </span>
                 <span>
-          | <Msg msgKey='label.page.goto'/>:{' '}
+                    | <Msg msgKey="label.page.goto" />:{' '}
                     <input
                         type="number"
                         value={number + 1}
-                        onChange={e => {
+                        onChange={(e) => {
                             if (e.target.value) {
-                                setNumber(
-                                    Number(e.target.value) - 1
-                                );
+                                setNumber(Number(e.target.value) - 1);
                             } else {
                                 setNumber(0);
                             }
                         }}
-                        style={{width: '100px'}}
-                    />
-                    {' '}
-        </span><span>
-                | <Msg msgKey='label.page.show'/>:{' '}
-                <select
-                    value={size}
-                    onChange={e => {
-                        setPageSize(Number(e.target.value))
-                    }}
-                >
-                    {pageSizeOptions}
-                </select>
+                        style={{ width: '100px' }}
+                    />{' '}
+                </span>
+                <span>
+                    | <Msg msgKey="label.page.show" />:{' '}
+                    <select
+                        value={size}
+                        onChange={(e) => {
+                            setPageSize(Number(e.target.value));
+                        }}>
+                        {pageSizeOptions}
+                    </select>
                 </span>
             </div>
-        )
+        );
     }
 }

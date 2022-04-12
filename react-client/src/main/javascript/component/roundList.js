@@ -15,87 +15,117 @@
  * limitations under the License.
  */
 
-import {Pagination} from "./pagination";
-import {Round} from "./round";
-import {Msg} from "./msg";
-
-const React = require('react');
+import { Pagination } from './pagination';
+import { Round } from './round';
+import { Msg } from './msg';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 export class RoundList extends React.Component {
     constructor(props) {
         super(props);
-        this.props = props;
-        this.pagination = React.createRef()
-    }
-
-    componentDidMount() {
-        // this.pagination.current.update(this.props.rounds);
-        if (true) {
-            let i = 0;
-            i++;
-            i++;
-        }
+        RoundList.propTypes = {
+            rounds: PropTypes.shape(
+                { totalElements: PropTypes.number },
+                {
+                    content: PropTypes.arrayOf({
+                        round: PropTypes.shape(
+                            { id: PropTypes.string },
+                            {
+                                status: PropTypes.shape({
+                                    name: PropTypes.string,
+                                    messageKey: PropTypes.string
+                                })
+                            },
+                            {
+                                player1: PropTypes.shape({
+                                    name: PropTypes.string,
+                                    messageKey: PropTypes.string
+                                })
+                            },
+                            {
+                                player2: PropTypes.shape({
+                                    name: PropTypes.string,
+                                    messageKey: PropTypes.string
+                                })
+                            }
+                        )
+                    })
+                }
+            )
+        };
+        this.setState(props.rounds);
+        this.pagination = React.createRef();
     }
 
     render() {
         let rounds;
-        let roundLength = this.props.rounds?.totalElements;
+        let roundLength = this.state.rounds?.totalElements;
 
         if (roundLength > 0) {
-            rounds = this.props.rounds?.content?.map(round =>
-                <Round key={round.id} round={round}/>
-            );
+            rounds = this.state.rounds?.content?.map((round) => (
+                <Round key={round.id} round={round} />
+            ));
         } else {
-            rounds = <tr>
-                <td colSpan="4">
-                    <Msg msgKey="label.table.empty"/>
-                </td>
-            </tr>;
+            rounds = (
+                <tr>
+                    <td colSpan="4">
+                        <Msg msgKey="label.table.empty" />
+                    </td>
+                </tr>
+            );
         }
 
-        this.pagination?.current?.update(this.props.rounds);
+        this.pagination?.current?.update(this.state.rounds);
 
         return (
             <div className="scroll-table">
                 <div className="pagination-panel">
                     <Pagination
                         ref={this.pagination}
-                        options={this.props.rounds}
-                        refreshTable={this.props.refreshTable}
+                        options={this.state.rounds}
+                        refreshTable={this.state.refreshTable}
                     />
                 </div>
                 <table>
                     <thead>
-                    <tr>
-                        <th><Msg msgKey='label.id'/></th>
-                        <th><Msg msgKey='label.player1'/></th>
-                        <th><Msg msgKey='label.player2'/></th>
-                        <th><Msg msgKey='label.round.result'/></th>
-                    </tr>
+                        <tr>
+                            <th>
+                                <Msg msgKey="label.id" />
+                            </th>
+                            <th>
+                                <Msg msgKey="label.player1" />
+                            </th>
+                            <th>
+                                <Msg msgKey="label.player2" />
+                            </th>
+                            <th>
+                                <Msg msgKey="label.round.result" />
+                            </th>
+                        </tr>
                     </thead>
                 </table>
                 <div className="scroll-table-body">
                     <table>
-                        <tbody>
-                        {rounds}
-                        </tbody>
+                        <tbody>{rounds}</tbody>
                     </table>
                 </div>
                 <table>
                     <tfoot>
-                    <tr>
-                        <td colSpan="3">
-                            <label htmlFor="round">
-                                <Msg msgKey="label.round"/>
-                                :&nbsp;</label>
-                        </td>
-                        <td>
-                            <output id="round">{roundLength}</output>
-                        </td>
-                    </tr>
+                        <tr>
+                            <td colSpan="3">
+                                <label htmlFor="round">
+                                    <Msg msgKey="label.round" />
+                                    :&nbsp;
+                                </label>
+                            </td>
+                            <td>
+                                <output id="round">{roundLength}</output>
+                            </td>
+                        </tr>
                     </tfoot>
                 </table>
             </div>
-        )
+        );
     }
 }

@@ -15,29 +15,30 @@
  * limitations under the License.
  */
 
-import React from "react";
-import MsgService from "../service/msgService";
+import React from 'react';
+import MsgService from '../service/msgService';
+import PropTypes from 'prop-types';
 
 export class Msg extends React.Component {
     constructor(props) {
         super(props);
+        Msg.propTypes = {
+            msgKey: PropTypes.string,
+            msgOptions: PropTypes.array
+        };
         this.msgKey = props.msgKey;
         this.msgOptions = props.msgOptions;
-        this.state = {msg: this.msgKey};
+        this.state = { msg: this.msgKey };
         this.msgService = MsgService.getInstance();
         this.refresh = this.refresh.bind(this);
     }
 
     refresh() {
-        this.msgService.t(
-            this.msgKey,
-            this.msgOptions,
-            (msgText) => {
-                if (this.state?.msg !== msgText) {
-                    this.setState({msg: msgText});
-                }
+        this.msgService.t(this.msgKey, this.msgOptions, (msgText) => {
+            if (this.state?.msg !== msgText) {
+                this.setState({ msg: msgText });
             }
-        );
+        });
     }
 
     componentDidMount() {

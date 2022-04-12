@@ -16,25 +16,22 @@
  */
 'use strict';
 
-import {LANGUAGE_DEFAULT} from "../service/msgService";
-
-const React = require('react');
-import {Statistics} from "./statistics";
-import {Game} from "./game";
-import {LanguageSelect} from "./languageSelect";
-
-const {Msg} = require("./msg");
+import React from 'react';
+import { Statistics } from './statistics';
+import { Game } from './game';
+import { LanguageSelect } from './languageSelect';
+import { Msg } from './msg';
 
 const TAB_GAME = 'game';
 const TAB_STATISTICS = 'statistics';
 
-export class Main extends React.Component { // <1>
+export class Main extends React.Component {
     constructor(props) {
         super(props);
 
         this.game = React.createRef();
         this.statistics = React.createRef();
-        this.state = {active: TAB_GAME, refresh:true};
+        this.state = { active: TAB_GAME, refresh: true };
 
         this.activate = this.activate.bind(this);
         this.switchToGame = this.switchToGame.bind(this);
@@ -43,14 +40,11 @@ export class Main extends React.Component { // <1>
     }
 
     activate(t) {
-        this.setState({active: t, refresh:true})
+        this.setState({ active: t, refresh: true });
     }
 
     switchToGame() {
-        try {
-            this.activate(TAB_GAME);
-        } catch (e) {
-        }
+        this.activate(TAB_GAME);
     }
 
     switchToStatistics() {
@@ -66,11 +60,11 @@ export class Main extends React.Component { // <1>
         if (this.state.active === TAB_GAME) {
             gameMenuClassName = 'active';
             statisticsMenuClassName = '';
-            page = <Game ref={this.game}/>;
+            page = <Game ref={this.game} />;
         } else {
             gameMenuClassName = '';
             statisticsMenuClassName = 'active';
-            page = <Statistics ref={this.statistics}/>;
+            page = <Statistics ref={this.statistics} />;
         }
         return (
             <div className="main">
@@ -78,50 +72,50 @@ export class Main extends React.Component { // <1>
                     <div className="menu-context">
                         <div className="menu-item">
                             <ul>
-
                                 <li className={gameMenuClassName}>
                                     <a href="#" onClick={() => this.switchToGame()}>
-                                        <Msg msgKey='title.game'/>
+                                        <Msg msgKey="title.game" />
                                     </a>
                                 </li>
                                 <li className={statisticsMenuClassName}>
                                     <a href="#" onClick={() => this.switchToStatistics()}>
-                                        <Msg msgKey='title.statistics'/>
+                                        <Msg msgKey="title.statistics" />
                                     </a>
                                 </li>
                             </ul>
                         </div>
-                        <div className="logo"/>
+                        <div className="logo" />
                     </div>
                 </div>
-                <div className="context">
-                    {page}
-                </div>
+                <div className="context">{page}</div>
                 <div className="footer">
                     <div className="footer-context">
                         <div className="copyrights">
-                            <p><a href={authorUrl}>©
-                                <Msg msgKey="project.author"/>
-                            </a>&nbsp;2022
+                            <p>
+                                <a href={authorUrl}>
+                                    ©
+                                    <Msg msgKey="project.author" />
+                                </a>
+                                &nbsp;2022
                             </p>
                         </div>
                         <div className="languages">
-                            <Msg msgKey='label.language'/>:{' '}
-                            <LanguageSelect handleChange={this.handleChange}/>
+                            <Msg msgKey="label.language" />:{' '}
+                            <LanguageSelect handleChange={this.handleChange} />
                         </div>
                         <div className="version">
                             <p>
                                 <a href={projectUrl}>
-                                    <Msg msgKey="project.version"/>
+                                    <Msg msgKey="project.version" />
                                 </a>
                             </p>
                         </div>
                     </div>
                 </div>
             </div>
-        )
+        );
     }
-    handleChange(event) {
-        this.setState( {active: this.state.active, refresh:true });
+    handleChange() {
+        this.setState({ active: this.state.active, refresh: true });
     }
 }

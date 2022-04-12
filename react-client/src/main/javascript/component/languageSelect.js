@@ -15,25 +15,33 @@
  * limitations under the License.
  */
 
-import React from "react";
-import MsgService, {LANGUAGE_DEFAULT, LANGUAGES} from "../service/msgService";
+import React from 'react';
+import MsgService, { LANGUAGE_DEFAULT, LANGUAGES } from '../service/msgService';
+import PropTypes from 'prop-types';
 
 export class LanguageSelect extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {language: LANGUAGE_DEFAULT};
+        LanguageSelect.propTypes = {
+            handleChange: PropTypes.func
+        };
+        this.setState({
+            language: LANGUAGE_DEFAULT,
+            handleChange: this.props.handleChange
+        });
         this.refresh = this.refresh.bind(this);
         this.handleChangeLanguage = this.handleChangeLanguage.bind(this);
     }
 
     handleChangeLanguage(event) {
         MsgService.getInstance().changeLanguage(event.target.value);
-        this.setState( {language: event.target.value });
-        this.props.handleChange(event);
+        this.setState({
+            language: event.target.value,
+            handleChange: this.state.handleChange
+        });
+        this.state.handleChange(event);
     }
-    refresh() {
-
-    }
+    refresh() {}
 
     componentDidMount() {
         this.refresh();
@@ -41,13 +49,16 @@ export class LanguageSelect extends React.Component {
 
     render() {
         return (
-            <select name='language' value={this.state.language} onChange={this.handleChangeLanguage}>
+            <select
+                name="language"
+                value={this.state.language}
+                onChange={this.handleChangeLanguage}>
                 {LANGUAGES.map((language, i) => (
                     <option key={i} value={language.value} data-label={language.label}>
                         {language.name}
                     </option>
                 ))}
             </select>
-        )
+        );
     }
 }

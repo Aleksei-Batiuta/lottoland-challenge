@@ -15,12 +15,17 @@
  * limitations under the License.
  */
 
-import React from "react";
-
 export default class RestService {
     static instance = null;
 
     constructor() {
+        this.findAllRounds = this.findAllRounds.bind(this);
+        this.newRound = this.newRound.bind(this);
+        this.cleanRounds = this.cleanRounds.bind(this);
+
+        this.getStatistics = this.getStatistics.bind(this);
+
+        this.doRequest = this.doRequest.bind(this);
     }
 
     static getInstance() {
@@ -31,36 +36,33 @@ export default class RestService {
     }
 
     getCsrfToken() {
-        return document.cookie
-            .replace(
-                /(?:^|.*;\s*)XSRF-TOKEN\s*=\s*([^;]*).*$|^.*$/,
-                '$1'
-            );
+        return document.cookie.replace(/(?:^|.*;\s*)XSRF-TOKEN\s*=\s*([^;]*).*$|^.*$/, '$1');
     }
 
     newRound(processor, errorCallback) {
         this.doRequest(
-            "/api/rounds/generate",
+            '/api/rounds/generate',
             'POST',
-            {'X-XSRF-TOKEN': this.getCsrfToken()},
+            { 'X-XSRF-TOKEN': this.getCsrfToken() },
             processor,
             errorCallback
-        )
+        );
     }
 
     cleanRounds(processor, errorCallback) {
         this.doRequest(
-            "/api/rounds/",
+            '/api/rounds/',
             'DELETE',
-            {'X-XSRF-TOKEN': this.getCsrfToken()},
+            { 'X-XSRF-TOKEN': this.getCsrfToken() },
             processor,
             errorCallback
-        )
+        );
     }
 
     findAllRounds(page, size, sort, processor, errorCallback) {
-        let path = '/api/rounds/?'
-            + new URLSearchParams({
+        let path =
+            '/api/rounds/?' +
+            new URLSearchParams({
                 page: page,
                 size: size,
                 sort: sort
@@ -68,49 +70,35 @@ export default class RestService {
         this.doRequest(
             path,
             'GET',
-            {'X-XSRF-TOKEN': this.getCsrfToken()},
+            { 'X-XSRF-TOKEN': this.getCsrfToken() },
             processor,
             errorCallback
-        )
+        );
     }
 
     getStatistics(processor) {
-        this.doRequest(
-            "/api/rounds/statistics",
-            'GET',
-            new Headers(),
-            processor
-        )
+        this.doRequest('/api/rounds/statistics', 'GET', new Headers(), processor);
     }
 
     doRequest(path, method, headers, processor, errorCallback) {
-        fetch(
-            path,
-            {
-                method: method,
-                headers: headers,
-            }
-        )
-            .then(
-                (response) => {
-                    return response.json();
+        fetch(path, {
+            method: method,
+            headers: headers
+        })
+            .then((response) => {
+                return response.json();
+            })
+            .then((data) => {
+                if (data.status?.codeValue >= 400) {
+                    throw new Error(data.body.message);
                 }
-            )
-            .then(
-                (data) => {
-                    if (data.status?.codeValue >= 400) {
-                        throw new Error(data.body.message);
-                    }
-                    processor(data.body);
+                processor(data.body);
+            })
+            .catch((err) => {
+                console.log(err);
+                if (errorCallback !== null && errorCallback !== undefined) {
+                    errorCallback(err);
                 }
-            )
-            .catch(
-                (err) => {
-                    console.log(err);
-                    if (errorCallback !== null && errorCallback !== undefined) {
-                        errorCallback(err);
-                    }
-                }
-            );
+            });
     }
 }

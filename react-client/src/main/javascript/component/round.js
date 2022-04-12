@@ -15,19 +15,41 @@
  * limitations under the License.
  */
 
-import {Msg} from "./msg";
-
-const React = require("react");
+import { Msg } from './msg';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 export class Round extends React.Component {
     constructor(props) {
         super(props);
-        this.props = props;
-        console.log(this.props);
+        Round.propTypes = {
+            round: PropTypes.shape(
+                { id: PropTypes.string },
+                {
+                    status: PropTypes.shape({
+                        name: PropTypes.string,
+                        messageKey: PropTypes.string
+                    })
+                },
+                {
+                    player1: PropTypes.shape({
+                        name: PropTypes.string,
+                        messageKey: PropTypes.string
+                    })
+                },
+                {
+                    player2: PropTypes.shape({
+                        name: PropTypes.string,
+                        messageKey: PropTypes.string
+                    })
+                }
+            )
+        };
+        this.setState(props.round);
     }
 
     render() {
-        let round = this.props.round;
+        let round = this.state.round;
 
         let rowClassName = 'legend icon sprite bg-' + round.status.name.toLowerCase();
         let player1ClassName = 'legend icon sprite bg-' + round.player1.name.toLowerCase();
@@ -39,25 +61,32 @@ export class Round extends React.Component {
                 <td>{round.id}</td>
                 <td>
                     <div className="item">
-                        <div className={player1ClassName}/>
-                        <div className="name"><Msg msgKey={round.player1.messageKey}/></div>
+                        <div className={player1ClassName} />
+                        <div className="name">
+                            <Msg msgKey={round.player1.messageKey} />
+                        </div>
                     </div>
                 </td>
                 <td>
                     <div className="item">
-                        <div className={player2ClassName}/>
-                        <div className="name"><Msg msgKey={round.player2.messageKey}/></div>
+                        <div className={player2ClassName} />
+                        <div className="name">
+                            <Msg msgKey={round.player2.messageKey} />
+                        </div>
                     </div>
                 </td>
                 <td>
                     <div className="item">
                         <div className={'legend-container'}>
-                        <div className={resultClassName}/></div>
-                        <div className={"name " + 'fg-'+round.status.name.toLowerCase()}><Msg msgKey={round.status.messageKey}/></div>
+                            <div className={resultClassName} />
+                        </div>
+                        <div className={'name ' + 'fg-' + round.status.name.toLowerCase()}>
+                            <Msg msgKey={round.status.messageKey} />
+                        </div>
                     </div>
                 </td>
             </tr>
-        )
+        );
     }
 
     getResultClassName(round) {
@@ -70,10 +99,10 @@ export class Round extends React.Component {
         switch (round.player1.name) {
             case 'ROCK':
                 switch (round.player2.name) {
-                    case 'PAPER' :
+                    case 'PAPER':
                         resultClassName += rockAndPaper;
                         break;
-                    case 'SCISSORS' :
+                    case 'SCISSORS':
                         resultClassName += rockAndScissors;
                         break;
                     default:
@@ -82,10 +111,10 @@ export class Round extends React.Component {
                 break;
             case 'SCISSORS':
                 switch (round.player2.name) {
-                    case 'ROCK' :
+                    case 'ROCK':
                         resultClassName += rockAndScissors;
                         break;
-                    case 'PAPER' :
+                    case 'PAPER':
                         resultClassName += scissorsAndPaper;
                         break;
                     default:
@@ -94,10 +123,10 @@ export class Round extends React.Component {
                 break;
             case 'PAPER':
                 switch (round.player2.name) {
-                    case 'ROCK' :
+                    case 'ROCK':
                         resultClassName += rockAndPaper;
                         break;
-                    case 'SCISSORS' :
+                    case 'SCISSORS':
                         resultClassName += scissorsAndPaper;
                         break;
                     default:

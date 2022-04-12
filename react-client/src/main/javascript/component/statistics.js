@@ -15,11 +15,10 @@
  * limitations under the License.
  */
 
-const React = require("react");
-
-import {Chart} from "./chart";
-import {Msg} from "./msg";
-import RestService from "../service/restService";
+import { Chart } from './chart';
+import { Msg } from './msg';
+import React from 'react';
+import RestService from '../service/restService';
 
 export class Statistics extends React.Component {
     constructor(props) {
@@ -27,9 +26,9 @@ export class Statistics extends React.Component {
         this.props = props;
         this.state = {
             chartData: [
-                ["#69a507", 1],
-                ["#a50769", 1],
-                ["#0769a5", 1]
+                ['#69a507', 1],
+                ['#a50769', 1],
+                ['#0769a5', 1]
             ],
             data: {
                 total: 3,
@@ -52,107 +51,117 @@ export class Statistics extends React.Component {
         // <2>
         this.restService.getStatistics((data) => {
             const chartData = [
-                ["#69a507", data.first],
-                ["#a50769", data.second],
-                ["#0769a5", data.draws]
+                ['#69a507', data.first],
+                ['#a50769', data.second],
+                ['#0769a5', data.draws]
             ];
-            this.setState({chartData: chartData, data: data});
-        })
+            this.setState({ chartData: chartData, data: data });
+        });
     }
 
     render() {
         let tableContext;
         if (this.state.data.total === 0) {
-            tableContext =
+            tableContext = (
                 <tbody>
-                <tr>
-                    <td colSpan="4">
-                        <Msg msgKey="label.table.empty"/>
-                    </td>
-                </tr>
+                    <tr>
+                        <td colSpan="4">
+                            <Msg msgKey="label.table.empty" />
+                        </td>
+                    </tr>
                 </tbody>
-            ;
+            );
         } else {
-            tableContext =
+            tableContext = (
                 <tbody>
-                <tr>
-                    <td rowSpan="3">
-                        <div id="chart">
-                            <Chart data={this.state.chartData}/>
-                        </div>
-                    </td>
-                    <td>
-                        <div className="legend bg-win">&nbsp;</div>
-                    </td>
-                    <td><label className="fg-win" htmlFor="first_wins">
-                        <Msg msgKey="label.rounds.first"/>
-                    </label></td>
-                    <td>
-                        <output id="first_wins" className="fg-win">{this.state.data.first}</output>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div className="legend bg-loss">&nbsp;</div>
-                    </td>
-                    <td><label htmlFor="second_wins" className="fg-loss">
-                        <Msg msgKey="label.rounds.second"/>
-                    </label></td>
-                    <td>
-                        <output id="second_wins" className="fg-loss">{this.state.data.second}</output>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div className="legend bg-draw">&nbsp;</div>
-                    </td>
-                    <td><label htmlFor="total_draws" className="fg-draw">
-                        <Msg msgKey="label.rounds.draws"/>
-                    </label></td>
-                    <td>
-                        <output id="total_draws" className="fg-draw">{this.state.data.draws}</output>
-                    </td>
-                </tr>
+                    <tr>
+                        <td rowSpan="3">
+                            <div id="chart">
+                                <Chart data={this.state.chartData} />
+                            </div>
+                        </td>
+                        <td>
+                            <div className="legend bg-win">&nbsp;</div>
+                        </td>
+                        <td>
+                            <label className="fg-win" htmlFor="first_wins">
+                                <Msg msgKey="label.rounds.first" />
+                            </label>
+                        </td>
+                        <td>
+                            <output id="first_wins" className="fg-win">
+                                {this.state.data.first}
+                            </output>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div className="legend bg-loss">&nbsp;</div>
+                        </td>
+                        <td>
+                            <label htmlFor="second_wins" className="fg-loss">
+                                <Msg msgKey="label.rounds.second" />
+                            </label>
+                        </td>
+                        <td>
+                            <output id="second_wins" className="fg-loss">
+                                {this.state.data.second}
+                            </output>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div className="legend bg-draw">&nbsp;</div>
+                        </td>
+                        <td>
+                            <label htmlFor="total_draws" className="fg-draw">
+                                <Msg msgKey="label.rounds.draws" />
+                            </label>
+                        </td>
+                        <td>
+                            <output id="total_draws" className="fg-draw">
+                                {this.state.data.draws}
+                            </output>
+                        </td>
+                    </tr>
                 </tbody>
-            ;
+            );
         }
         return (
             <div>
                 <div className="scroll-table">
                     <table>
                         <thead>
-                        <tr>
-                            <th>
-                                <Msg msgKey="label.chart"/>
-                            </th>
-                            <th colSpan="3">
-                                <Msg msgKey="label.data"/>
-                            </th>
-                        </tr>
+                            <tr>
+                                <th>
+                                    <Msg msgKey="label.chart" />
+                                </th>
+                                <th colSpan="3">
+                                    <Msg msgKey="label.data" />
+                                </th>
+                            </tr>
                         </thead>
                     </table>
                     <div className="no-scroll-table-body">
-                        <table>
-                            {tableContext}
-                        </table>
+                        <table>{tableContext}</table>
                     </div>
                     <table>
                         <tfoot>
-                        <tr>
-                            <td/>
-                            <td colSpan="2">
-                                <label htmlFor="total_rounds">
-                                    <Msg msgKey="label.rounds.total"/>
-                                </label>
-                            </td>
-                            <td>
-                                <output id="total_rounds">{this.state.data.total}</output>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td />
+                                <td colSpan="2">
+                                    <label htmlFor="total_rounds">
+                                        <Msg msgKey="label.rounds.total" />
+                                    </label>
+                                </td>
+                                <td>
+                                    <output id="total_rounds">{this.state.data.total}</output>
+                                </td>
+                            </tr>
                         </tfoot>
                     </table>
                 </div>
             </div>
-        )
+        );
     }
 }
