@@ -1,0 +1,14 @@
+version: "3.1"
+
+services:
+  @project.artifactId@:
+     image: @dockerhub.owner@/@my.artifactId@:@project.version@
+     networks:
+       - spring
+     ports:
+       - "8080:8080"
+     #    environment:
+     #      - SPRING_PROFILES_ACTIVE=debug
+     restart: on-failure
+networks:
+  spring:

@@ -13,5 +13,8 @@ steps.txt
 /pom.xml.releaseBackup
 /settings.xml
 package-lock.json
-/src/main/resources/static/built/
-/node_modules/
+**/src/main/resources/static/built/
+*.iml
+**/node_modules/
+/react-client/src/main/resources/
+**/target/

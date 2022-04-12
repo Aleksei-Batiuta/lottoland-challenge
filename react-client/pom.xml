@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright 2022 the original author or authors.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+  ~ either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>lottoland-challenge</artifactId>
+        <groupId>com.batyuta.challenge</groupId>
+        <version>0.36-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>react-client</artifactId>
+    <!-- Deployment Settings -->
+    <distributionManagement>
+        <!-- Release Project Maven Repository -->
+        <repository>
+            <!--
+            uses artifactId as ID for corresponding server settings
+            in Maven settings.xml to authorization via personal credential
+            -->
+            <id>${my.artifactId}</id>
+            <name>GitHub ${github.owner} Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/Aleksei-Batiuta/${my.artifactId}</url>
+        </repository>
+        <!-- Project Site Path -->
+        <site>
+            <id>${my.artifactId}</id>
+            <!-- Uses the local path to site deploy -->
+            <url>file://${basedir}/../docs/${project.artifactId}</url>
+        </site>
+    </distributionManagement>
+
+    <!-- Libs Project Maven Repository -->
+    <repositories>
+        <repository>
+            <!--
+           uses artifactId as ID for corresponding server settings
+           in Maven settings.xml to authorization via personal credential
+           -->
+            <id>${my.artifactId}</id>
+            <name>GitHub ${github.owner} Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/${github.owner}/${my.artifactId}</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+        <repository>
+            <!--
+           uses artifactId as ID for corresponding server settings
+           in Maven settings.xml to authorization via personal credential
+           -->
+            <id>central-mirror</id>
+            <name>Apache Maven Central Repository</name>
+            <url>https://repo1.maven.org/maven2/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <configuration>
+                    <failOnViolation>false</failOnViolation>
+                    <printFailingErrors>true</printFailingErrors>
+
+                    <skipEmptyReport>false</skipEmptyReport>
+
+                    <language>javascript</language>
+                    <rulesets>
+                        <ruleset>/category/ecmascript/bestpractices.xml</ruleset>
+                        <ruleset>/category/ecmascript/codestyle.xml</ruleset>
+                        <ruleset>/category/ecmascript/errorprone.xml</ruleset>
+                    </rulesets>
+                    <includes>
+                        <include>**/*.js</include>
+                    </includes>
+                    <compileSourceRoots>
+                        <compileSourceRoot>${project.basedir}/src/main/javascript</compileSourceRoot>
+                    </compileSourceRoots>
+                </configuration>
+                <reportSets>
+                    <reportSet>
+                        <id>js-pmd</id>
+                        <reports>
+                            <report>pmd</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+            </plugin>
+
+        </plugins>
+    </reporting>
+    <properties>
+        <checkstyle.checkstyleDirectory>${project.basedir}/../checkstyle</checkstyle.checkstyleDirectory>
+        <site.siteDirectory>${project.basedir}/../src/site</site.siteDirectory>
+    </properties>
+    <build>
+        <sourceDirectory>${project.basedir}/src/main/javascript</sourceDirectory>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>antrun-plugin</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <echo message="Build dir: ${project.basedir}" level="info"/>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+
+            </plugin>
+            <plugin>
+                <groupId>com.github.eirslett</groupId>
+                <artifactId>frontend-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>com.github.eirslett</groupId>
+                    <artifactId>frontend-maven-plugin</artifactId>
+                    <version>${frontend-maven-plugin.version}</version>
+                    <configuration>
+                        <installDirectory>target</installDirectory>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>install node and npm</id>
+                            <goals>
+                                <goal>install-node-and-npm</goal>
+                            </goals>
+                            <configuration>
+                                <nodeVersion>${frontend-maven-plugin.nodeVersion}</nodeVersion>
+                                <npmVersion>${frontend-maven-plugin.npmVersion}</npmVersion>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>npm install</id>
+                            <goals>
+                                <goal>npm</goal>
+                            </goals>
+                            <configuration>
+                                <arguments>install</arguments>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>webpack build</id>
+                            <goals>
+                                <goal>webpack</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>${maven-clean-plugin.version}</version>
+                    <configuration>
+                        <filesets>
+                            <fileset>
+                                <directory>node_modules</directory>
+                            </fileset>
+                            <fileset>
+                                <directory>./</directory>
+                                <includes>
+                                    <include>package-lock.json</include>
+                                </includes>
+                            </fileset>
+                            <fileset>
+                                <directory>src/main/resources</directory>
+                            </fileset>
+                        </filesets>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-pmd-plugin</artifactId>
+                    <version>3.9.0</version>
+                    <configuration>
+                        <failOnViolation>false</failOnViolation>
+                        <printFailingErrors>true</printFailingErrors>
+
+                        <language>javascript</language>
+                        <rulesets>
+                            <ruleset>/category/ecmascript/bestpractices.xml</ruleset>
+                            <ruleset>/category/ecmascript/codestyle.xml</ruleset>
+                            <ruleset>/category/ecmascript/errorprone.xml</ruleset>
+                        </rulesets>
+                        <includes>
+                            <include>**/*.js</include>
+                        </includes>
+                        <compileSourceRoots>
+                            <compileSourceRoot>${project.basedir}/src/main/javascript</compileSourceRoot>
+                        </compileSourceRoots>
+                    </configuration>
+                </plugin>
+
+            </plugins>
+        </pluginManagement>
+    </build>
+
+</project>
