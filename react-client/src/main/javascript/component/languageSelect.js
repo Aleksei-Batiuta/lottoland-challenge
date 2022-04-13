@@ -16,42 +16,29 @@
  */
 
 import React from 'react';
-import MsgService, { LANGUAGE_DEFAULT, LANGUAGES } from '../service/msgService';
+import { changeLanguage, LANGUAGES } from '../service/msgService';
 import PropTypes from 'prop-types';
 
 export class LanguageSelect extends React.Component {
     constructor(props) {
         super(props);
-        LanguageSelect.propTypes = {
-            handleChange: PropTypes.func
-        };
-        this.setState({
-            language: LANGUAGE_DEFAULT,
-            handleChange: this.props.handleChange
-        });
-        this.refresh = this.refresh.bind(this);
         this.handleChangeLanguage = this.handleChangeLanguage.bind(this);
     }
 
     handleChangeLanguage(event) {
-        MsgService.getInstance().changeLanguage(event.target.value);
-        this.setState({
-            language: event.target.value,
-            handleChange: this.state.handleChange
+        changeLanguage(event.target.value, () => {
+            this.props.handleChange(event.target.value);
         });
-        this.state.handleChange(event);
-    }
-    refresh() {}
-
-    componentDidMount() {
-        this.refresh();
     }
 
     render() {
+        if (this.props.language === null) {
+            return <></>;
+        }
         return (
             <select
                 name="language"
-                value={this.state.language}
+                value={this.props.language}
                 onChange={this.handleChangeLanguage}>
                 {LANGUAGES.map((language, i) => (
                     <option key={i} value={language.value} data-label={language.label}>
@@ -62,3 +49,8 @@ export class LanguageSelect extends React.Component {
         );
     }
 }
+// Specifies the value types for props:
+LanguageSelect.propTypes = {
+    language: PropTypes.string,
+    handleChange: PropTypes.func
+};

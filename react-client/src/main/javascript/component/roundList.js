@@ -24,46 +24,15 @@ import React from 'react';
 export class RoundList extends React.Component {
     constructor(props) {
         super(props);
-        RoundList.propTypes = {
-            rounds: PropTypes.shape(
-                { totalElements: PropTypes.number },
-                {
-                    content: PropTypes.arrayOf({
-                        round: PropTypes.shape(
-                            { id: PropTypes.string },
-                            {
-                                status: PropTypes.shape({
-                                    name: PropTypes.string,
-                                    messageKey: PropTypes.string
-                                })
-                            },
-                            {
-                                player1: PropTypes.shape({
-                                    name: PropTypes.string,
-                                    messageKey: PropTypes.string
-                                })
-                            },
-                            {
-                                player2: PropTypes.shape({
-                                    name: PropTypes.string,
-                                    messageKey: PropTypes.string
-                                })
-                            }
-                        )
-                    })
-                }
-            )
-        };
-        this.setState(props.rounds);
         this.pagination = React.createRef();
     }
 
     render() {
         let rounds;
-        let roundLength = this.state.rounds?.totalElements;
+        let roundLength = this.props.rounds.totalElements;
 
         if (roundLength > 0) {
-            rounds = this.state.rounds?.content?.map((round) => (
+            rounds = this.props.rounds.content?.map((round) => (
                 <Round key={round.id} round={round} />
             ));
         } else {
@@ -76,15 +45,15 @@ export class RoundList extends React.Component {
             );
         }
 
-        this.pagination?.current?.update(this.state.rounds);
+        // this.pagination.current?.update(this.props.rounds);
 
         return (
             <div className="scroll-table">
                 <div className="pagination-panel">
                     <Pagination
                         ref={this.pagination}
-                        options={this.state.rounds}
-                        refreshTable={this.state.refreshTable}
+                        options={this.props.rounds}
+                        refreshTable={this.props.refreshTable}
                     />
                 </div>
                 <table>
@@ -129,3 +98,11 @@ export class RoundList extends React.Component {
         );
     }
 }
+// Specifies the value types for props:
+RoundList.propTypes = {
+    rounds: PropTypes.shape({
+        totalElements: PropTypes.number,
+        content: PropTypes.arrayOf(PropTypes.shape(Round.propTypes))
+    }),
+    refreshTable: PropTypes.func
+};

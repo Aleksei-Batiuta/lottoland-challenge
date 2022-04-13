@@ -23,14 +23,12 @@ import { Msg } from './msg';
 export class Game extends React.Component {
     constructor(props) {
         super(props);
-
         this.state = {
-            rounds: [],
-            pagination: {
-                page: 0,
-                size: 10,
-                sort: 'desc,id'
-            }
+            rounds: {
+                totalElements: 0,
+                content: []
+            },
+            pagination: Game.defaultPagination
         };
         this.restService = RestService.getInstance();
 
@@ -113,16 +111,18 @@ export class Game extends React.Component {
                 this.setState({
                     rounds: data,
                     pagination: this.state.pagination
+
+                    // pagination: {
+                    //     page: data.number,
+                    //     size: data.totalPages,
+                    //     sort: 'desc,id'
+                    // }
                 });
             },
             (error) => {
                 this.setState({
                     rounds: this.state.rounds,
-                    pagination: {
-                        page: 0,
-                        size: 10,
-                        sort: 'desc,id'
-                    }
+                    pagination: Game.defaultPagination
                 });
                 this.setError(error);
             }
@@ -151,3 +151,9 @@ export class Game extends React.Component {
         );
     }
 }
+// Specifies the default page settings:
+Game.defaultPagination = {
+    page: 0,
+    size: 10,
+    sort: 'desc,id'
+};

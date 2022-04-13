@@ -21,17 +21,6 @@ import PropTypes from 'prop-types';
 export class Chart extends React.Component {
     constructor(props) {
         super(props);
-        Chart.propTypes = {
-            data: PropTypes.array
-        };
-        this.setState(props.data);
-        this.refresh = this.refresh.bind(this);
-    }
-
-    refresh() {}
-
-    componentDidMount() {
-        this.refresh();
     }
 
     calculatePercent(value, total) {
@@ -44,16 +33,16 @@ export class Chart extends React.Component {
     render() {
         let conic = 'conic-gradient(';
         let total = 0;
-        this.state.data?.forEach((element) => {
-            total = total + element[1];
+        this.props.data.forEach((element) => {
+            total = total + element.count;
         });
         let previousPercent = 0;
-        this.state.data?.forEach((element, index) => {
-            let currentPercent = this.calculatePercent(element[1], total);
+        this.props.data.forEach((element, index) => {
+            let currentPercent = this.calculatePercent(element.count, total);
             previousPercent = previousPercent + currentPercent;
             conic +=
                 (index !== 0 ? ' ,' : '') +
-                element[0] +
+                element.color +
                 (index !== 0 ? ' 0 ' : ' ') +
                 previousPercent.toFixed(0) +
                 '%';
@@ -69,3 +58,7 @@ export class Chart extends React.Component {
         return <div className="chart" style={style} />;
     }
 }
+// Specifies the value types for props:
+Chart.propTypes = {
+    data: PropTypes.arrayOf(PropTypes.shape({ color: PropTypes.string, count: PropTypes.number }))
+};

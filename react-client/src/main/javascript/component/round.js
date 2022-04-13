@@ -22,34 +22,10 @@ import React from 'react';
 export class Round extends React.Component {
     constructor(props) {
         super(props);
-        Round.propTypes = {
-            round: PropTypes.shape(
-                { id: PropTypes.string },
-                {
-                    status: PropTypes.shape({
-                        name: PropTypes.string,
-                        messageKey: PropTypes.string
-                    })
-                },
-                {
-                    player1: PropTypes.shape({
-                        name: PropTypes.string,
-                        messageKey: PropTypes.string
-                    })
-                },
-                {
-                    player2: PropTypes.shape({
-                        name: PropTypes.string,
-                        messageKey: PropTypes.string
-                    })
-                }
-            )
-        };
-        this.setState(props.round);
     }
 
     render() {
-        let round = this.state.round;
+        let round = this.props.round;
 
         let rowClassName = 'legend icon sprite bg-' + round.status.name.toLowerCase();
         let player1ClassName = 'legend icon sprite bg-' + round.player1.name.toLowerCase();
@@ -58,12 +34,12 @@ export class Round extends React.Component {
 
         return (
             <tr>
-                <td>{round.id}</td>
+                <td>{this.props.round.id}</td>
                 <td>
                     <div className="item">
                         <div className={player1ClassName} />
                         <div className="name">
-                            <Msg msgKey={round.player1.messageKey} />
+                            <Msg msgKey={this.props.round.player1.messageKey} />
                         </div>
                     </div>
                 </td>
@@ -71,7 +47,7 @@ export class Round extends React.Component {
                     <div className="item">
                         <div className={player2ClassName} />
                         <div className="name">
-                            <Msg msgKey={round.player2.messageKey} />
+                            <Msg msgKey={this.props.round.player2.messageKey} />
                         </div>
                     </div>
                 </td>
@@ -80,8 +56,11 @@ export class Round extends React.Component {
                         <div className={'legend-container'}>
                             <div className={resultClassName} />
                         </div>
-                        <div className={'name ' + 'fg-' + round.status.name.toLowerCase()}>
-                            <Msg msgKey={round.status.messageKey} />
+                        <div
+                            className={
+                                'name ' + 'fg-' + this.props.round.status.name.toLowerCase()
+                            }>
+                            <Msg msgKey={this.props.round.status.messageKey} />
                         </div>
                     </div>
                 </td>
@@ -137,3 +116,16 @@ export class Round extends React.Component {
         return resultClassName;
     }
 }
+Round.propCustomEnum = {
+    name: PropTypes.string,
+    messageKey: PropTypes.string
+};
+// Specifies the value types for props:
+Round.propTypes = {
+    round: PropTypes.shape({
+        id: PropTypes.number,
+        status: PropTypes.shape(Round.propCustomEnum),
+        player1: PropTypes.shape(Round.propCustomEnum),
+        player2: PropTypes.shape(Round.propCustomEnum)
+    })
+};

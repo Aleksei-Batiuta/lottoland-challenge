@@ -23,12 +23,11 @@ import RestService from '../service/restService';
 export class Statistics extends React.Component {
     constructor(props) {
         super(props);
-        this.props = props;
         this.state = {
             chartData: [
-                ['#69a507', 1],
-                ['#a50769', 1],
-                ['#0769a5', 1]
+                { color: '#69a507', count: 1 },
+                { color: '#a50769', count: 1 },
+                { color: '#0769a5', count: 1 }
             ],
             data: {
                 total: 3,
@@ -51,9 +50,9 @@ export class Statistics extends React.Component {
         // <2>
         this.restService.getStatistics((data) => {
             const chartData = [
-                ['#69a507', data.first],
-                ['#a50769', data.second],
-                ['#0769a5', data.draws]
+                { color: '#69a507', count: data.first },
+                { color: '#a50769', count: data.second },
+                { color: '#0769a5', count: data.draws }
             ];
             this.setState({ chartData: chartData, data: data });
         });

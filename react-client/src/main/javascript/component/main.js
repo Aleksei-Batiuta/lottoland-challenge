@@ -21,6 +21,7 @@ import { Statistics } from './statistics';
 import { Game } from './game';
 import { LanguageSelect } from './languageSelect';
 import { Msg } from './msg';
+import { initLanguages, LANGUAGE_DEFAULT } from '../service/msgService';
 
 const TAB_GAME = 'game';
 const TAB_STATISTICS = 'statistics';
@@ -31,7 +32,7 @@ export class Main extends React.Component {
 
         this.game = React.createRef();
         this.statistics = React.createRef();
-        this.state = { active: TAB_GAME, refresh: true };
+        this.state = { active: TAB_GAME, language: LANGUAGE_DEFAULT };
 
         this.activate = this.activate.bind(this);
         this.switchToGame = this.switchToGame.bind(this);
@@ -39,8 +40,8 @@ export class Main extends React.Component {
         this.handleChange = this.handleChange.bind(this);
     }
 
-    activate(t) {
-        this.setState({ active: t, refresh: true });
+    componentDidMount() {
+        initLanguages(this.handleChange);
     }
 
     switchToGame() {
@@ -49,6 +50,10 @@ export class Main extends React.Component {
 
     switchToStatistics() {
         this.activate(TAB_STATISTICS);
+    }
+
+    activate(t) {
+        this.setState({ active: t, language: this.state.language });
     }
 
     render() {
@@ -101,7 +106,10 @@ export class Main extends React.Component {
                         </div>
                         <div className="languages">
                             <Msg msgKey="label.language" />:{' '}
-                            <LanguageSelect handleChange={this.handleChange} />
+                            <LanguageSelect
+                                language={this.state.language}
+                                handleChange={this.handleChange}
+                            />
                         </div>
                         <div className="version">
                             <p>
@@ -115,7 +123,7 @@ export class Main extends React.Component {
             </div>
         );
     }
-    handleChange() {
-        this.setState({ active: this.state.active, refresh: true });
+    handleChange(language) {
+        this.setState({ active: this.state.active, language: language });
     }
 }

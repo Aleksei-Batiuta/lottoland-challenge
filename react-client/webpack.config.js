@@ -22,7 +22,7 @@ module.exports = {
     mode: 'development',
     output: {
         path: __dirname,
-        filename: './src/main/resources/static/built/bundle.js'
+        filename: './target/generated-resources/static/built/bundle.js'
     },
     module: {
         rules: [

@@ -16,40 +16,32 @@
  */
 
 import React from 'react';
-import MsgService from '../service/msgService';
+import { translate } from '../service/msgService';
 import PropTypes from 'prop-types';
 
 export class Msg extends React.Component {
     constructor(props) {
         super(props);
-        Msg.propTypes = {
-            msgKey: PropTypes.string,
-            msgOptions: PropTypes.array
-        };
         this.msgKey = props.msgKey;
         this.msgOptions = props.msgOptions;
         this.state = { msg: this.msgKey };
-        this.msgService = MsgService.getInstance();
-        this.refresh = this.refresh.bind(this);
-    }
-
-    refresh() {
-        this.msgService.t(this.msgKey, this.msgOptions, (msgText) => {
-            if (this.state?.msg !== msgText) {
-                this.setState({ msg: msgText });
-            }
-        });
-    }
-
-    componentDidMount() {
-        this.refresh();
     }
 
     render() {
-        this.refresh();
-        if (this.state.msg === null) {
-            return '';
+        // let msg = translate(this.msgKey, this.msgOptions, (msgText) => {
+        //     if (this.state?.msg !== msgText) {
+        //         this.setState({ msg: msgText });
+        //     }
+        // });
+        let msg = translate(this.msgKey, this.msgOptions, () => {});
+        if (msg === null) {
+            msg = '';
         }
-        return this.state.msg;
+        return <>{msg}</>;
     }
 }
+// Specifies the value types for props:
+Msg.propTypes = {
+    msgKey: PropTypes.string,
+    msgOptions: PropTypes.array
+};

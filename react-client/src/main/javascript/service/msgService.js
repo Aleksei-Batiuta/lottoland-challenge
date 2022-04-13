@@ -32,76 +32,43 @@ export const LANGUAGES = [
     }
 ];
 export const LANGUAGE_DEFAULT = 'en';
-export default class MsgService {
-    static instance = null;
-    context = [];
-    i18n = i18next;
 
-    constructor() {
-        this.init();
-        this.t = this.t.bind(this);
-        this.changeLanguage = this.changeLanguage.bind(this);
-    }
-
-    static getInstance() {
-        if (MsgService.instance == null) {
-            MsgService.instance = new MsgService();
-        }
-        return MsgService.instance;
-    }
-
-    t(msgKey, msgOptions, setter) {
-        if (!this.i18n.exists(msgKey)) {
-            if (!this.i18n.isInitialized) {
-                this.context.push({ key: msgKey, options: msgOptions, setter: setter });
-            }
-            return console.log('Message key was not found!', msgKey);
-        }
-        setter(this.i18n.t(msgKey, msgOptions));
-    }
-
-    changeLanguage(language) {
-        return this.i18n.changeLanguage(language);
-    }
-
-    refresh() {
-        try {
-            this.context.forEach((o) => {
-                try {
-                    o.setter(this.i18n.t(o.key, o.options));
-                } catch (e) {
-                    console.log(e);
-                }
-            });
-        } finally {
-            this.context = [];
-        }
-    }
-
-    init() {
-        this.i18n
-            .use(initReactI18next)
-            .use(backend)
-            .init(
-                {
-                    fallbackLng: LANGUAGE_DEFAULT,
-                    // use en if detected lng is not available
-                    lng: LANGUAGE_DEFAULT,
-                    preload: LANGUAGES.map((language) => language.value),
-                    debug: true,
-                    interpolation: {
-                        escapeValue: false // react already safes from xss
-                    },
-                    backend: {
-                        loadPath: '/api/messages/?lang={{lng}}'
-                    }
+export function initLanguages(callback) {
+    i18next
+        .use(initReactI18next)
+        .use(backend)
+        .init(
+            {
+                fallbackLng: LANGUAGE_DEFAULT,
+                // use en if detected lng is not available
+                lng: LANGUAGE_DEFAULT,
+                preload: LANGUAGES.map((language) => language.value),
+                debug: true,
+                interpolation: {
+                    escapeValue: false // react already safes from xss
                 },
-                (error) => {
-                    if (error) {
-                        return console.log('something went wrong loading', error);
-                    }
-                    this.refresh();
+                backend: {
+                    loadPath: '/api/messages/?lang={{lng}}'
                 }
-            );
+            },
+            (error) => {
+                if (error) {
+                    return console.log('something went wrong loading', error);
+                }
+                callback(LANGUAGE_DEFAULT);
+            }
+        );
+}
+
+export function translate(msgKey, msgOptions, setter) {
+    if (!i18next.exists(msgKey)) {
+        return console.log('Message key was not found!', msgKey);
     }
+    let msg = i18next.t(msgKey, msgOptions);
+    setter(msg);
+    return msg;
+}
+
+export function changeLanguage(language, callback) {
+    return i18next.changeLanguage(language, () => callback(language));
 }

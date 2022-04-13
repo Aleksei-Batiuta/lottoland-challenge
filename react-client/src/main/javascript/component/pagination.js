@@ -22,25 +22,13 @@ import PropTypes from 'prop-types';
 export class Pagination extends React.Component {
     constructor(props) {
         super(props);
-        Pagination.propTypes = {
-            options: PropTypes.shape({
-                first: PropTypes.bool,
-                last: PropTypes.bool,
-                empty: PropTypes.bool,
-                totalPages: PropTypes.number,
-                number: PropTypes.number,
-                size: PropTypes.number
-            }),
-            refreshTable: PropTypes.func
-        };
         this.state = {
-            first: props.options?.first,
-            last: props.options?.last,
-            empty: props.options?.empty,
-            totalPages: props.options?.totalPages,
-            number: props.options?.number,
-            size: props.options?.size,
-            refreshTable: props.refreshTable
+            first: props.options.first,
+            last: props.options.last,
+            empty: props.options.empty,
+            totalPages: props.options.totalPages,
+            number: props.options.number,
+            size: props.options.size
         };
         this.update = this.update.bind(this);
         this.setNumber = this.setNumber.bind(this);
@@ -55,47 +43,52 @@ export class Pagination extends React.Component {
             empty: props.empty,
             totalPages: props.totalPages,
             number: props.number,
-            size: props.size,
-            refreshTable: props.refreshTable
+            size: props.size
         });
     }
 
     setNumber(page) {
-        this.setState({
-            first: this.state.first,
-            last: this.state.last,
-            empty: this.state.empty,
-            totalPages: this.state.totalPages,
-            number: page,
-            size: this.state.size,
-            refreshTable: this.state.refreshTable
-        });
-        this.refreshTable();
+        this.setState(
+            {
+                first: this.state.first,
+                last: this.state.last,
+                empty: this.state.empty,
+                totalPages: this.state.totalPages,
+                number: page,
+                size: this.state.size
+            },
+            () => {
+                this.refreshTable();
+            }
+        );
     }
 
     setPageSize(pageSize) {
-        this.setState({
-            first: this.state.first,
-            last: this.state.last,
-            empty: this.state.empty,
-            totalPages: this.state.totalPages,
-            number: 0,
-            size: pageSize,
-            refreshTable: this.state.refreshTable
-        });
-        this.refreshTable();
+        this.setState(
+            {
+                first: this.state.first,
+                last: this.state.last,
+                empty: this.state.empty,
+                totalPages: this.state.totalPages,
+                number: 0,
+                size: pageSize
+            },
+            () => {
+                this.refreshTable();
+            }
+        );
     }
 
     refreshTable() {
-        this.state.refreshTable(this.state.number, this.state.size);
+        this.props.refreshTable(this.state.number, this.state.size);
     }
 
     render() {
         const first = this.state.first;
         const last = this.state.last;
         const empty = this.state.empty;
-        const totalPages = this.state.totalPages;
-        const number = this.state.number;
+        const totalPages = this.state.totalPages ? this.state.totalPages : 0;
+        const number = this.state.number ? this.state.number : 0;
         const size = this.state.size;
 
         const setNumber = this.setNumber;
@@ -123,7 +116,7 @@ export class Pagination extends React.Component {
                 <span>
                     <Msg msgKey="label.page" />{' '}
                     <strong>
-                        {number + 1} <Msg msgKey="label.page.of" />{' '}
+                        {number !== 0 ? number + 1 : 1} <Msg msgKey="label.page.of" />{' '}
                         {totalPages !== 0 ? totalPages : 1}
                     </strong>{' '}
                 </span>
@@ -156,3 +149,16 @@ export class Pagination extends React.Component {
         );
     }
 }
+
+// Specifies the value types for props:
+Pagination.propTypes = {
+    options: PropTypes.shape({
+        first: PropTypes.bool,
+        last: PropTypes.bool,
+        empty: PropTypes.bool,
+        totalPages: PropTypes.number,
+        number: PropTypes.number,
+        size: PropTypes.number
+    }),
+    refreshTable: PropTypes.func
+};

@@ -54,9 +54,9 @@
     </organization>
     <!-- subversion version control system settings-->
     <scm>
-        <connection>scm:git:https://github.com/Aleksei-Batiuta/${my.artifactId}.git</connection>
-        <developerConnection>scm:git:https://github.com/Aleksei-Batiuta/${my.artifactId}.git</developerConnection>
-        <url>https://github.com/Aleksei-Batiuta/${my.artifactId}.git</url>
+        <connection>scm:git:https://github.com/Aleksei-Batiuta/lottoland-challenge.git</connection>
+        <developerConnection>scm:git:https://github.com/Aleksei-Batiuta/lottoland-challenge.git</developerConnection>
+        <url>https://github.com/Aleksei-Batiuta/lottoland-challenge.git</url>
         <tag>HEAD</tag>
     </scm>
     <!-- Deployment Settings -->
@@ -67,13 +67,13 @@
             uses artifactId as ID for corresponding server settings
             in Maven settings.xml to authorization via personal credential
             -->
-            <id>${my.artifactId}</id>
+            <id>lottoland-challenge</id>
             <name>GitHub Aleksei-Batiuta Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/Aleksei-Batiuta/${my.artifactId}</url>
+            <url>https://maven.pkg.github.com/Aleksei-Batiuta/lottoland-challenge</url>
         </repository>
         <!-- Project Site Path -->
         <site>
-            <id>${project.artifactId}</id>
+            <id>lottoland-challenge</id>
             <!-- Uses the local path to site deploy -->
             <url>file://${basedir}/docs</url>
         </site>
@@ -85,9 +85,9 @@
            uses artifactId as ID for corresponding server settings
            in Maven settings.xml to authorization via personal credential
            -->
-            <id>${my.artifactId}</id>
+            <id>lottoland-challenge</id>
             <name>GitHub Aleksei-Batiuta Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/Aleksei-Batiuta/${my.artifactId}</url>
+            <url>https://maven.pkg.github.com/Aleksei-Batiuta/lottoland-challenge</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
@@ -131,12 +131,14 @@
         <dockerhub.url/>
 
         <springfox.version>3.0.0</springfox.version>
+        <maven.test.skip>true</maven.test.skip>
 
         <frontend-maven-plugin.version>1.9.1</frontend-maven-plugin.version>
         <frontend-maven-plugin.nodeVersion>v16.14.1</frontend-maven-plugin.nodeVersion>
         <frontend-maven-plugin.npmVersion>8.5.0</frontend-maven-plugin.npmVersion>
         <maven-project-info-reports-plugin.version>3.2.2</maven-project-info-reports-plugin.version>
         <maven-pmd-plugin.version>3.16.0</maven-pmd-plugin.version>
+        <maven-resources-plugin.version>3.2.0</maven-resources-plugin.version>
     </properties>
 
     <profiles>
@@ -161,7 +163,7 @@
                         <plugin>
                             <groupId>org.apache.maven.plugins</groupId>
                             <artifactId>maven-resources-plugin</artifactId>
-                            <version>3.2.0</version>
+                            <version>${maven-resources-plugin.version}</version>
                             <configuration>
                                 <propertiesEncoding>ISO-8859-1</propertiesEncoding>
                             </configuration>
@@ -344,29 +346,6 @@
                     <artifactId>frontend-maven-plugin</artifactId>
                     <version>${frontend-maven-plugin.version}</version>
                 </plugin>
-                <!-- Heroku WEb start -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-dependency-plugin</artifactId>
-                    <executions>
-                        <execution>
-                            <phase>package</phase>
-                            <goals>
-                                <goal>copy</goal>
-                            </goals>
-                            <configuration>
-                                <artifactItems>
-                                    <artifactItem>
-                                        <groupId>com.heroku</groupId>
-                                        <artifactId>webapp-runner</artifactId>
-                                        <version>9.0.52.1</version>
-                                        <destFileName>webapp-runner.jar</destFileName>
-                                    </artifactItem>
-                                </artifactItems>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin>
                 <!-- JUnit maven report plugin-->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -513,7 +492,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-resources-plugin</artifactId>
-                    <version>3.2.0</version>
+                    <version>${maven-resources-plugin.version}</version>
                     <configuration>
                         <propertiesEncoding>ISO-8859-1</propertiesEncoding>
                     </configuration>
