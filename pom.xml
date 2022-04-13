@@ -156,7 +156,7 @@
                             <!-- Commits the Project Site (HitHub Pages) -->
                             <configuration>
                                 <message>[maven-scm-plugin] update ${project.version} GitHub Pages</message>
-                                <includes>docs/**</includes>
+                                <includes>docs</includes>
                                 <!-- todo: it should push after commit only! -->
                                 <!--<pushChanges>true</pushChanges>-->
                             </configuration>
