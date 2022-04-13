@@ -80,7 +80,7 @@
     <properties>
         <checkstyle.checkstyleDirectory>${project.basedir}/../checkstyle</checkstyle.checkstyleDirectory>
         <site.siteDirectory>${basedir}/../src/site</site.siteDirectory>
-        <spring-boot.buid-image.skip>false</spring-boot.buid-image.skip>
+        <spring-boot-maven-plugin.skip>false</spring-boot-maven-plugin.skip>
     </properties>
 
     <reporting>
@@ -237,6 +237,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
+                    <skip>${spring-boot-maven-plugin.skip}</skip>
                     <image>
                         <name>${dockerhub.owner}/${my.artifactId}:${project.version}</name>
                     </image>
