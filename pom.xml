@@ -132,7 +132,7 @@
 
         <springfox.version>3.0.0</springfox.version>
         <maven.test.skip>true</maven.test.skip>
-        <spring-boot.repackage.skip>true</spring-boot.repackage.skip>
+        <spring-boot.buid-image.skip>true</spring-boot.buid-image.skip>
 
         <frontend-maven-plugin.version>1.9.1</frontend-maven-plugin.version>
         <frontend-maven-plugin.nodeVersion>v16.14.1</frontend-maven-plugin.nodeVersion>
@@ -332,6 +332,21 @@
         <!-- Plugin configuration -->
         <pluginManagement>
             <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>repackage</id>
+                            <goals>
+                                <goal>build-image</goal>
+                            </goals>
+                            <configuration>
+                                <skip>${spring-boot.buid-image.skip}</skip>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-project-info-reports-plugin</artifactId>

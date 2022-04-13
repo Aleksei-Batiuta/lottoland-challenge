@@ -80,7 +80,7 @@
     <properties>
         <checkstyle.checkstyleDirectory>${project.basedir}/../checkstyle</checkstyle.checkstyleDirectory>
         <site.siteDirectory>${basedir}/../src/site</site.siteDirectory>
-        <spring-boot.repackage.skip>false</spring-boot.repackage.skip>
+        <spring-boot.buid-image.skip>false</spring-boot.buid-image.skip>
     </properties>
 
     <reporting>
