@@ -25,7 +25,7 @@ spring-boot-server
     <div id="breadcrumbs">
       <div class="xleft">
         <span id="publishDate">Last Published: 2022-04-13</span>
-          &nbsp;| <span id="projectVersion">Version: 0.39</span>
+          &nbsp;| <span id="projectVersion">Version: 0.40</span>
       </div>
       <div class="xright"><a href="./" title="spring-boot-server">spring-boot-server</a>      </div>
       <div class="clear">
@@ -83,10 +83,10 @@ spring-boot-server
 <td>A method should have only one exit point, and that should be the last statement in the method</td>
 <td>76</td></tr>
 <tr class="b">
-<td>A method should have only one exit point, and that should be the last statement in the method</td>
+<td>Potential violation of Law of Demeter (method chain calls)</td>
 <td>79</td></tr>
 <tr class="a">
-<td>Potential violation of Law of Demeter (method chain calls)</td>
+<td>A method should have only one exit point, and that should be the last statement in the method</td>
 <td>79</td></tr>
 <tr class="b">
 <td>A method should have only one exit point, and that should be the last statement in the method</td>
@@ -125,13 +125,13 @@ spring-boot-server
 <td>A method should have only one exit point, and that should be the last statement in the method</td>
 <td>96</td></tr>
 <tr class="b">
-<td>To avoid mistakes add a comment at the beginning of the log method if you want a default access modifier</td>
-<td>109&#x2013;126</td></tr>
-<tr class="a">
 <td>The method 'log(Logger, Level, String)' has a NCSS line count of 16.</td>
 <td>109&#x2013;126</td></tr>
-<tr class="b">
+<tr class="a">
 <td>Use explicit scoping instead of the default package private level</td>
+<td>109&#x2013;126</td></tr>
+<tr class="b">
+<td>To avoid mistakes add a comment at the beginning of the log method if you want a default access modifier</td>
 <td>109&#x2013;126</td></tr>
 <tr class="a">
 <td>A switch statement does not contain a break</td>
@@ -167,14 +167,14 @@ spring-boot-server
 <td>Local variable 'logger' could be declared final</td>
 <td>147</td></tr>
 <tr class="b">
-<td>Potential violation of Law of Demeter (object not created locally)</td>
-<td>149</td></tr>
+<td>Local variable 'logEntryMessage' could be declared final</td>
+<td>149&#x2013;150</td></tr>
 <tr class="a">
 <td>Potential violation of Law of Demeter (object not created locally)</td>
 <td>149</td></tr>
 <tr class="b">
-<td>Local variable 'logEntryMessage' could be declared final</td>
-<td>149&#x2013;150</td></tr>
+<td>Potential violation of Law of Demeter (object not created locally)</td>
+<td>149</td></tr>
 <tr class="a">
 <td>Potential violation of Law of Demeter (object not created locally)</td>
 <td>150</td></tr>
@@ -194,13 +194,13 @@ spring-boot-server
 <th>Violation</th>
 <th>Line</th></tr>
 <tr class="b">
-<td>This abstract class does not have any abstract methods</td>
+<td>Abstract classes should be named AbstractXXX</td>
 <td>31&#x2013;118</td></tr>
 <tr class="a">
-<td>Each class should declare at least one constructor</td>
+<td>This abstract class does not have any abstract methods</td>
 <td>31&#x2013;118</td></tr>
 <tr class="b">
-<td>Abstract classes should be named AbstractXXX</td>
+<td>Each class should declare at least one constructor</td>
 <td>31&#x2013;118</td></tr>
 <tr class="a">
 <td>Found non-transient, non-static member. Please mark as transient or provide accessors.</td>
@@ -317,10 +317,10 @@ spring-boot-server
 <td>Avoid excessively long variable names like servletEndpointsSupplier</td>
 <td>62</td></tr>
 <tr class="a">
-<td>Avoid excessively long variable names like endpointMediaTypes</td>
+<td>Avoid excessively long variable names like controllerEndpointsSupplier</td>
 <td>63</td></tr>
 <tr class="b">
-<td>Avoid excessively long variable names like controllerEndpointsSupplier</td>
+<td>Avoid excessively long variable names like endpointMediaTypes</td>
 <td>63</td></tr>
 <tr class="a">
 <td>Avoid excessively long variable names like webEndpointProperties</td>
@@ -348,10 +348,10 @@ spring-boot-server
 <td>80</td></tr>
 <tr class="a">
 <td>Potential violation of Law of Demeter (method chain calls)</td>
-<td>82</td></tr>
+<td>82&#x2013;83</td></tr>
 <tr class="b">
 <td>Potential violation of Law of Demeter (method chain calls)</td>
-<td>82&#x2013;83</td></tr>
+<td>82</td></tr>
 <tr class="a">
 <td>Potential violation of Law of Demeter (method chain calls)</td>
 <td>83</td></tr></table></div>
@@ -371,11 +371,17 @@ spring-boot-server
 <td>Local variable 'split' could be declared final</td>
 <td>40</td></tr>
 <tr class="b">
-<td>Found 'DD'-anomaly for variable 'direction' (lines '41'-'43').</td>
-<td>41&#x2013;43</td></tr>
-<tr class="a">
 <td>Found 'DU'-anomaly for variable 'direction' (lines '41'-'50').</td>
 <td>41&#x2013;50</td></tr>
+<tr class="a">
+<td>Found 'DD'-anomaly for variable 'direction' (lines '41'-'43').</td>
+<td>41&#x2013;43</td></tr>
+<tr class="b">
+<td>Potential violation of Law of Demeter (static property access)</td>
+<td>43</td></tr>
+<tr class="a">
+<td>Found 'DU'-anomaly for variable 'direction' (lines '43'-'50').</td>
+<td>43&#x2013;50</td></tr>
 <tr class="b">
 <td>Potential violation of Law of Demeter (method chain calls)</td>
 <td>43</td></tr>
@@ -386,17 +392,11 @@ spring-boot-server
 <td>When doing a String.toLowerCase()/toUpperCase() call, use a Locale</td>
 <td>43</td></tr>
 <tr class="a">
-<td>Potential violation of Law of Demeter (static property access)</td>
+<td>Potential violation of Law of Demeter (method chain calls)</td>
 <td>43</td></tr>
 <tr class="b">
 <td>Potential violation of Law of Demeter (method chain calls)</td>
 <td>43</td></tr>
-<tr class="a">
-<td>Potential violation of Law of Demeter (method chain calls)</td>
-<td>43</td></tr>
-<tr class="b">
-<td>Found 'DU'-anomaly for variable 'direction' (lines '43'-'50').</td>
-<td>43&#x2013;50</td></tr>
 <tr class="a">
 <td>Avoid using Literals in Conditional Statements</td>
 <td>45</td></tr>
@@ -440,10 +440,10 @@ spring-boot-server
 <td>Avoid variables with short names like p</td>
 <td>80</td></tr>
 <tr class="a">
-<td>In J2EE, getClassLoader() might not work as expected.  Use Thread.currentThread().getContextClassLoader() instead.</td>
+<td>Potential violation of Law of Demeter (method chain calls)</td>
 <td>81</td></tr>
 <tr class="b">
-<td>Potential violation of Law of Demeter (method chain calls)</td>
+<td>In J2EE, getClassLoader() might not work as expected.  Use Thread.currentThread().getContextClassLoader() instead.</td>
 <td>81</td></tr>
 <tr class="a">
 <td>Potential violation of Law of Demeter (method chain calls)</td>
@@ -497,11 +497,11 @@ spring-boot-server
 <td>A method should have only one exit point, and that should be the last statement in the method</td>
 <td>67</td></tr>
 <tr class="a">
-<td>The method 'compareToEnum(SignEnum)' has a NCSS line count of 12.</td>
-<td>81&#x2013;95</td></tr>
-<tr class="b">
 <td>Avoid variables with short names like o2</td>
 <td>81</td></tr>
+<tr class="b">
+<td>The method 'compareToEnum(SignEnum)' has a NCSS line count of 12.</td>
+<td>81&#x2013;95</td></tr>
 <tr class="a">
 <td>A method should have only one exit point, and that should be the last statement in the method</td>
 <td>83</td></tr>
@@ -575,10 +575,10 @@ spring-boot-server
 <td>Abstract classes should be named AbstractXXX</td>
 <td>28&#x2013;53</td></tr>
 <tr class="a">
-<td>Private field 'name' could be made final; it is only initialized in the declaration or constructor.</td>
+<td>Found non-transient, non-static member. Please mark as transient or provide accessors.</td>
 <td>33</td></tr>
 <tr class="b">
-<td>Found non-transient, non-static member. Please mark as transient or provide accessors.</td>
+<td>Private field 'name' could be made final; it is only initialized in the declaration or constructor.</td>
 <td>33</td></tr>
 <tr class="a">
 <td>Avoid variables with short names like id</td>
@@ -614,10 +614,10 @@ spring-boot-server
 <td>Avoid variables with short names like o</td>
 <td>161</td></tr>
 <tr class="a">
-<td>Local variable 'comparator' could be declared final</td>
+<td>Potential violation of Law of Demeter (method chain calls)</td>
 <td>162</td></tr>
 <tr class="b">
-<td>Potential violation of Law of Demeter (method chain calls)</td>
+<td>Local variable 'comparator' could be declared final</td>
 <td>162</td></tr>
 <tr class="a">
 <td>Potential violation of Law of Demeter (method chain calls)</td>
@@ -641,10 +641,10 @@ spring-boot-server
 <td>Potential violation of Law of Demeter (method chain calls)</td>
 <td>63</td></tr>
 <tr class="a">
-<td>Potential violation of Law of Demeter (object not created locally)</td>
+<td>Potential violation of Law of Demeter (method chain calls)</td>
 <td>64</td></tr>
 <tr class="b">
-<td>Potential violation of Law of Demeter (method chain calls)</td>
+<td>Potential violation of Law of Demeter (object not created locally)</td>
 <td>64</td></tr>
 <tr class="a">
 <td>Local variable 'comparator' could be declared final</td>
@@ -668,10 +668,10 @@ spring-boot-server
 <td>Found non-transient, non-static member. Please mark as transient or provide accessors.</td>
 <td>43</td></tr>
 <tr class="a">
-<td>Found non-transient, non-static member. Please mark as transient or provide accessors.</td>
+<td>Avoid excessively long variable names like sortComparatorFactory</td>
 <td>54</td></tr>
 <tr class="b">
-<td>Avoid excessively long variable names like sortComparatorFactory</td>
+<td>Found non-transient, non-static member. Please mark as transient or provide accessors.</td>
 <td>54</td></tr>
 <tr class="a">
 <td>Potential violation of Law of Demeter (method chain calls)</td>
@@ -695,10 +695,10 @@ spring-boot-server
 <td>Potential violation of Law of Demeter (method chain calls)</td>
 <td>109</td></tr>
 <tr class="b">
-<td>Avoid variables with short names like o1</td>
+<td>Avoid variables with short names like o2</td>
 <td>119</td></tr>
 <tr class="a">
-<td>Avoid variables with short names like o2</td>
+<td>Avoid variables with short names like o1</td>
 <td>119</td></tr>
 <tr class="b">
 <td>Local variable 'comparator' could be declared final</td>
@@ -710,26 +710,20 @@ spring-boot-server
 <th>Violation</th>
 <th>Line</th></tr>
 <tr class="b">
-<td>Abstract classes should be named AbstractXXX</td>
+<td>Each class should declare at least one constructor</td>
 <td>43&#x2013;265</td></tr>
 <tr class="a">
-<td>Each class should declare at least one constructor</td>
+<td>Abstract classes should be named AbstractXXX</td>
 <td>43&#x2013;265</td></tr>
 <tr class="b">
 <td>This class has too many methods, consider refactoring it.</td>
 <td>44&#x2013;265</td></tr>
 <tr class="a">
-<td>Potential violation of Law of Demeter (method chain calls)</td>
-<td>54</td></tr>
-<tr class="b">
 <td>Local variable 'entities' could be declared final</td>
 <td>54</td></tr>
-<tr class="a">
-<td>Potential violation of Law of Demeter (object not created locally)</td>
-<td>69</td></tr>
 <tr class="b">
 <td>Potential violation of Law of Demeter (method chain calls)</td>
-<td>69</td></tr>
+<td>54</td></tr>
 <tr class="a">
 <td>Local variable 'list' could be declared final</td>
 <td>69</td></tr>
@@ -737,10 +731,16 @@ spring-boot-server
 <td>Potential violation of Law of Demeter (method chain calls)</td>
 <td>69</td></tr>
 <tr class="a">
+<td>Potential violation of Law of Demeter (method chain calls)</td>
+<td>69</td></tr>
+<tr class="b">
 <td>Potential violation of Law of Demeter (object not created locally)</td>
+<td>69</td></tr>
+<tr class="a">
+<td>Local variable 'total' could be declared final</td>
 <td>70</td></tr>
 <tr class="b">
-<td>Local variable 'total' could be declared final</td>
+<td>Potential violation of Law of Demeter (object not created locally)</td>
 <td>70</td></tr>
 <tr class="a">
 <td>Found 'DD'-anomaly for variable 'list' (lines '84'-'89').</td>
@@ -750,10 +750,10 @@ spring-boot-server
 <td>88</td></tr>
 <tr class="a">
 <td>Potential violation of Law of Demeter (object not created locally)</td>
-<td>89&#x2013;90</td></tr>
+<td>89</td></tr>
 <tr class="b">
 <td>Potential violation of Law of Demeter (object not created locally)</td>
-<td>89</td></tr>
+<td>89&#x2013;90</td></tr>
 <tr class="a">
 <td>Potential violation of Law of Demeter (object not created locally)</td>
 <td>90</td></tr>
@@ -773,31 +773,31 @@ spring-boot-server
 <td>Local variable 'result' could be declared final</td>
 <td>132</td></tr>
 <tr class="a">
-<td>Avoid variables with short names like s</td>
+<td>Potential violation of Law of Demeter (method chain calls)</td>
 <td>133</td></tr>
 <tr class="b">
-<td>Potential violation of Law of Demeter (method chain calls)</td>
+<td>Avoid variables with short names like s</td>
 <td>133</td></tr>
 <tr class="a">
 <td>Avoid variables with short names like id</td>
 <td>145</td></tr>
 <tr class="b">
+<td>Potential violation of Law of Demeter (method chain calls)</td>
+<td>146</td></tr>
+<tr class="a">
+<td>Potential violation of Law of Demeter (method chain calls)</td>
+<td>146</td></tr>
+<tr class="b">
+<td>Potential violation of Law of Demeter (method chain calls)</td>
+<td>146</td></tr>
+<tr class="a">
+<td>Potential violation of Law of Demeter (method chain calls)</td>
+<td>146</td></tr>
+<tr class="b">
+<td>Potential violation of Law of Demeter (method chain calls)</td>
+<td>146</td></tr>
+<tr class="a">
 <td>Local variable 'read' could be declared final</td>
-<td>146</td></tr>
-<tr class="a">
-<td>Potential violation of Law of Demeter (method chain calls)</td>
-<td>146</td></tr>
-<tr class="b">
-<td>Potential violation of Law of Demeter (method chain calls)</td>
-<td>146</td></tr>
-<tr class="a">
-<td>Potential violation of Law of Demeter (method chain calls)</td>
-<td>146</td></tr>
-<tr class="b">
-<td>Potential violation of Law of Demeter (method chain calls)</td>
-<td>146</td></tr>
-<tr class="a">
-<td>Potential violation of Law of Demeter (method chain calls)</td>
 <td>146</td></tr>
 <tr class="b">
 <td>Potential violation of Law of Demeter (method chain calls)</td>
@@ -824,20 +824,20 @@ spring-boot-server
 <td>Potential violation of Law of Demeter (method chain calls)</td>
 <td>180&#x2013;181</td></tr>
 <tr class="b">
-<td>Potential violation of Law of Demeter (object not created locally)</td>
-<td>180</td></tr>
+<td>Potential violation of Law of Demeter (method chain calls)</td>
+<td>180&#x2013;181</td></tr>
 <tr class="a">
 <td>Potential violation of Law of Demeter (object not created locally)</td>
 <td>180</td></tr>
+<tr class="b">
+<td>Potential violation of Law of Demeter (object not created locally)</td>
+<td>180</td></tr>
+<tr class="a">
+<td>Potential violation of Law of Demeter (method chain calls)</td>
+<td>180&#x2013;181</td></tr>
 <tr class="b">
 <td>Avoid variables with short names like id</td>
 <td>180</td></tr>
-<tr class="a">
-<td>Potential violation of Law of Demeter (method chain calls)</td>
-<td>180&#x2013;181</td></tr>
-<tr class="b">
-<td>Potential violation of Law of Demeter (method chain calls)</td>
-<td>180&#x2013;181</td></tr>
 <tr class="a">
 <td>Potential violation of Law of Demeter (method chain calls)</td>
 <td>181</td></tr>
@@ -884,11 +884,11 @@ spring-boot-server
 <td>Potential violation of Law of Demeter (method chain calls)</td>
 <td>226&#x2013;227</td></tr>
 <tr class="b">
-<td>Potential violation of Law of Demeter (method chain calls)</td>
-<td>226&#x2013;227</td></tr>
-<tr class="a">
 <td>Avoid variables with short names like id</td>
 <td>226</td></tr>
+<tr class="a">
+<td>Potential violation of Law of Demeter (method chain calls)</td>
+<td>226&#x2013;227</td></tr>
 <tr class="b">
 <td>Found 'UR'-anomaly for variable 'entity' (lines '237'-'240').</td>
 <td>237&#x2013;240</td></tr>
@@ -938,20 +938,20 @@ spring-boot-server
 <td>The method 'getRounds(Long, Boolean, StatusEnum, Pageable)' has a NCSS line count of 15.</td>
 <td>58&#x2013;80</td></tr>
 <tr class="b">
-<td>Potential violation of Law of Demeter (method chain calls)</td>
-<td>61</td></tr>
-<tr class="a">
-<td>Potential violation of Law of Demeter (method chain calls)</td>
-<td>61</td></tr>
-<tr class="b">
-<td>Found 'DD'-anomaly for variable 'roundsStream' (lines '61'-'69').</td>
-<td>61&#x2013;69</td></tr>
-<tr class="a">
-<td>Found 'DD'-anomaly for variable 'roundsStream' (lines '61'-'66').</td>
-<td>61&#x2013;66</td></tr>
-<tr class="b">
 <td>Found 'DD'-anomaly for variable 'roundsStream' (lines '61'-'63').</td>
 <td>61&#x2013;63</td></tr>
+<tr class="a">
+<td>Potential violation of Law of Demeter (method chain calls)</td>
+<td>61</td></tr>
+<tr class="b">
+<td>Found 'DD'-anomaly for variable 'roundsStream' (lines '61'-'66').</td>
+<td>61&#x2013;66</td></tr>
+<tr class="a">
+<td>Found 'DD'-anomaly for variable 'roundsStream' (lines '61'-'69').</td>
+<td>61&#x2013;69</td></tr>
+<tr class="b">
+<td>Potential violation of Law of Demeter (method chain calls)</td>
+<td>61</td></tr>
 <tr class="a">
 <td>Potential violation of Law of Demeter (object not created locally)</td>
 <td>63</td></tr>
@@ -1061,10 +1061,10 @@ spring-boot-server
 <td>Potential violation of Law of Demeter (method chain calls)</td>
 <td>50&#x2013;51</td></tr>
 <tr class="a">
-<td>Potential violation of Law of Demeter (method chain calls)</td>
+<td>Local variable 'read' could be declared final</td>
 <td>50&#x2013;51</td></tr>
 <tr class="b">
-<td>Local variable 'read' could be declared final</td>
+<td>Potential violation of Law of Demeter (method chain calls)</td>
 <td>50&#x2013;51</td></tr>
 <tr class="a">
 <td>Potential violation of Law of Demeter (method chain calls)</td>
@@ -1094,10 +1094,10 @@ spring-boot-server
 <td>Local variable 'repositoryEntity' could be declared final</td>
 <td>107</td></tr>
 <tr class="a">
-<td>Local variable 't' could be declared final</td>
+<td>Avoid variables with short names like t</td>
 <td>108</td></tr>
 <tr class="b">
-<td>Avoid variables with short names like t</td>
+<td>Local variable 't' could be declared final</td>
 <td>108</td></tr></table></div>
 <div class="section">
 <h3><a name="com.2Fbatyuta.2Fchallenge.2Flottoland.2Fservice.2FLightweightService.java"></a>com/batyuta/challenge/lottoland/service/LightweightService.java</h3>
@@ -1160,10 +1160,10 @@ spring-boot-server
 <td>Local variable 'messagesMap' could be declared final</td>
 <td>55</td></tr>
 <tr class="a">
-<td>Local variable 'entry' could be declared final</td>
+<td>Potential violation of Law of Demeter (object not created locally)</td>
 <td>56</td></tr>
 <tr class="b">
-<td>Potential violation of Law of Demeter (object not created locally)</td>
+<td>Local variable 'entry' could be declared final</td>
 <td>56</td></tr>
 <tr class="a">
 <td>Potential violation of Law of Demeter (method chain calls)</td>
@@ -1220,17 +1220,17 @@ spring-boot-server
 <th>Violation</th>
 <th>Line</th></tr>
 <tr class="b">
-<td>Avoid excessively long variable names like userEntityRepository</td>
-<td>36</td></tr>
-<tr class="a">
 <td>Found non-transient, non-static member. Please mark as transient or provide accessors.</td>
 <td>36</td></tr>
-<tr class="b">
-<td>Found 'DD'-anomaly for variable 'userEntity' (lines '66'-'70').</td>
-<td>66&#x2013;70</td></tr>
 <tr class="a">
+<td>Avoid excessively long variable names like userEntityRepository</td>
+<td>36</td></tr>
+<tr class="b">
 <td>Found 'DU'-anomaly for variable 'userEntity' (lines '66'-'77').</td>
 <td>66&#x2013;77</td></tr>
+<tr class="a">
+<td>Found 'DD'-anomaly for variable 'userEntity' (lines '66'-'70').</td>
+<td>66&#x2013;70</td></tr>
 <tr class="b">
 <td>Potential violation of Law of Demeter (method chain calls)</td>
 <td>69</td></tr></table></div>
@@ -1274,10 +1274,10 @@ spring-boot-server
 <th>Violation</th>
 <th>Line</th></tr>
 <tr class="a">
-<td>Abstract classes should be named AbstractXXX</td>
+<td>This abstract class does not have any abstract methods</td>
 <td>23&#x2013;53</td></tr>
 <tr class="b">
-<td>This abstract class does not have any abstract methods</td>
+<td>Abstract classes should be named AbstractXXX</td>
 <td>23&#x2013;53</td></tr>
 <tr class="a">
 <td>Avoid variables with short names like id</td>
@@ -1346,13 +1346,13 @@ spring-boot-server
 <td>Potential violation of Law of Demeter (method chain calls)</td>
 <td>101</td></tr>
 <tr class="a">
-<td>A method should have only one exit point, and that should be the last statement in the method</td>
+<td>Potential violation of Law of Demeter (method chain calls)</td>
 <td>117</td></tr>
 <tr class="b">
 <td>Potential violation of Law of Demeter (method chain calls)</td>
 <td>117</td></tr>
 <tr class="a">
-<td>Potential violation of Law of Demeter (method chain calls)</td>
+<td>A method should have only one exit point, and that should be the last statement in the method</td>
 <td>117</td></tr>
 <tr class="b">
 <td>When doing a String.toLowerCase()/toUpperCase() call, use a Locale</td>
@@ -1373,10 +1373,10 @@ spring-boot-server
 <td>Found non-transient, non-static member. Please mark as transient or provide accessors.</td>
 <td>56</td></tr>
 <tr class="a">
-<td>Found non-transient, non-static member. Please mark as transient or provide accessors.</td>
+<td>Field status has the same name as a method</td>
 <td>62</td></tr>
 <tr class="b">
-<td>Field status has the same name as a method</td>
+<td>Found non-transient, non-static member. Please mark as transient or provide accessors.</td>
 <td>62</td></tr>
 <tr class="a">
 <td>Avoid using short method names</td>
@@ -1445,14 +1445,14 @@ spring-boot-server
 <td>The method 'buildPageable(Integer, Integer, Sort)' has a NCSS line count of 14.</td>
 <td>126&#x2013;147</td></tr>
 <tr class="a">
-<td>Found 'DD'-anomaly for variable 'pageable' (lines '127'-'140').</td>
-<td>127&#x2013;140</td></tr>
+<td>Found 'DD'-anomaly for variable 'pageable' (lines '127'-'134').</td>
+<td>127&#x2013;134</td></tr>
 <tr class="b">
 <td>Found 'DD'-anomaly for variable 'pageable' (lines '127'-'131').</td>
 <td>127&#x2013;131</td></tr>
 <tr class="a">
-<td>Found 'DD'-anomaly for variable 'pageable' (lines '127'-'134').</td>
-<td>127&#x2013;134</td></tr>
+<td>Found 'DD'-anomaly for variable 'pageable' (lines '127'-'140').</td>
+<td>127&#x2013;140</td></tr>
 <tr class="b">
 <td>Avoid if (x != y) ..; else ..;</td>
 <td>128&#x2013;142</td></tr>
@@ -1472,10 +1472,10 @@ spring-boot-server
 <td>Potential violation of Law of Demeter (object not created locally)</td>
 <td>157</td></tr>
 <tr class="b">
-<td>Local variable 'view' could be declared final</td>
+<td>Potential violation of Law of Demeter (object not created locally)</td>
 <td>158</td></tr>
 <tr class="a">
-<td>Potential violation of Law of Demeter (object not created locally)</td>
+<td>Local variable 'view' could be declared final</td>
 <td>158</td></tr>
 <tr class="b">
 <td>Local variable 'entity' could be declared final</td>
@@ -1514,19 +1514,19 @@ spring-boot-server
 <td>Potential violation of Law of Demeter (method chain calls)</td>
 <td>221</td></tr>
 <tr class="b">
-<td>Potential violation of Law of Demeter (method chain calls)</td>
-<td>221</td></tr>
-<tr class="a">
-<td>Potential violation of Law of Demeter (method chain calls)</td>
-<td>221</td></tr>
-<tr class="b">
-<td>Potential violation of Law of Demeter (method chain calls)</td>
-<td>221</td></tr>
-<tr class="a">
-<td>Potential violation of Law of Demeter (method chain calls)</td>
-<td>221</td></tr>
-<tr class="b">
 <td>Local variable 'model' could be declared final</td>
+<td>221</td></tr>
+<tr class="a">
+<td>Potential violation of Law of Demeter (method chain calls)</td>
+<td>221</td></tr>
+<tr class="b">
+<td>Potential violation of Law of Demeter (method chain calls)</td>
+<td>221</td></tr>
+<tr class="a">
+<td>Potential violation of Law of Demeter (method chain calls)</td>
+<td>221</td></tr>
+<tr class="b">
+<td>Potential violation of Law of Demeter (method chain calls)</td>
 <td>221</td></tr>
 <tr class="a">
 <td>Potential violation of Law of Demeter (method chain calls)</td>
@@ -1535,17 +1535,29 @@ spring-boot-server
 <td>Potential violation of Law of Demeter (object not created locally)</td>
 <td>223</td></tr>
 <tr class="a">
+<td>Potential violation of Law of Demeter (method chain calls)</td>
+<td>226&#x2013;227</td></tr>
+<tr class="b">
+<td>Potential violation of Law of Demeter (object not created locally)</td>
+<td>226&#x2013;227</td></tr>
+<tr class="a">
+<td>Potential violation of Law of Demeter (method chain calls)</td>
+<td>226&#x2013;227</td></tr>
+<tr class="b">
+<td>Potential violation of Law of Demeter (method chain calls)</td>
+<td>226&#x2013;227</td></tr>
+<tr class="a">
+<td>Potential violation of Law of Demeter (object not created locally)</td>
+<td>226</td></tr>
+<tr class="b">
+<td>Potential violation of Law of Demeter (method chain calls)</td>
+<td>226&#x2013;227</td></tr>
+<tr class="a">
+<td>Potential violation of Law of Demeter (method chain calls)</td>
+<td>226&#x2013;227</td></tr>
+<tr class="b">
 <td>Potential violation of Law of Demeter (object not created locally)</td>
 <td>226</td></tr>
-<tr class="b">
-<td>Potential violation of Law of Demeter (method chain calls)</td>
-<td>226&#x2013;227</td></tr>
-<tr class="a">
-<td>Potential violation of Law of Demeter (object not created locally)</td>
-<td>226</td></tr>
-<tr class="b">
-<td>Potential violation of Law of Demeter (method chain calls)</td>
-<td>226&#x2013;227</td></tr>
 <tr class="a">
 <td>Potential violation of Law of Demeter (method chain calls)</td>
 <td>226&#x2013;227</td></tr>
@@ -1554,18 +1566,6 @@ spring-boot-server
 <td>226&#x2013;227</td></tr>
 <tr class="a">
 <td>Potential violation of Law of Demeter (method chain calls)</td>
-<td>226&#x2013;227</td></tr>
-<tr class="b">
-<td>Potential violation of Law of Demeter (method chain calls)</td>
-<td>226&#x2013;227</td></tr>
-<tr class="a">
-<td>Potential violation of Law of Demeter (method chain calls)</td>
-<td>226&#x2013;227</td></tr>
-<tr class="b">
-<td>Potential violation of Law of Demeter (method chain calls)</td>
-<td>226&#x2013;227</td></tr>
-<tr class="a">
-<td>Potential violation of Law of Demeter (object not created locally)</td>
 <td>226&#x2013;227</td></tr>
 <tr class="b">
 <td>Potential violation of Law of Demeter (object not created locally)</td>
@@ -1616,10 +1616,10 @@ spring-boot-server
 <th>Violation</th>
 <th>Line</th></tr>
 <tr class="b">
-<td>Found non-transient, non-static member. Please mark as transient or provide accessors.</td>
+<td>The Logger variable declaration does not contain the static and final modifiers</td>
 <td>46</td></tr>
 <tr class="a">
-<td>The Logger variable declaration does not contain the static and final modifiers</td>
+<td>Found non-transient, non-static member. Please mark as transient or provide accessors.</td>
 <td>46</td></tr>
 <tr class="b">
 <td>Found non-transient, non-static member. Please mark as transient or provide accessors.</td>
