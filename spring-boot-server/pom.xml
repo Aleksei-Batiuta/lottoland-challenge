@@ -209,7 +209,7 @@
                     </execution>
                     <execution>
                         <id>unpack</id>
-                        <phase>generate-resources</phase>
+                        <phase>prepare-package</phase>
                         <goals>
                             <goal>unpack</goal>
                         </goals>
