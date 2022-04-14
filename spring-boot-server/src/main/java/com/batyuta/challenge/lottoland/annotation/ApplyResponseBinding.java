@@ -23,11 +23,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation to use response wrapper
- * {@link com.batyuta.challenge.lottoland.web.RestResponseAdvise}.
+ * Annotation to use response wrapper {@link
+ * com.batyuta.challenge.lottoland.web.RestResponseAdvise}.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface ApplyResponseBinding {
-
-}
+public @interface ApplyResponseBinding {}

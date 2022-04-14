@@ -17,34 +17,31 @@
 
 package com.batyuta.challenge.lottoland.config;
 
+import static com.batyuta.challenge.lottoland.enums.I18n.CLASSPATH_MESSAGES;
+
 import com.batyuta.challenge.lottoland.enums.I18n;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import static com.batyuta.challenge.lottoland.enums.I18n.CLASSPATH_MESSAGES;
-
-/**
- * Locale Custom Configuration.
- */
+/** Locale Custom Configuration. */
 @Configuration
 @EnableAutoConfiguration
 public class LocaleConfiguration {
 
-	/**
-	 * Custom configuration of {@link MessageSource}. Sets the localized message location,
-	 * localization encoding and flag to show message key value if this message was not
-	 * found.
-	 * @return message source
-	 */
-	@Bean
-	public MessageSource messageSource() {
-		ExposedResourceMessageBundleSource messageSource = new ExposedResourceMessageBundleSource();
-		messageSource.setBasename(CLASSPATH_MESSAGES);
-		messageSource.setDefaultEncoding(I18n.ENCODING_MESSAGES);
-		messageSource.setUseCodeAsDefaultMessage(true);
-		return messageSource;
-	}
-
+  /**
+   * Custom configuration of {@link MessageSource}. Sets the localized message location,
+   * localization encoding and flag to show message key value if this message was not found.
+   *
+   * @return message source
+   */
+  @Bean
+  public MessageSource messageSource() {
+    ExposedResourceMessageBundleSource messageSource = new ExposedResourceMessageBundleSource();
+    messageSource.setBasename(CLASSPATH_MESSAGES);
+    messageSource.setDefaultEncoding(I18n.ENCODING_MESSAGES);
+    messageSource.setUseCodeAsDefaultMessage(true);
+    return messageSource;
+  }
 }

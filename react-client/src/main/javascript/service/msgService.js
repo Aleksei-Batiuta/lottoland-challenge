@@ -20,55 +20,55 @@ import { initReactI18next } from 'react-i18next';
 import backend from 'i18next-http-backend';
 
 export const LANGUAGES = [
-    {
-        value: 'en',
-        label: 'label.language.en',
-        name: 'English'
-    },
-    {
-        value: 'ru',
-        label: 'label.language.ru',
-        name: 'Русский'
-    }
+  {
+    value: 'en',
+    label: 'label.language.en',
+    name: 'English'
+  },
+  {
+    value: 'ru',
+    label: 'label.language.ru',
+    name: 'Русский'
+  }
 ];
 export const LANGUAGE_DEFAULT = 'en';
 
 export function initLanguages(callback) {
-    i18next
-        .use(initReactI18next)
-        .use(backend)
-        .init(
-            {
-                fallbackLng: LANGUAGE_DEFAULT,
-                // use en if detected lng is not available
-                lng: LANGUAGE_DEFAULT,
-                preload: LANGUAGES.map((language) => language.value),
-                debug: true,
-                interpolation: {
-                    escapeValue: false // react already safes from xss
-                },
-                backend: {
-                    loadPath: '/api/messages/?lang={{lng}}'
-                }
-            },
-            (error) => {
-                if (error) {
-                    return console.log('something went wrong loading', error);
-                }
-                callback(LANGUAGE_DEFAULT);
-            }
-        );
+  i18next
+    .use(initReactI18next)
+    .use(backend)
+    .init(
+      {
+        fallbackLng: LANGUAGE_DEFAULT,
+        // use en if detected lng is not available
+        lng: LANGUAGE_DEFAULT,
+        preload: LANGUAGES.map((language) => language.value),
+        debug: true,
+        interpolation: {
+          escapeValue: false // react already safes from xss
+        },
+        backend: {
+          loadPath: '/api/messages/?lang={{lng}}'
+        }
+      },
+      (error) => {
+        if (error) {
+          return console.log('something went wrong loading', error);
+        }
+        callback(LANGUAGE_DEFAULT);
+      }
+    );
 }
 
 export function translate(msgKey, msgOptions, setter) {
-    if (!i18next.exists(msgKey)) {
-        return console.log('Message key was not found!', msgKey);
-    }
-    let msg = i18next.t(msgKey, msgOptions);
-    setter(msg);
-    return msg;
+  if (!i18next.exists(msgKey)) {
+    return console.log('Message key was not found!', msgKey);
+  }
+  let msg = i18next.t(msgKey, msgOptions);
+  setter(msg);
+  return msg;
 }
 
 export function changeLanguage(language, callback) {
-    return i18next.changeLanguage(language, () => callback(language));
+  return i18next.changeLanguage(language, () => callback(language));
 }

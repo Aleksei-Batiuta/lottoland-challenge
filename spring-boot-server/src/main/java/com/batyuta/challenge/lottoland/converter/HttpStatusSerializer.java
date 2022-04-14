@@ -20,49 +20,41 @@ package com.batyuta.challenge.lottoland.converter;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import java.io.IOException;
 import org.springframework.http.HttpStatus;
 
-import java.io.IOException;
-
-/**
- * Custom {@link HttpStatus} JSON serializer.
- */
+/** Custom {@link HttpStatus} JSON serializer. */
 public class HttpStatusSerializer extends StdSerializer<HttpStatus> {
 
-	/**
-	 * Field code value name.
-	 */
-	public static final String FIELD_CODE_VALUE = "codeValue";
+  /** Field code value name. */
+  public static final String FIELD_CODE_VALUE = "codeValue";
 
-	/**
-	 * Field code name.
-	 */
-	public static final String FIELD_CODE = "code";
+  /** Field code name. */
+  public static final String FIELD_CODE = "code";
 
-	/**
-	 * Default constructor.
-	 */
-	public HttpStatusSerializer() {
-		super(HttpStatus.class);
-	}
+  /** Default constructor. */
+  public HttpStatusSerializer() {
+    super(HttpStatus.class);
+  }
 
-	/**
-	 * Method that can be called to ask implementation to serialize values of type this
-	 * serializer handles.
-	 * @param status Value to serialize; can <b>not</b> be null.
-	 * @param generator Generator used to output resulting Json content
-	 * @param provider Provider that can be used to get serializers for serializing
-	 * Objects value contains, if any.
-	 */
-	@Override
-	public void serialize(final HttpStatus status, final JsonGenerator generator, final SerializerProvider provider)
-			throws IOException {
-		generator.writeStartObject();
-		generator.writeFieldName(FIELD_CODE_VALUE);
-		generator.writeNumber(status.value());
-		generator.writeFieldName(FIELD_CODE);
-		generator.writeString(status.getReasonPhrase());
-		generator.writeEndObject();
-	}
-
+  /**
+   * Method that can be called to ask implementation to serialize values of type this serializer
+   * handles.
+   *
+   * @param status Value to serialize; can <b>not</b> be null.
+   * @param generator Generator used to output resulting Json content
+   * @param provider Provider that can be used to get serializers for serializing Objects value
+   *     contains, if any.
+   */
+  @Override
+  public void serialize(
+      final HttpStatus status, final JsonGenerator generator, final SerializerProvider provider)
+      throws IOException {
+    generator.writeStartObject();
+    generator.writeFieldName(FIELD_CODE_VALUE);
+    generator.writeNumber(status.value());
+    generator.writeFieldName(FIELD_CODE);
+    generator.writeString(status.getReasonPhrase());
+    generator.writeEndObject();
+  }
 }

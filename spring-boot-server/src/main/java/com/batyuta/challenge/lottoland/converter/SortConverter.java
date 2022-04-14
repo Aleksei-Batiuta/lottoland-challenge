@@ -17,36 +17,33 @@
 
 package com.batyuta.challenge.lottoland.converter;
 
+import java.util.Arrays;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
-
-/**
- * Convertor {@link String} to {@link Sort}.
- */
+/** Convertor {@link String} to {@link Sort}. */
 @Component
 public class SortConverter implements Converter<String, Sort> {
 
-	/**
-	 * Parsing of {@link Sort}.
-	 * @param sortString as string
-	 * @return parsed sort
-	 */
-	@Override
-	public Sort convert(final String sortString) {
-		Sort sort = null;
-		String[] split = sortString.split(",");
-		Sort.Direction direction = null;
-		if (split.length > 0) {
-			direction = Sort.Direction.valueOf(split[0].toUpperCase());
-		}
-		if (split.length > 1) {
-			String[] fields = Arrays.copyOfRange(split, 1, split.length);
-			sort = Sort.by(direction, fields);
-		}
-		return sort;
-	}
-
+  /**
+   * Parsing of {@link Sort}.
+   *
+   * @param sortString as string
+   * @return parsed sort
+   */
+  @Override
+  public Sort convert(final String sortString) {
+    Sort sort = null;
+    String[] split = sortString.split(",");
+    Sort.Direction direction = null;
+    if (split.length > 0) {
+      direction = Sort.Direction.valueOf(split[0].toUpperCase());
+    }
+    if (split.length > 1) {
+      String[] fields = Arrays.copyOfRange(split, 1, split.length);
+      sort = Sort.by(direction, fields);
+    }
+    return sort;
+  }
 }

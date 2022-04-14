@@ -17,6 +17,13 @@
 
 package com.batyuta.challenge.lottoland.test;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.io.IOException;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
@@ -30,14 +37,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.io.IOException;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 /**
  * Unit test for Application.
  *
@@ -49,86 +48,89 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DisplayName("Simple HTTP request test cases")
 public class ApplicationTest {
 
-	/**
-	 * Root path.
-	 */
-	public static final String ROOT_PATH = "/";
+  /** Root path. */
+  public static final String ROOT_PATH = "/";
 
-	/**
-	 * Test Server port.
-	 */
-	// @LocalServerPort
-	private static final int SERVER_PORT = 8080;
+  /** Test Server port. */
+  // @LocalServerPort
+  private static final int SERVER_PORT = 8080;
 
-	/**
-	 * Mock Model View Controller.
-	 */
-	@Autowired
-	private MockMvc mockMvc;
+  /** Mock Model View Controller. */
+  @Autowired private MockMvc mockMvc;
 
-	/**
-	 * Test access to main game page.
-	 * @throws Exception if error appears
-	 */
-	@Test
-	public void root() throws Exception {
-		this.mockMvc.perform(get(ROOT_PATH)).andDo(print()).andExpect(status().isOk());
-	}
+  /**
+   * Test access to main game page.
+   *
+   * @throws Exception if error appears
+   */
+  @Test
+  public void root() throws Exception {
+    this.mockMvc.perform(get(ROOT_PATH)).andDo(print()).andExpect(status().isOk());
+  }
 
-	/**
-	 * Test root JSP page.
-	 * @throws IOException if error appears
-	 */
-	@Test
-	public void rootJsp() throws IOException {
+  /**
+   * Test root JSP page.
+   *
+   * @throws IOException if error appears
+   */
+  @Test
+  public void rootJsp() throws IOException {
 
-		// Given
-		HttpUriRequest request = new HttpGet("http://localhost:" + SERVER_PORT + ROOT_PATH);
+    // Given
+    HttpUriRequest request = new HttpGet("http://localhost:" + SERVER_PORT + ROOT_PATH);
 
-		// When
-		HttpResponse httpResponse = HttpClientBuilder.create().build().execute(request);
+    // When
+    HttpResponse httpResponse = HttpClientBuilder.create().build().execute(request);
 
-		// Then
-		assertThat("Invalid HTTP response code", httpResponse.getStatusLine().getStatusCode(),
-				equalTo(HttpStatus.SC_OK));
-	}
+    // Then
+    assertThat(
+        "Invalid HTTP response code",
+        httpResponse.getStatusLine().getStatusCode(),
+        equalTo(HttpStatus.SC_OK));
+  }
 
-	/**
-	 * Test error page.
-	 * @throws Exception if error appears
-	 */
-	@Test
-	public void error() throws Exception {
-		this.mockMvc.perform(get(ROOT_PATH + "error")).andDo(print()).andExpect(status().is4xxClientError());
-	}
+  /**
+   * Test error page.
+   *
+   * @throws Exception if error appears
+   */
+  @Test
+  public void error() throws Exception {
+    this.mockMvc
+        .perform(get(ROOT_PATH + "error"))
+        .andDo(print())
+        .andExpect(status().is4xxClientError());
+  }
 
-	/**
-	 * Test main.css.
-	 * @throws Exception if error appears
-	 */
-	@Test
-	public void cssTest() throws Exception {
-		this.mockMvc.perform(get(ROOT_PATH + "css/main.css")).andDo(print()).andExpect(status().isOk());
-	}
+  /**
+   * Test main.css.
+   *
+   * @throws Exception if error appears
+   */
+  @Test
+  public void cssTest() throws Exception {
+    this.mockMvc.perform(get(ROOT_PATH + "css/main.css")).andDo(print()).andExpect(status().isOk());
+  }
 
-	/**
-	 * Test lottoland.png.
-	 * @throws Exception if error appears
-	 */
-	@Test
-	public void logoTest() throws Exception {
+  /**
+   * Test lottoland.png.
+   *
+   * @throws Exception if error appears
+   */
+  @Test
+  public void logoTest() throws Exception {
 
-		this.mockMvc.perform(get(ROOT_PATH + "image/lottoland.png")).andExpect(status().isOk());
-	}
+    this.mockMvc.perform(get(ROOT_PATH + "image/lottoland.png")).andExpect(status().isOk());
+  }
 
-	/**
-	 * Test favicon.ico.
-	 * @throws Exception if error appears
-	 */
-	@Test
-	public void faviconTest() throws Exception {
+  /**
+   * Test favicon.ico.
+   *
+   * @throws Exception if error appears
+   */
+  @Test
+  public void faviconTest() throws Exception {
 
-		this.mockMvc.perform(get(ROOT_PATH + "favicon.ico")).andExpect(status().isOk());
-	}
-
+    this.mockMvc.perform(get(ROOT_PATH + "favicon.ico")).andExpect(status().isOk());
+  }
 }

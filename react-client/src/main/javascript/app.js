@@ -24,10 +24,10 @@ import { Main } from './component/main';
  * The Application code.
  */
 ReactDOM.render(
-    <React.StrictMode>
-        <React.Suspense fallback="Loading...">
-            <Main />
-        </React.Suspense>
-    </React.StrictMode>,
-    document.getElementById('react')
+  <React.StrictMode>
+    <React.Suspense fallback="Loading...">
+      <Main />
+    </React.Suspense>
+  </React.StrictMode>,
+  document.getElementById('react')
 );

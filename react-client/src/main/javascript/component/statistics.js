@@ -21,146 +21,146 @@ import React from 'react';
 import RestService from '../service/restService';
 
 export class Statistics extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            chartData: [
-                { color: '#69a507', count: 1 },
-                { color: '#a50769', count: 1 },
-                { color: '#0769a5', count: 1 }
-            ],
-            data: {
-                total: 3,
-                first: 1,
-                second: 1,
-                draws: 1
-            }
-        };
+  constructor(props) {
+    super(props);
+    this.state = {
+      chartData: [
+        { color: '#69a507', count: 1 },
+        { color: '#a50769', count: 1 },
+        { color: '#0769a5', count: 1 }
+      ],
+      data: {
+        total: 3,
+        first: 1,
+        second: 1,
+        draws: 1
+      }
+    };
 
-        this.restService = RestService.getInstance();
+    this.restService = RestService.getInstance();
 
-        this.refresh = this.refresh.bind(this);
+    this.refresh = this.refresh.bind(this);
+  }
+
+  componentDidMount() {
+    this.refresh();
+  }
+
+  refresh() {
+    // <2>
+    this.restService.getStatistics((data) => {
+      const chartData = [
+        { color: '#69a507', count: data.first },
+        { color: '#a50769', count: data.second },
+        { color: '#0769a5', count: data.draws }
+      ];
+      this.setState({ chartData: chartData, data: data });
+    });
+  }
+
+  render() {
+    let tableContext;
+    if (this.state.data.total === 0) {
+      tableContext = (
+        <tbody>
+          <tr>
+            <td colSpan="4">
+              <Msg msgKey="label.table.empty" />
+            </td>
+          </tr>
+        </tbody>
+      );
+    } else {
+      tableContext = (
+        <tbody>
+          <tr>
+            <td rowSpan="3">
+              <div id="chart">
+                <Chart data={this.state.chartData} />
+              </div>
+            </td>
+            <td>
+              <div className="legend bg-win">&nbsp;</div>
+            </td>
+            <td>
+              <label className="fg-win" htmlFor="first_wins">
+                <Msg msgKey="label.rounds.first" />
+              </label>
+            </td>
+            <td>
+              <output id="first_wins" className="fg-win">
+                {this.state.data.first}
+              </output>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div className="legend bg-loss">&nbsp;</div>
+            </td>
+            <td>
+              <label htmlFor="second_wins" className="fg-loss">
+                <Msg msgKey="label.rounds.second" />
+              </label>
+            </td>
+            <td>
+              <output id="second_wins" className="fg-loss">
+                {this.state.data.second}
+              </output>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div className="legend bg-draw">&nbsp;</div>
+            </td>
+            <td>
+              <label htmlFor="total_draws" className="fg-draw">
+                <Msg msgKey="label.rounds.draws" />
+              </label>
+            </td>
+            <td>
+              <output id="total_draws" className="fg-draw">
+                {this.state.data.draws}
+              </output>
+            </td>
+          </tr>
+        </tbody>
+      );
     }
-
-    componentDidMount() {
-        this.refresh();
-    }
-
-    refresh() {
-        // <2>
-        this.restService.getStatistics((data) => {
-            const chartData = [
-                { color: '#69a507', count: data.first },
-                { color: '#a50769', count: data.second },
-                { color: '#0769a5', count: data.draws }
-            ];
-            this.setState({ chartData: chartData, data: data });
-        });
-    }
-
-    render() {
-        let tableContext;
-        if (this.state.data.total === 0) {
-            tableContext = (
-                <tbody>
-                    <tr>
-                        <td colSpan="4">
-                            <Msg msgKey="label.table.empty" />
-                        </td>
-                    </tr>
-                </tbody>
-            );
-        } else {
-            tableContext = (
-                <tbody>
-                    <tr>
-                        <td rowSpan="3">
-                            <div id="chart">
-                                <Chart data={this.state.chartData} />
-                            </div>
-                        </td>
-                        <td>
-                            <div className="legend bg-win">&nbsp;</div>
-                        </td>
-                        <td>
-                            <label className="fg-win" htmlFor="first_wins">
-                                <Msg msgKey="label.rounds.first" />
-                            </label>
-                        </td>
-                        <td>
-                            <output id="first_wins" className="fg-win">
-                                {this.state.data.first}
-                            </output>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div className="legend bg-loss">&nbsp;</div>
-                        </td>
-                        <td>
-                            <label htmlFor="second_wins" className="fg-loss">
-                                <Msg msgKey="label.rounds.second" />
-                            </label>
-                        </td>
-                        <td>
-                            <output id="second_wins" className="fg-loss">
-                                {this.state.data.second}
-                            </output>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div className="legend bg-draw">&nbsp;</div>
-                        </td>
-                        <td>
-                            <label htmlFor="total_draws" className="fg-draw">
-                                <Msg msgKey="label.rounds.draws" />
-                            </label>
-                        </td>
-                        <td>
-                            <output id="total_draws" className="fg-draw">
-                                {this.state.data.draws}
-                            </output>
-                        </td>
-                    </tr>
-                </tbody>
-            );
-        }
-        return (
-            <div>
-                <div className="scroll-table">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>
-                                    <Msg msgKey="label.chart" />
-                                </th>
-                                <th colSpan="3">
-                                    <Msg msgKey="label.data" />
-                                </th>
-                            </tr>
-                        </thead>
-                    </table>
-                    <div className="no-scroll-table-body">
-                        <table>{tableContext}</table>
-                    </div>
-                    <table>
-                        <tfoot>
-                            <tr>
-                                <td />
-                                <td colSpan="2">
-                                    <label htmlFor="total_rounds">
-                                        <Msg msgKey="label.rounds.total" />
-                                    </label>
-                                </td>
-                                <td>
-                                    <output id="total_rounds">{this.state.data.total}</output>
-                                </td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-            </div>
-        );
-    }
+    return (
+      <div>
+        <div className="scroll-table">
+          <table>
+            <thead>
+              <tr>
+                <th>
+                  <Msg msgKey="label.chart" />
+                </th>
+                <th colSpan="3">
+                  <Msg msgKey="label.data" />
+                </th>
+              </tr>
+            </thead>
+          </table>
+          <div className="no-scroll-table-body">
+            <table>{tableContext}</table>
+          </div>
+          <table>
+            <tfoot>
+              <tr>
+                <td />
+                <td colSpan="2">
+                  <label htmlFor="total_rounds">
+                    <Msg msgKey="label.rounds.total" />
+                  </label>
+                </td>
+                <td>
+                  <output id="total_rounds">{this.state.data.total}</output>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    );
+  }
 }

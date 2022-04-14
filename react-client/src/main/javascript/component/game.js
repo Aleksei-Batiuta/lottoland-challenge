@@ -21,139 +21,131 @@ import { RoundList } from './roundList';
 import { Msg } from './msg';
 
 export class Game extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            rounds: {
-                totalElements: 0,
-                content: []
-            },
-            pagination: Game.defaultPagination
-        };
-        this.restService = RestService.getInstance();
+  constructor(props) {
+    super(props);
+    this.state = {
+      rounds: {
+        totalElements: 0,
+        content: []
+      },
+      pagination: Game.defaultPagination
+    };
+    this.restService = RestService.getInstance();
 
-        this.refresh = this.refresh.bind(this);
-        this.generate = this.generate.bind(this);
-        this.cleanRounds = this.cleanRounds.bind(this);
-        this.setError = this.setError.bind(this);
+    this.refresh = this.refresh.bind(this);
+    this.generate = this.generate.bind(this);
+    this.cleanRounds = this.cleanRounds.bind(this);
+    this.setError = this.setError.bind(this);
+  }
+
+  setError(error) {
+    this.setState({ errorMessage: error });
+  }
+
+  componentDidMount() {
+    this.refresh();
+  }
+
+  render() {
+    if (this.state?.errorMessage !== undefined) {
+      setTimeout(() => {
+        this.setError(undefined);
+        //this.refresh(0, 10, 'desc,id');
+      }, 2000);
     }
 
-    setError(error) {
-        this.setState({ errorMessage: error });
-    }
+    let errorMessage = this.state.errorMessage?.message;
+    return (
+      <div>
+        {errorMessage && <div className="error"> {errorMessage} </div>}
+        <RoundList rounds={this.state.rounds} refreshTable={this.refresh} />
+        <div className="button-panel">
+          <div className="button">
+            <button onClick={this.generate}>
+              <Msg msgKey="label.play.round" />
+            </button>
+          </div>
+          <div className="button">
+            <button onClick={this.cleanRounds}>
+              <Msg msgKey="label.restart.game" />
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
-    componentDidMount() {
-        this.refresh();
-    }
+  refresh(page, size, sort) {
+    page = page !== undefined ? page : this.state.pagination?.page ? this.state.pagination.page : 0;
+    size =
+      size !== undefined ? size : this.state.pagination?.size ? this.state.pagination.size : 10;
+    sort =
+      sort !== undefined
+        ? sort
+        : this.state.pagination?.sort
+        ? this.state.pagination.sort
+        : 'desc,id';
 
-    render() {
-        if (this.state?.errorMessage !== undefined) {
-            setTimeout(() => {
-                this.setError(undefined);
-                //this.refresh(0, 10, 'desc,id');
-            }, 2000);
-        }
-
-        let errorMessage = this.state.errorMessage?.message;
-        return (
-            <div>
-                {errorMessage && <div className="error"> {errorMessage} </div>}
-                <RoundList rounds={this.state.rounds} refreshTable={this.refresh} />
-                <div className="button-panel">
-                    <div className="button">
-                        <button onClick={this.generate}>
-                            <Msg msgKey="label.play.round" />
-                        </button>
-                    </div>
-                    <div className="button">
-                        <button onClick={this.cleanRounds}>
-                            <Msg msgKey="label.restart.game" />
-                        </button>
-                    </div>
-                </div>
-            </div>
-        );
-    }
-
-    refresh(page, size, sort) {
-        page =
-            page !== undefined
-                ? page
-                : this.state.pagination?.page
-                ? this.state.pagination.page
-                : 0;
-        size =
-            size !== undefined
-                ? size
-                : this.state.pagination?.size
-                ? this.state.pagination.size
-                : 10;
-        sort =
-            sort !== undefined
-                ? sort
-                : this.state.pagination?.sort
-                ? this.state.pagination.sort
-                : 'desc,id';
-
+    this.setState({
+      rounds: this.state.rounds,
+      pagination: {
+        page: page,
+        size: size,
+        sort: sort
+      }
+    });
+    this.restService.findAllRounds(
+      page,
+      size,
+      sort,
+      (data) => {
         this.setState({
-            rounds: this.state.rounds,
-            pagination: {
-                page: page,
-                size: size,
-                sort: sort
-            }
+          rounds: data,
+          pagination: this.state.pagination
+
+          // pagination: {
+          //     page: data.number,
+          //     size: data.totalPages,
+          //     sort: 'desc,id'
+          // }
         });
-        this.restService.findAllRounds(
-            page,
-            size,
-            sort,
-            (data) => {
-                this.setState({
-                    rounds: data,
-                    pagination: this.state.pagination
+      },
+      (error) => {
+        this.setState({
+          rounds: this.state.rounds,
+          pagination: Game.defaultPagination
+        });
+        this.setError(error);
+      }
+    );
+  }
 
-                    // pagination: {
-                    //     page: data.number,
-                    //     size: data.totalPages,
-                    //     sort: 'desc,id'
-                    // }
-                });
-            },
-            (error) => {
-                this.setState({
-                    rounds: this.state.rounds,
-                    pagination: Game.defaultPagination
-                });
-                this.setError(error);
-            }
-        );
-    }
+  generate() {
+    this.restService.newRound(
+      () => {
+        this.refresh();
+      },
+      (error) => {
+        this.setError(error);
+      }
+    );
+  }
 
-    generate() {
-        this.restService.newRound(
-            () => {
-                this.refresh();
-            },
-            (error) => {
-                this.setError(error);
-            }
-        );
-    }
-
-    cleanRounds() {
-        this.restService.cleanRounds(
-            () => {
-                this.refresh();
-            },
-            (error) => {
-                this.setError(error);
-            }
-        );
-    }
+  cleanRounds() {
+    this.restService.cleanRounds(
+      () => {
+        this.refresh();
+      },
+      (error) => {
+        this.setError(error);
+      }
+    );
+  }
 }
+
 // Specifies the default page settings:
 Game.defaultPagination = {
-    page: 0,
-    size: 10,
-    sort: 'desc,id'
+  page: 0,
+  size: 10,
+  sort: 'desc,id'
 };

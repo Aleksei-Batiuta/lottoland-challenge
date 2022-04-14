@@ -22,87 +22,86 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 export class RoundList extends React.Component {
-    constructor(props) {
-        super(props);
-        this.pagination = React.createRef();
+  constructor(props) {
+    super(props);
+    this.pagination = React.createRef();
+  }
+
+  render() {
+    let rounds;
+    let roundLength = this.props.rounds.totalElements;
+
+    if (roundLength > 0) {
+      rounds = this.props.rounds.content?.map((round) => <Round key={round.id} round={round} />);
+    } else {
+      rounds = (
+        <tr>
+          <td colSpan="4">
+            <Msg msgKey="label.table.empty" />
+          </td>
+        </tr>
+      );
     }
 
-    render() {
-        let rounds;
-        let roundLength = this.props.rounds.totalElements;
+    // this.pagination.current?.update(this.props.rounds);
 
-        if (roundLength > 0) {
-            rounds = this.props.rounds.content?.map((round) => (
-                <Round key={round.id} round={round} />
-            ));
-        } else {
-            rounds = (
-                <tr>
-                    <td colSpan="4">
-                        <Msg msgKey="label.table.empty" />
-                    </td>
-                </tr>
-            );
-        }
-
-        // this.pagination.current?.update(this.props.rounds);
-
-        return (
-            <div className="scroll-table">
-                <div className="pagination-panel">
-                    <Pagination
-                        ref={this.pagination}
-                        options={this.props.rounds}
-                        refreshTable={this.props.refreshTable}
-                    />
-                </div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>
-                                <Msg msgKey="label.id" />
-                            </th>
-                            <th>
-                                <Msg msgKey="label.player1" />
-                            </th>
-                            <th>
-                                <Msg msgKey="label.player2" />
-                            </th>
-                            <th>
-                                <Msg msgKey="label.round.result" />
-                            </th>
-                        </tr>
-                    </thead>
-                </table>
-                <div className="scroll-table-body">
-                    <table>
-                        <tbody>{rounds}</tbody>
-                    </table>
-                </div>
-                <table>
-                    <tfoot>
-                        <tr>
-                            <td colSpan="3">
-                                <label htmlFor="round">
-                                    <Msg msgKey="label.round" />
-                                    :&nbsp;
-                                </label>
-                            </td>
-                            <td>
-                                <output id="round">{roundLength}</output>
-                            </td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
-        );
-    }
+    return (
+      <div className="scroll-table">
+        <div className="pagination-panel">
+          <Pagination
+            ref={this.pagination}
+            options={this.props.rounds}
+            refreshTable={this.props.refreshTable}
+          />
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>
+                <Msg msgKey="label.id" />
+              </th>
+              <th>
+                <Msg msgKey="label.player1" />
+              </th>
+              <th>
+                <Msg msgKey="label.player2" />
+              </th>
+              <th>
+                <Msg msgKey="label.round.result" />
+              </th>
+            </tr>
+          </thead>
+        </table>
+        <div className="scroll-table-body">
+          <table>
+            <tbody>{rounds}</tbody>
+          </table>
+        </div>
+        <table>
+          <tfoot>
+            <tr>
+              <td colSpan="3">
+                <label htmlFor="round">
+                  <Msg msgKey="label.round" />
+                  :&nbsp;
+                </label>
+              </td>
+              <td>
+                <output id="round">{roundLength}</output>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    );
+  }
 }
+
 // Specifies the value types for props:
 RoundList.propTypes = {
-    rounds: PropTypes.shape({
-        totalElements: PropTypes.number,
-        content: PropTypes.arrayOf(PropTypes.shape(Round.propTypes))
-    }),
-    refreshTable: PropTypes.func
+  rounds: PropTypes.shape({
+    totalElements: PropTypes.number,
+    content: PropTypes.arrayOf(PropTypes.shape(Round.propTypes))
+  }),
+  refreshTable: PropTypes.func
 };

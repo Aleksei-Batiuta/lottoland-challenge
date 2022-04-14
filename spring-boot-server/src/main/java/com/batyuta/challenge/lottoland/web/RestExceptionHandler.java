@@ -34,82 +34,83 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-/**
- * Controller Advice catches the app exceptions and returns correct RESP response.
- */
+/** Controller Advice catches the app exceptions and returns correct RESP response. */
 @ControllerAdvice(annotations = RestController.class)
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
-	/**
-	 * Logger.
-	 */
-	private final Logger logger = LoggerFactory.getLogger(RestExceptionHandler.class);
+  /** Logger. */
+  private final Logger logger = LoggerFactory.getLogger(RestExceptionHandler.class);
 
-	/**
-	 * Message service.
-	 */
-	private final MessageSource messageSource;
+  /** Message service. */
+  private final MessageSource messageSource;
 
-	/**
-	 * Default constructor.
-	 * @param service Message service.
-	 */
-	public RestExceptionHandler(final MessageSource service) {
-		this.messageSource = service;
-	}
+  /**
+   * Default constructor.
+   *
+   * @param service Message service.
+   */
+  public RestExceptionHandler(final MessageSource service) {
+    this.messageSource = service;
+  }
 
-	/**
-	 * Handle {@link BaseException}.
-	 * @param ex exception
-	 * @param request request
-	 * @return REST response
-	 */
-	@ExceptionHandler({ BaseException.class })
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	@ResponseBody
-	public RestResponse<ErrorBody> handleBaseException(final BaseException ex, final WebRequest request) {
-		String message = messageSource.getMessage(ex.getKey(), ex.getArgs(), request.getLocale());
-		setMessageAttribute(request, message, ex);
-		return RestResponse.badRequest(message, ex);
-	}
+  /**
+   * Handle {@link BaseException}.
+   *
+   * @param ex exception
+   * @param request request
+   * @return REST response
+   */
+  @ExceptionHandler({BaseException.class})
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ResponseBody
+  public RestResponse<ErrorBody> handleBaseException(
+      final BaseException ex, final WebRequest request) {
+    String message = messageSource.getMessage(ex.getKey(), ex.getArgs(), request.getLocale());
+    setMessageAttribute(request, message, ex);
+    return RestResponse.badRequest(message, ex);
+  }
 
-	/**
-	 * Handle {@link AccessDeniedException}.
-	 * @param ex exception
-	 * @param request request
-	 * @return REST response
-	 */
-	@ExceptionHandler({ AccessDeniedException.class })
-	@ResponseStatus(HttpStatus.FORBIDDEN)
-	@ResponseBody
-	public RestResponse<ErrorBody> handleAccessDeniedException(final Exception ex, final WebRequest request) {
-		setMessageAttribute(request, ex.getMessage(), ex);
-		return RestResponse.forbidden(ex);
-	}
+  /**
+   * Handle {@link AccessDeniedException}.
+   *
+   * @param ex exception
+   * @param request request
+   * @return REST response
+   */
+  @ExceptionHandler({AccessDeniedException.class})
+  @ResponseStatus(HttpStatus.FORBIDDEN)
+  @ResponseBody
+  public RestResponse<ErrorBody> handleAccessDeniedException(
+      final Exception ex, final WebRequest request) {
+    setMessageAttribute(request, ex.getMessage(), ex);
+    return RestResponse.forbidden(ex);
+  }
 
-	/**
-	 * Handle {@link Throwable}.
-	 * @param ex exception
-	 * @param request request
-	 * @return REST response
-	 */
-	@ExceptionHandler({ Throwable.class })
-	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-	@ResponseBody
-	public RestResponse<ErrorBody> handleThrowable(final Exception ex, final WebRequest request) {
-		setMessageAttribute(request, ex.getMessage(), ex);
-		return RestResponse.internalServerError(ex);
-	}
+  /**
+   * Handle {@link Throwable}.
+   *
+   * @param ex exception
+   * @param request request
+   * @return REST response
+   */
+  @ExceptionHandler({Throwable.class})
+  @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+  @ResponseBody
+  public RestResponse<ErrorBody> handleThrowable(final Exception ex, final WebRequest request) {
+    setMessageAttribute(request, ex.getMessage(), ex);
+    return RestResponse.internalServerError(ex);
+  }
 
-	/**
-	 * Setts the 'message' HTTP attribute.
-	 * @param request request
-	 * @param message message text
-	 * @param ex exception
-	 */
-	private void setMessageAttribute(final WebRequest request, final String message, final Throwable ex) {
-		logger.error(message, ex);
-		request.setAttribute("message", message, RequestAttributes.SCOPE_REQUEST);
-	}
-
+  /**
+   * Setts the 'message' HTTP attribute.
+   *
+   * @param request request
+   * @param message message text
+   * @param ex exception
+   */
+  private void setMessageAttribute(
+      final WebRequest request, final String message, final Throwable ex) {
+    logger.error(message, ex);
+    request.setAttribute("message", message, RequestAttributes.SCOPE_REQUEST);
+  }
 }

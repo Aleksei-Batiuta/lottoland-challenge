@@ -25,6 +25,7 @@ import com.batyuta.challenge.lottoland.service.RoundLightweightService;
 import com.batyuta.challenge.lottoland.utils.PageableUtils;
 import com.batyuta.challenge.lottoland.vo.RoundVO;
 import com.batyuta.challenge.lottoland.vo.StatisticsVO;
+import java.util.Collections;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -38,91 +39,91 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.util.Collections;
-
-/**
- * REST Round Controller.
- */
+/** REST Round Controller. */
 @RestController("REST Round Controller")
 @RequestMapping("/api/rounds")
 @ApplyResponseBinding
 public class RestRoundController extends RestAbstractController<RoundEntity, RoundVO> {
 
-	/**
-	 * Round Service.
-	 */
-	private final RoundEntityService roundService;
+  /** Round Service. */
+  private final RoundEntityService roundService;
 
-	/**
-	 * Default constructor.
-	 * @param entityService round service
-	 * @param lightweightService round lightweight service
-	 */
-	public RestRoundController(final RoundEntityService entityService,
-			final RoundLightweightService lightweightService) {
-		super(entityService, lightweightService);
-		this.roundService = entityService;
-	}
+  /**
+   * Default constructor.
+   *
+   * @param entityService round service
+   * @param lightweightService round lightweight service
+   */
+  public RestRoundController(
+      final RoundEntityService entityService, final RoundLightweightService lightweightService) {
+    super(entityService, lightweightService);
+    this.roundService = entityService;
+  }
 
-	/**
-	 * Find all active user's rounds.
-	 * @param user user
-	 * @param page page number
-	 * @param size page size
-	 * @param sort sort type
-	 * @return rounds
-	 */
-	@Override
-	@ResponseStatus(HttpStatus.OK)
-	public Page<RoundVO> findAll(final @RequestHeader(value = CSRF, required = false) UserEntity user,
-			final @RequestParam(required = false) Integer page, final @RequestParam(required = false) Integer size,
-			final @RequestParam(required = false) Sort sort) {
-		Pageable pageable = buildPageable(page, size, sort);
-		if (user == null) {
-			return new PageImpl<>(Collections.emptyList(), PageableUtils.fixPageable(pageable, 0), 0L);
-		}
-		Page<RoundEntity> allByUserId = roundService.findAllByUserId(user.getId(), pageable);
-		return getLightweightService().getViews(allByUserId);
-	}
+  /**
+   * Find all active user's rounds.
+   *
+   * @param user user
+   * @param page page number
+   * @param size page size
+   * @param sort sort type
+   * @return rounds
+   */
+  @Override
+  @ResponseStatus(HttpStatus.OK)
+  public Page<RoundVO> findAll(
+      final @RequestHeader(value = CSRF, required = false) UserEntity user,
+      final @RequestParam(required = false) Integer page,
+      final @RequestParam(required = false) Integer size,
+      final @RequestParam(required = false) Sort sort) {
+    Pageable pageable = buildPageable(page, size, sort);
+    if (user == null) {
+      return new PageImpl<>(Collections.emptyList(), PageableUtils.fixPageable(pageable, 0), 0L);
+    }
+    Page<RoundEntity> allByUserId = roundService.findAllByUserId(user.getId(), pageable);
+    return getLightweightService().getViews(allByUserId);
+  }
 
-	/**
-	 * Creates a new round.
-	 * @param user round's user
-	 * @return a new user's round
-	 */
-	@RequestMapping(value = "/generate", method = RequestMethod.POST)
-	@ResponseStatus(HttpStatus.CREATED)
-	public RoundVO generate(final @RequestHeader(value = CSRF) UserEntity user) {
-		RoundEntity roundEntity = roundService.generate(user.getId());
-		ServletUriComponentsBuilder builder = ServletUriComponentsBuilder.fromCurrentRequestUri();
-		builder.path("/api/rounds/" + roundEntity.getId());
-		return getLightweightService().toView(roundEntity);
-	}
+  /**
+   * Creates a new round.
+   *
+   * @param user round's user
+   * @return a new user's round
+   */
+  @RequestMapping(value = "/generate", method = RequestMethod.POST)
+  @ResponseStatus(HttpStatus.CREATED)
+  public RoundVO generate(final @RequestHeader(value = CSRF) UserEntity user) {
+    RoundEntity roundEntity = roundService.generate(user.getId());
+    ServletUriComponentsBuilder builder = ServletUriComponentsBuilder.fromCurrentRequestUri();
+    builder.path("/api/rounds/" + roundEntity.getId());
+    return getLightweightService().toView(roundEntity);
+  }
 
-	/**
-	 * Clean user rounds.
-	 * @param user round's user
-	 * @return count of deleted user's rounds
-	 */
-	@RequestMapping(value = "/", method = RequestMethod.DELETE)
-	@ResponseStatus(HttpStatus.ACCEPTED)
-	public Long deleteByUserName(final @RequestHeader(value = CSRF) UserEntity user) {
-		return roundService.deleteByUserId(user.getId());
-	}
+  /**
+   * Clean user rounds.
+   *
+   * @param user round's user
+   * @return count of deleted user's rounds
+   */
+  @RequestMapping(value = "/", method = RequestMethod.DELETE)
+  @ResponseStatus(HttpStatus.ACCEPTED)
+  public Long deleteByUserName(final @RequestHeader(value = CSRF) UserEntity user) {
+    return roundService.deleteByUserId(user.getId());
+  }
 
-	/**
-	 * Statistics getter.
-	 * @return statistics data
-	 */
-	@RequestMapping(value = "/statistics", method = RequestMethod.GET)
-	@ResponseStatus(HttpStatus.OK)
-	public StatisticsVO statistics() {
-		long totalRounds = roundService.getTotalRounds();
-		long firstRounds = roundService.getFirstRounds();
-		long secondRounds = roundService.getSecondRounds();
-		long totalDraws = roundService.getDraws();
+  /**
+   * Statistics getter.
+   *
+   * @return statistics data
+   */
+  @RequestMapping(value = "/statistics", method = RequestMethod.GET)
+  @ResponseStatus(HttpStatus.OK)
+  public StatisticsVO statistics() {
+    long totalRounds = roundService.getTotalRounds();
+    long firstRounds = roundService.getFirstRounds();
+    long secondRounds = roundService.getSecondRounds();
+    long totalDraws = roundService.getDraws();
 
-		return new StatisticsVO(totalRounds, firstRounds, secondRounds, totalDraws);
-	}
-
+    return new StatisticsVO(totalRounds, firstRounds, secondRounds, totalDraws);
+  }
 }

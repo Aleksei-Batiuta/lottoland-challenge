@@ -17,37 +17,32 @@
 
 package com.batyuta.challenge.lottoland.vo;
 
-/**
- * Base View class.
- */
+/** Base View class. */
 public abstract class BaseVO {
 
-	/**
-	 * View ID.
-	 */
-	private final Long id;
+  /** View ID. */
+  private final Long id;
 
-	/**
-	 * Default no-arguments Constructor.
-	 */
-	public BaseVO() {
-		this(-1L);
-	}
+  /** Default no-arguments Constructor. */
+  public BaseVO() {
+    this(-1L);
+  }
 
-	/**
-	 * Default constructor.
-	 * @param voId view ID
-	 */
-	public BaseVO(final Long voId) {
-		this.id = voId;
-	}
+  /**
+   * Default constructor.
+   *
+   * @param voId view ID
+   */
+  public BaseVO(final Long voId) {
+    this.id = voId;
+  }
 
-	/**
-	 * Getter of VO ID.
-	 * @return ID
-	 */
-	public Long getId() {
-		return id;
-	}
-
+  /**
+   * Getter of VO ID.
+   *
+   * @return ID
+   */
+  public Long getId() {
+    return id;
+  }
 }

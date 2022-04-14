@@ -21,102 +21,89 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import lombok.Data;
-
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import lombok.Data;
 
-/**
- * The View Object class for Logger.
- */
+/** The View Object class for Logger. */
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({ "method", "args", "result", "duration" })
+@JsonPropertyOrder({"method", "args", "result", "duration"})
 public class LogEntryData {
 
-	/**
-	 * Called method name.
-	 */
-	private final String method;
+  /** Called method name. */
+  private final String method;
 
-	/**
-	 * Called method arguments.
-	 */
-	private final Map<String, Object> args;
+  /** Called method arguments. */
+  private final Map<String, Object> args;
 
-	/**
-	 * Called method start time.
-	 */
-	@JsonIgnore
-	private final Instant start;
+  /** Called method start time. */
+  @JsonIgnore private final Instant start;
 
-	/**
-	 * Called method duration time unit.
-	 */
-	@JsonIgnore
-	private final ChronoUnit unit;
+  /** Called method duration time unit. */
+  @JsonIgnore private final ChronoUnit unit;
 
-	/**
-	 * Called method result.
-	 */
-	private Object result;
+  /** Called method result. */
+  private Object result;
 
-	/**
-	 * Called method end time.
-	 */
-	@JsonIgnore
-	private Instant end;
+  /** Called method end time. */
+  @JsonIgnore private Instant end;
 
-	/**
-	 * Default constructor.
-	 * @param methodName method name
-	 * @param parameters method parameter names
-	 * @param arguments method arguments
-	 * @param startTime start time
-	 * @param timeUnit duration time unit
-	 */
-	public LogEntryData(final String methodName, final String[] parameters, final Object[] arguments,
-			final Instant startTime, final ChronoUnit timeUnit) {
-		this.method = methodName;
-		this.args = toMap(parameters, arguments);
-		this.start = startTime;
-		this.unit = timeUnit;
-	}
+  /**
+   * Default constructor.
+   *
+   * @param methodName method name
+   * @param parameters method parameter names
+   * @param arguments method arguments
+   * @param startTime start time
+   * @param timeUnit duration time unit
+   */
+  public LogEntryData(
+      final String methodName,
+      final String[] parameters,
+      final Object[] arguments,
+      final Instant startTime,
+      final ChronoUnit timeUnit) {
+    this.method = methodName;
+    this.args = toMap(parameters, arguments);
+    this.start = startTime;
+    this.unit = timeUnit;
+  }
 
-	/**
-	 * Converts to map.
-	 * @param params method parameter names
-	 * @param args method parameter arguments
-	 * @return map
-	 */
-	private static Map<String, Object> toMap(final String[] params, final Object[] args) {
-		Map<String, Object> values;
-		if (Objects.nonNull(params) && Objects.nonNull(args) && params.length == args.length) {
+  /**
+   * Converts to map.
+   *
+   * @param params method parameter names
+   * @param args method parameter arguments
+   * @return map
+   */
+  private static Map<String, Object> toMap(final String[] params, final Object[] args) {
+    Map<String, Object> values;
+    if (Objects.nonNull(params) && Objects.nonNull(args) && params.length == args.length) {
 
-			values = new HashMap<>(params.length);
-			for (int i = 0; i < params.length; i++) {
-				values.put(params[i], args[i]);
-			}
-		}
-		else {
-			values = new HashMap<>();
-		}
-		return values;
-	}
+      values = new HashMap<>(params.length);
+      for (int i = 0; i < params.length; i++) {
+        values.put(params[i], args[i]);
+      }
+    } else {
+      values = new HashMap<>();
+    }
+    return values;
+  }
 
-	/**
-	 * Called method duration.
-	 * @return duration time
-	 */
-	@JsonProperty
-	public String duration() {
-		if (unit != null && start != null && end != null) {
-			return String.format("%s %s", unit.between(start, end), unit.name().toLowerCase());
-		}
-		return null;
-	}
-
+  /**
+   * Called method duration.
+   *
+   * @return duration time
+   */
+  @JsonProperty
+  public String duration() {
+    if (unit != null && start != null && end != null) {
+      return String.format("%s %s", unit.between(start, end), unit.name().toLowerCase());
+    }
+    return null;
+  }
 }

@@ -19,11 +19,10 @@ package com.batyuta.challenge.lottoland.service;
 
 import com.batyuta.challenge.lottoland.exception.DataException;
 import com.batyuta.challenge.lottoland.model.BaseEntity;
+import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
-
-import java.util.Optional;
 
 /**
  * Abstract entities service.
@@ -32,89 +31,97 @@ import java.util.Optional;
  */
 public abstract class AbstractEntityService<T extends BaseEntity<T>> {
 
-	/**
-	 * Entity repository.
-	 */
-	private final PagingAndSortingRepository<T, Long> repository;
+  /** Entity repository. */
+  private final PagingAndSortingRepository<T, Long> repository;
 
-	/**
-	 * Default constructor.
-	 * @param sortingRepository Entity repository.
-	 */
-	public AbstractEntityService(final PagingAndSortingRepository<T, Long> sortingRepository) {
-		this.repository = sortingRepository;
-	}
+  /**
+   * Default constructor.
+   *
+   * @param sortingRepository Entity repository.
+   */
+  public AbstractEntityService(final PagingAndSortingRepository<T, Long> sortingRepository) {
+    this.repository = sortingRepository;
+  }
 
-	/**
-	 * Getter of entity repository.
-	 * @return repository
-	 */
-	public PagingAndSortingRepository<T, Long> getRepository() {
-		return repository;
-	}
+  /**
+   * Getter of entity repository.
+   *
+   * @return repository
+   */
+  public PagingAndSortingRepository<T, Long> getRepository() {
+    return repository;
+  }
 
-	/**
-	 * Find all entities.
-	 * @param pageable page settings
-	 * @return entities
-	 */
-	public Page<T> findAll(final Pageable pageable) {
-		return repository.findAll(pageable);
-	}
+  /**
+   * Find all entities.
+   *
+   * @param pageable page settings
+   * @return entities
+   */
+  public Page<T> findAll(final Pageable pageable) {
+    return repository.findAll(pageable);
+  }
 
-	/**
-	 * Find entity by ID.
-	 * @param id entity ID
-	 * @return entity
-	 */
-	public Optional<T> findById(final Long id) {
-		return repository.findById(id);
-	}
+  /**
+   * Find entity by ID.
+   *
+   * @param id entity ID
+   * @return entity
+   */
+  public Optional<T> findById(final Long id) {
+    return repository.findById(id);
+  }
 
-	/**
-	 * Save entity into repository.
-	 * @param entity entity
-	 * @return saved entity
-	 */
-	public T save(final T entity) {
-		return repository.save(entity);
-	}
+  /**
+   * Save entity into repository.
+   *
+   * @param entity entity
+   * @return saved entity
+   */
+  public T save(final T entity) {
+    return repository.save(entity);
+  }
 
-	/**
-	 * Replace entity.
-	 * @param entity entity
-	 * @return entity
-	 */
-	public T replace(final T entity) {
-		repository.deleteById(entity.getId());
-		return repository.save(entity);
-	}
+  /**
+   * Replace entity.
+   *
+   * @param entity entity
+   * @return entity
+   */
+  public T replace(final T entity) {
+    repository.deleteById(entity.getId());
+    return repository.save(entity);
+  }
 
-	/**
-	 * Delete entity by ID.
-	 * @param id entity ID
-	 */
-	public void deleteById(final Long id) {
-		repository.deleteById(id);
-	}
+  /**
+   * Delete entity by ID.
+   *
+   * @param id entity ID
+   */
+  public void deleteById(final Long id) {
+    repository.deleteById(id);
+  }
 
-	/**
-	 * Update entity.
-	 * @param entity entity
-	 * @return updated entity
-	 */
-	public T update(final T entity) {
-		Optional<T> repositoryEntity = repository.findById(entity.getId());
-		T t = repositoryEntity.orElseThrow(() -> new DataException("error.data.entity.not.found", entity.getId()));
-		return updateImpl(t, entity);
-	}
+  /**
+   * Update entity.
+   *
+   * @param entity entity
+   * @return updated entity
+   */
+  public T update(final T entity) {
+    Optional<T> repositoryEntity = repository.findById(entity.getId());
+    T t =
+        repositoryEntity.orElseThrow(
+            () -> new DataException("error.data.entity.not.found", entity.getId()));
+    return updateImpl(t, entity);
+  }
 
-	/**
-	 * Update implementation.
-	 * @param destination destination entity
-	 * @param source source entity
-	 * @return updated entity
-	 */
-	protected abstract T updateImpl(T destination, T source);
-
+  /**
+   * Update implementation.
+   *
+   * @param destination destination entity
+   * @param source source entity
+   * @return updated entity
+   */
+  protected abstract T updateImpl(T destination, T source);
 }

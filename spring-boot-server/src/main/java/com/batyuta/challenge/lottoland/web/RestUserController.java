@@ -24,20 +24,19 @@ import com.batyuta.challenge.lottoland.vo.UserVO;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * User REST Controller.
- */
+/** User REST Controller. */
 @RestController("User REST Controller")
 @RequestMapping("/api/users")
 public class RestUserController extends RestAbstractController<UserEntity, UserVO> {
 
-	/**
-	 * Default constructor.
-	 * @param service user service
-	 * @param lightweightService user lightweight service
-	 */
-	public RestUserController(final UserEntityService service, final UserLightweightService lightweightService) {
-		super(service, lightweightService);
-	}
-
+  /**
+   * Default constructor.
+   *
+   * @param service user service
+   * @param lightweightService user lightweight service
+   */
+  public RestUserController(
+      final UserEntityService service, final UserLightweightService lightweightService) {
+    super(service, lightweightService);
+  }
 }

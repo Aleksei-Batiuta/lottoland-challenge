@@ -17,37 +17,36 @@
 
 package com.batyuta.challenge.lottoland.annotation;
 
-import org.slf4j.event.Level;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.time.temporal.ChronoUnit;
+import org.slf4j.event.Level;
 
-/**
- * Annotation is used in AspectJ method call logging.
- */
+/** Annotation is used in AspectJ method call logging. */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface LogEntry {
 
-	/**
-	 * Logging Level.
-	 * @return level
-	 */
-	Level value() default Level.TRACE;
+  /**
+   * Logging Level.
+   *
+   * @return level
+   */
+  Level value() default Level.TRACE;
 
-	/**
-	 * Duration time logging unit.
-	 * @return time unit
-	 */
-	ChronoUnit unit() default ChronoUnit.MILLIS;
+  /**
+   * Duration time logging unit.
+   *
+   * @return time unit
+   */
+  ChronoUnit unit() default ChronoUnit.MILLIS;
 
-	/**
-	 * Sets the pretty output format.
-	 * @return pretty output format flag
-	 */
-	boolean prettyFormatted() default false;
-
+  /**
+   * Sets the pretty output format.
+   *
+   * @return pretty output format flag
+   */
+  boolean prettyFormatted() default false;
 }

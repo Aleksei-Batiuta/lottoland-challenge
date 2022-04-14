@@ -17,28 +17,27 @@
 
 package com.batyuta.challenge.lottoland.exception;
 
-/**
- * Application Exception class. It should be used for business logic errors.
- */
+/** Application Exception class. It should be used for business logic errors. */
 public class ApplicationException extends BaseException {
 
-	/**
-	 * Default Constructor.
-	 * @param msg format message
-	 * @param arguments arguments
-	 */
-	public ApplicationException(final String msg, final Object... arguments) {
-		this(msg, null, arguments);
-	}
+  /**
+   * Default Constructor.
+   *
+   * @param msg format message
+   * @param arguments arguments
+   */
+  public ApplicationException(final String msg, final Object... arguments) {
+    this(msg, null, arguments);
+  }
 
-	/**
-	 * Default Constructor.
-	 * @param msg format message
-	 * @param cause exception
-	 * @param arguments arguments
-	 */
-	public ApplicationException(final String msg, final Throwable cause, final Object... arguments) {
-		super(msg, cause, arguments);
-	}
-
+  /**
+   * Default Constructor.
+   *
+   * @param msg format message
+   * @param cause exception
+   * @param arguments arguments
+   */
+  public ApplicationException(final String msg, final Throwable cause, final Object... arguments) {
+    super(msg, cause, arguments);
+  }
 }

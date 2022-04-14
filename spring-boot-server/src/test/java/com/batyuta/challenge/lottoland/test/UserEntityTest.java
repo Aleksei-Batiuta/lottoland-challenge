@@ -17,45 +17,38 @@
 
 package com.batyuta.challenge.lottoland.test;
 
-import com.batyuta.challenge.lottoland.model.UserEntity;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
 import static org.springframework.test.util.AssertionErrors.assertEquals;
 import static org.springframework.test.util.AssertionErrors.assertFalse;
 import static org.springframework.test.util.AssertionErrors.assertNotNull;
 import static org.springframework.test.util.AssertionErrors.assertNull;
 import static org.springframework.test.util.AssertionErrors.assertTrue;
 
-/**
- * Test of modifying entity properties.
- */
+import com.batyuta.challenge.lottoland.model.UserEntity;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+/** Test of modifying entity properties. */
 @DisplayName("User Entity Concurrency modification test")
 class UserEntityTest {
 
-	/**
-	 * Test No-Arguments Constructor.
-	 */
-	@Test
-	@DisplayName("TC#01: Test No-Arguments Constructor")
-	void testNoArgumentsConstructor() {
-		UserEntity user = new UserEntity();
-		assertNotNull("Entity was not created", user);
-		assertTrue("Entity is not a new", user.isNew());
-		assertNull("Entity has name", user.getName());
-	}
+  /** Test No-Arguments Constructor. */
+  @Test
+  @DisplayName("TC#01: Test No-Arguments Constructor")
+  void testNoArgumentsConstructor() {
+    UserEntity user = new UserEntity();
+    assertNotNull("Entity was not created", user);
+    assertTrue("Entity is not a new", user.isNew());
+    assertNull("Entity has name", user.getName());
+  }
 
-	/**
-	 * Test Default Constructor.
-	 */
-	@Test
-	@DisplayName("TC#01: Test Default Constructor")
-	void testDefaultConstructor() {
-		String userName = "User Name";
-		UserEntity user = new UserEntity(1L, userName);
-		assertNotNull("Entity was not created", user);
-		assertFalse("Entity is a new", user.isNew());
-		assertEquals("Entity has name", userName, user.getName());
-	}
-
+  /** Test Default Constructor. */
+  @Test
+  @DisplayName("TC#01: Test Default Constructor")
+  void testDefaultConstructor() {
+    String userName = "User Name";
+    UserEntity user = new UserEntity(1L, userName);
+    assertNotNull("Entity was not created", user);
+    assertFalse("Entity is a new", user.isNew());
+    assertEquals("Entity has name", userName, user.getName());
+  }
 }

@@ -16,89 +16,83 @@
  */
 
 export default class RestService {
-    static instance = null;
+  static instance = null;
 
-    constructor() {
-        this.findAllRounds = this.findAllRounds.bind(this);
-        this.newRound = this.newRound.bind(this);
-        this.cleanRounds = this.cleanRounds.bind(this);
+  constructor() {
+    this.findAllRounds = this.findAllRounds.bind(this);
+    this.newRound = this.newRound.bind(this);
+    this.cleanRounds = this.cleanRounds.bind(this);
 
-        this.getStatistics = this.getStatistics.bind(this);
+    this.getStatistics = this.getStatistics.bind(this);
 
-        this.doRequest = this.doRequest.bind(this);
+    this.doRequest = this.doRequest.bind(this);
+  }
+
+  static getInstance() {
+    if (RestService.instance == null) {
+      RestService.instance = new RestService();
     }
+    return RestService.instance;
+  }
 
-    static getInstance() {
-        if (RestService.instance == null) {
-            RestService.instance = new RestService();
+  getCsrfToken() {
+    return document.cookie.replace(/(?:^|.*;\s*)XSRF-TOKEN\s*=\s*([^;]*).*$|^.*$/, '$1');
+  }
+
+  newRound(processor, errorCallback) {
+    this.doRequest(
+      '/api/rounds/generate',
+      'POST',
+      { 'X-XSRF-TOKEN': this.getCsrfToken() },
+      processor,
+      errorCallback
+    );
+  }
+
+  cleanRounds(processor, errorCallback) {
+    this.doRequest(
+      '/api/rounds/',
+      'DELETE',
+      { 'X-XSRF-TOKEN': this.getCsrfToken() },
+      processor,
+      errorCallback
+    );
+  }
+
+  findAllRounds(page, size, sort, processor, errorCallback) {
+    let path =
+      '/api/rounds/?' +
+      new URLSearchParams({
+        page: page,
+        size: size,
+        sort: sort
+      });
+    this.doRequest(path, 'GET', { 'X-XSRF-TOKEN': this.getCsrfToken() }, processor, errorCallback);
+  }
+
+  getStatistics(processor) {
+    this.doRequest('/api/rounds/statistics', 'GET', new Headers(), processor);
+  }
+
+  doRequest(path, method, headers, processor, errorCallback) {
+    fetch(path, {
+      method: method,
+      headers: headers
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        if (data.status?.codeValue >= 400) {
+          throw new Error(data.body.message);
         }
-        return RestService.instance;
-    }
-
-    getCsrfToken() {
-        return document.cookie.replace(/(?:^|.*;\s*)XSRF-TOKEN\s*=\s*([^;]*).*$|^.*$/, '$1');
-    }
-
-    newRound(processor, errorCallback) {
-        this.doRequest(
-            '/api/rounds/generate',
-            'POST',
-            { 'X-XSRF-TOKEN': this.getCsrfToken() },
-            processor,
-            errorCallback
-        );
-    }
-
-    cleanRounds(processor, errorCallback) {
-        this.doRequest(
-            '/api/rounds/',
-            'DELETE',
-            { 'X-XSRF-TOKEN': this.getCsrfToken() },
-            processor,
-            errorCallback
-        );
-    }
-
-    findAllRounds(page, size, sort, processor, errorCallback) {
-        let path =
-            '/api/rounds/?' +
-            new URLSearchParams({
-                page: page,
-                size: size,
-                sort: sort
-            });
-        this.doRequest(
-            path,
-            'GET',
-            { 'X-XSRF-TOKEN': this.getCsrfToken() },
-            processor,
-            errorCallback
-        );
-    }
-
-    getStatistics(processor) {
-        this.doRequest('/api/rounds/statistics', 'GET', new Headers(), processor);
-    }
-
-    doRequest(path, method, headers, processor, errorCallback) {
-        fetch(path, {
-            method: method,
-            headers: headers
-        })
-            .then((response) => {
-                return response.json();
-            })
-            .then((data) => {
-                if (data.status?.codeValue >= 400) {
-                    throw new Error(data.body.message);
-                }
-                processor(data.body);
-            })
-            .catch((err) => {
-                console.log(err);
-                if (errorCallback !== null && errorCallback !== undefined) {
-                    errorCallback(err);
-                }
-            });
-    }
+        processor(data.body);
+      })
+      .catch((err) => {
+        console.log(err);
+        if (errorCallback !== null && errorCallback !== undefined) {
+          errorCallback(err);
+        }
+      });
+  }
 }

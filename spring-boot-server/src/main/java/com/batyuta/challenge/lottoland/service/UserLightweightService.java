@@ -21,26 +21,23 @@ import com.batyuta.challenge.lottoland.model.UserEntity;
 import com.batyuta.challenge.lottoland.vo.UserVO;
 import org.springframework.stereotype.Service;
 
-/**
- * Lightweight Service between {@link UserEntity} and {@link UserVO}.
- */
+/** Lightweight Service between {@link UserEntity} and {@link UserVO}. */
 @Service
 public final class UserLightweightService implements LightweightService<UserEntity, UserVO> {
 
-	@Override
-	public UserEntity toEntity(final UserVO view) {
-		if (view == null) {
-			return null;
-		}
-		return new UserEntity(view.getId(), view.getEmail());
-	}
+  @Override
+  public UserEntity toEntity(final UserVO view) {
+    if (view == null) {
+      return null;
+    }
+    return new UserEntity(view.getId(), view.getEmail());
+  }
 
-	@Override
-	public UserVO toView(final UserEntity entity) {
-		if (entity == null) {
-			return null;
-		}
-		return new UserVO(entity.getId(), entity.getName());
-	}
-
+  @Override
+  public UserVO toView(final UserEntity entity) {
+    if (entity == null) {
+      return null;
+    }
+    return new UserVO(entity.getId(), entity.getName());
+  }
 }

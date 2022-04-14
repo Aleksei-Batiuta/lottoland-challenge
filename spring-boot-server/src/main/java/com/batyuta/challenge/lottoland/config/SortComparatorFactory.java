@@ -25,23 +25,21 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Sort;
 
-/**
- * Comparator Factory class.
- */
+/** Comparator Factory class. */
 @Configuration
 @EnableAutoConfiguration
 public class SortComparatorFactory {
 
-	/**
-	 * Creates a new instance of comparator.
-	 * @param sort sort type
-	 * @param <T> type of compared objects
-	 * @return comparator
-	 */
-	@Bean(autowireCandidate = false)
-	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-	public <T extends Comparable<? super T>> SortComparator<T> sortComparator(final Sort sort) {
-		return new SortComparator<>(sort);
-	}
-
+  /**
+   * Creates a new instance of comparator.
+   *
+   * @param sort sort type
+   * @param <T> type of compared objects
+   * @return comparator
+   */
+  @Bean(autowireCandidate = false)
+  @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+  public <T extends Comparable<? super T>> SortComparator<T> sortComparator(final Sort sort) {
+    return new SortComparator<>(sort);
+  }
 }

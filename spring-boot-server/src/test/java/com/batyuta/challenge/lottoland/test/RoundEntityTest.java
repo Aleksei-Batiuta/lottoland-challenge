@@ -17,59 +17,44 @@
 
 package com.batyuta.challenge.lottoland.test;
 
+import static org.junit.jupiter.api.parallel.ExecutionMode.CONCURRENT;
+import static org.springframework.test.util.AssertionErrors.assertNotNull;
+import static org.springframework.test.util.AssertionErrors.assertTrue;
+
 import com.batyuta.challenge.lottoland.model.RoundEntity;
+import java.util.Random;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 
-import java.util.Random;
-
-import static org.junit.jupiter.api.parallel.ExecutionMode.CONCURRENT;
-import static org.springframework.test.util.AssertionErrors.assertNotNull;
-import static org.springframework.test.util.AssertionErrors.assertTrue;
-
-/**
- * Test of modifying entity properties.
- */
+/** Test of modifying entity properties. */
 @DisplayName("Round Entity Concurrency modification test")
 class RoundEntityTest {
 
-	/**
-	 * Counts of retry to broke system. todo: maybe it should be reviewed to use one test
-	 * method
-	 */
-	public static final int REPEAT_COUNT = 1;
+  /** Counts of retry to broke system. todo: maybe it should be reviewed to use one test method */
+  public static final int REPEAT_COUNT = 1;
 
-	/**
-	 * Test data.
-	 */
-	private final RoundEntity roundEntity = new RoundEntity();
+  /** Test data. */
+  private final RoundEntity roundEntity = new RoundEntity();
 
-	/**
-	 * Random deleted status.
-	 */
-	private final Random random = new Random();
+  /** Random deleted status. */
+  private final Random random = new Random();
 
-	/**
-	 * Try to get the concurrent.
-	 */
-	@RepeatedTest(REPEAT_COUNT)
-	@DisplayName("TC#01: Update property concurrently")
-	@Execution(CONCURRENT)
-	void concurrentModification() {
-		roundEntity.setDeleted(random.nextBoolean());
-	}
+  /** Try to get the concurrent. */
+  @RepeatedTest(REPEAT_COUNT)
+  @DisplayName("TC#01: Update property concurrently")
+  @Execution(CONCURRENT)
+  void concurrentModification() {
+    roundEntity.setDeleted(random.nextBoolean());
+  }
 
-	/**
-	 * Test No-Arguments Constructor.
-	 */
-	@Test
-	@DisplayName("TC#02: Test No-Arguments Constructor")
-	void testNoArgumentsConstructor() {
-		RoundEntity round = new RoundEntity();
-		assertNotNull("Entity was not created", round);
-		assertTrue("Entity is not a new", round.isNew());
-	}
-
+  /** Test No-Arguments Constructor. */
+  @Test
+  @DisplayName("TC#02: Test No-Arguments Constructor")
+  void testNoArgumentsConstructor() {
+    RoundEntity round = new RoundEntity();
+    assertNotNull("Entity was not created", round);
+    assertTrue("Entity is not a new", round.isNew());
+  }
 }

@@ -26,70 +26,62 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  */
 public enum StatusEnum implements I18n {
 
-	/**
-	 * Player won the round.
-	 */
-	WIN(SignEnum.Const.WIN, "label.player.1.wins"),
-	/**
-	 * Players played a draw round.
-	 */
-	DRAW(SignEnum.Const.DRAW, "label.players.draw"),
-	/**
-	 * Player lost the round.
-	 */
-	LOSS(SignEnum.Const.LOSS, "label.player.2.wins");
+  /** Player won the round. */
+  WIN(SignEnum.Const.WIN, "label.player.1.wins"),
+  /** Players played a draw round. */
+  DRAW(SignEnum.Const.DRAW, "label.players.draw"),
+  /** Player lost the round. */
+  LOSS(SignEnum.Const.LOSS, "label.player.2.wins");
 
-	/**
-	 * the flag value.
-	 */
-	private final int status;
+  /** the flag value. */
+  private final int status;
 
-	/**
-	 * i18n message key.
-	 */
-	private final String messageKey;
+  /** i18n message key. */
+  private final String messageKey;
 
-	/**
-	 * Default constructor.
-	 * @param statusValue status value.
-	 * @param key i18n message key.
-	 */
-	StatusEnum(final int statusValue, final String key) {
-		this.status = statusValue;
-		this.messageKey = key;
-	}
+  /**
+   * Default constructor.
+   *
+   * @param statusValue status value.
+   * @param key i18n message key.
+   */
+  StatusEnum(final int statusValue, final String key) {
+    this.status = statusValue;
+    this.messageKey = key;
+  }
 
-	/**
-	 * Resolves the status enum by its value.
-	 * @param status status value.
-	 * @return status enum.
-	 * @throws IllegalArgumentException if enum was not found by status value
-	 */
-	public static StatusEnum valueOf(final int status) {
-		switch (status) {
-		case SignEnum.Const.WIN:
-			return WIN;
-		case SignEnum.Const.DRAW:
-			return DRAW;
-		case SignEnum.Const.LOSS:
-			return LOSS;
-		default:
-			throw new IllegalArgumentException();
-		}
-	}
+  /**
+   * Resolves the status enum by its value.
+   *
+   * @param status status value.
+   * @return status enum.
+   * @throws IllegalArgumentException if enum was not found by status value
+   */
+  public static StatusEnum valueOf(final int status) {
+    switch (status) {
+      case SignEnum.Const.WIN:
+        return WIN;
+      case SignEnum.Const.DRAW:
+        return DRAW;
+      case SignEnum.Const.LOSS:
+        return LOSS;
+      default:
+        throw new IllegalArgumentException();
+    }
+  }
 
-	@Override
-	public String getMessageKey() {
-		return this.messageKey;
-	}
+  @Override
+  public String getMessageKey() {
+    return this.messageKey;
+  }
 
-	/**
-	 * Getter of status value.
-	 * @return value
-	 */
-	@JsonIgnore
-	public int getStatus() {
-		return status;
-	}
-
+  /**
+   * Getter of status value.
+   *
+   * @return value
+   */
+  @JsonIgnore
+  public int getStatus() {
+    return status;
+  }
 }

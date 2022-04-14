@@ -21,27 +21,29 @@ import com.batyuta.challenge.lottoland.model.RoundEntity;
 import com.batyuta.challenge.lottoland.vo.RoundVO;
 import org.springframework.stereotype.Service;
 
-/**
- * Lightweight Service between {@link RoundEntity} and {@link RoundVO}.
- */
+/** Lightweight Service between {@link RoundEntity} and {@link RoundVO}. */
 @Service
 public final class RoundLightweightService implements LightweightService<RoundEntity, RoundVO> {
 
-	@Override
-	public RoundEntity toEntity(final RoundVO view) {
-		if (view == null) {
-			return null;
-		}
-		return new RoundEntity(view.getId(), view.getUserId(), view.getPlayer1(), view.getPlayer2(), view.getStatus());
-	}
+  @Override
+  public RoundEntity toEntity(final RoundVO view) {
+    if (view == null) {
+      return null;
+    }
+    return new RoundEntity(
+        view.getId(), view.getUserId(), view.getPlayer1(), view.getPlayer2(), view.getStatus());
+  }
 
-	@Override
-	public RoundVO toView(final RoundEntity entity) {
-		if (entity == null) {
-			return null;
-		}
-		return new RoundVO(entity.getId(), entity.getUserid(), entity.getPlayer1(), entity.getPlayer2(),
-				entity.getStatus());
-	}
-
+  @Override
+  public RoundVO toView(final RoundEntity entity) {
+    if (entity == null) {
+      return null;
+    }
+    return new RoundVO(
+        entity.getId(),
+        entity.getUserid(),
+        entity.getPlayer1(),
+        entity.getPlayer2(),
+        entity.getStatus());
+  }
 }

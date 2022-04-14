@@ -21,19 +21,17 @@ import com.batyuta.challenge.lottoland.Application;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
-/**
- * Servlet Initializer for WAR.
- */
+/** Servlet Initializer for WAR. */
 public class ServletInitializer extends SpringBootServletInitializer {
 
-	/**
-	 * Configure main application.
-	 * @param application application
-	 * @return builder
-	 */
-	@Override
-	protected SpringApplicationBuilder configure(final SpringApplicationBuilder application) {
-		return application.sources(Application.class);
-	}
-
+  /**
+   * Configure main application.
+   *
+   * @param application application
+   * @return builder
+   */
+  @Override
+  protected SpringApplicationBuilder configure(final SpringApplicationBuilder application) {
+    return application.sources(Application.class);
+  }
 }

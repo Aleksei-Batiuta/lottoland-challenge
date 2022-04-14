@@ -23,33 +23,28 @@ import org.apache.commons.beanutils.BeanUtilsBean;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-/**
- * Gets object property value.
- */
+/** Gets object property value. */
 @Service
 public class PropertyValueUtilsBean {
 
-	/**
-	 * Property utils.
-	 */
-	private final org.apache.commons.beanutils.PropertyUtilsBean propertyUtils = BeanUtilsBean.getInstance()
-			.getPropertyUtils();
+  /** Property utils. */
+  private final org.apache.commons.beanutils.PropertyUtilsBean propertyUtils =
+      BeanUtilsBean.getInstance().getPropertyUtils();
 
-	/**
-	 * Gets property value.
-	 * @param order property declaration in order
-	 * @param o object
-	 * @param <P> object type class
-	 * @return property value
-	 */
-	@LogEntry
-	public <P extends Comparable<? super P>> P getProperty(final Sort.Order order, final Object o) {
-		try {
-			return (P) propertyUtils.getProperty(o, order.getProperty());
-		}
-		catch (Exception e) {
-			throw new DataException("error.unsupported.operation", e, e.getMessage());
-		}
-	}
-
+  /**
+   * Gets property value.
+   *
+   * @param order property declaration in order
+   * @param o object
+   * @param <P> object type class
+   * @return property value
+   */
+  @LogEntry
+  public <P extends Comparable<? super P>> P getProperty(final Sort.Order order, final Object o) {
+    try {
+      return (P) propertyUtils.getProperty(o, order.getProperty());
+    } catch (Exception e) {
+      throw new DataException("error.unsupported.operation", e, e.getMessage());
+    }
+  }
 }

@@ -20,67 +20,62 @@ package com.batyuta.challenge.lottoland.vo;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
-/**
- * Error response body.
- */
+/** Error response body. */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Data // Lombok
 public final class ErrorBody implements java.io.Serializable {
 
-	/**
-	 * Error message.
-	 */
-	private String message;
+  /** Error message. */
+  private String message;
 
-	/**
-	 * Exception class name.
-	 */
-	@JsonInclude(JsonInclude.Include.NON_NULL)
-	private String debug;
+  /** Exception class name. */
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private String debug;
 
-	/**
-	 * Exception cause.
-	 */
-	@JsonInclude(JsonInclude.Include.NON_NULL)
-	private ErrorBody trace;
+  /** Exception cause. */
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private ErrorBody trace;
 
-	/**
-	 * Default constructor.
-	 * @param ex exception
-	 */
-	public ErrorBody(final Throwable ex) {
-		this(ex.getMessage(), ex);
-	}
+  /**
+   * Default constructor.
+   *
+   * @param ex exception
+   */
+  public ErrorBody(final Throwable ex) {
+    this(ex.getMessage(), ex);
+  }
 
-	/**
-	 * Default constructor.
-	 * @param error error message
-	 */
-	public ErrorBody(final String error) {
-		this(error, null);
-	}
+  /**
+   * Default constructor.
+   *
+   * @param error error message
+   */
+  public ErrorBody(final String error) {
+    this(error, null);
+  }
 
-	/**
-	 * Default constructor.
-	 * @param error error message
-	 * @param ex exception
-	 */
-	public ErrorBody(final String error, final Throwable ex) {
-		this.message = error;
-		this.debug = ex != null ? ex.getClass().getName() : null;
-		this.trace = buildTrace(ex);
-	}
+  /**
+   * Default constructor.
+   *
+   * @param error error message
+   * @param ex exception
+   */
+  public ErrorBody(final String error, final Throwable ex) {
+    this.message = error;
+    this.debug = ex != null ? ex.getClass().getName() : null;
+    this.trace = buildTrace(ex);
+  }
 
-	/**
-	 * Build causes.
-	 * @param ex exception
-	 * @return error body for exception
-	 */
-	private ErrorBody buildTrace(final Throwable ex) {
-		if (ex != null && ex.getCause() != null) {
-			return new ErrorBody(ex.getMessage(), ex.getCause());
-		}
-		return null;
-	}
-
+  /**
+   * Build causes.
+   *
+   * @param ex exception
+   * @return error body for exception
+   */
+  private ErrorBody buildTrace(final Throwable ex) {
+    if (ex != null && ex.getCause() != null) {
+      return new ErrorBody(ex.getMessage(), ex.getCause());
+    }
+    return null;
+  }
 }

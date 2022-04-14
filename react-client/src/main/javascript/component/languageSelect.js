@@ -20,37 +20,35 @@ import { changeLanguage, LANGUAGES } from '../service/msgService';
 import PropTypes from 'prop-types';
 
 export class LanguageSelect extends React.Component {
-    constructor(props) {
-        super(props);
-        this.handleChangeLanguage = this.handleChangeLanguage.bind(this);
-    }
+  constructor(props) {
+    super(props);
+    this.handleChangeLanguage = this.handleChangeLanguage.bind(this);
+  }
 
-    handleChangeLanguage(event) {
-        changeLanguage(event.target.value, () => {
-            this.props.handleChange(event.target.value);
-        });
-    }
+  handleChangeLanguage(event) {
+    changeLanguage(event.target.value, () => {
+      this.props.handleChange(event.target.value);
+    });
+  }
 
-    render() {
-        if (this.props.language === null) {
-            return <></>;
-        }
-        return (
-            <select
-                name="language"
-                value={this.props.language}
-                onChange={this.handleChangeLanguage}>
-                {LANGUAGES.map((language, i) => (
-                    <option key={i} value={language.value} data-label={language.label}>
-                        {language.name}
-                    </option>
-                ))}
-            </select>
-        );
+  render() {
+    if (this.props.language === null) {
+      return <></>;
     }
+    return (
+      <select name="language" value={this.props.language} onChange={this.handleChangeLanguage}>
+        {LANGUAGES.map((language, i) => (
+          <option key={i} value={language.value} data-label={language.label}>
+            {language.name}
+          </option>
+        ))}
+      </select>
+    );
+  }
 }
+
 // Specifies the value types for props:
 LanguageSelect.propTypes = {
-    language: PropTypes.string,
-    handleChange: PropTypes.func
+  language: PropTypes.string,
+  handleChange: PropTypes.func
 };

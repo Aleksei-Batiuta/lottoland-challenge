@@ -20,18 +20,16 @@ package com.batyuta.challenge.lottoland;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-/**
- * The Lottoland main application.
- */
+/** The Lottoland main application. */
 @SpringBootApplication
 public class Application {
 
-	/**
-	 * The main method for run app.
-	 * @param args arguments.
-	 */
-	public static void main(final String[] args) {
-		SpringApplication.run(Application.class, args);
-	}
-
+  /**
+   * The main method for run app.
+   *
+   * @param args arguments.
+   */
+  public static void main(final String[] args) {
+    SpringApplication.run(Application.class, args);
+  }
 }
