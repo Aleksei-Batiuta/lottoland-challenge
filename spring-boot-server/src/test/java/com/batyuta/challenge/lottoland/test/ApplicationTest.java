@@ -20,6 +20,7 @@ package com.batyuta.challenge.lottoland.test;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -98,7 +99,7 @@ public class ApplicationTest {
   public void error() throws Exception {
     this.mockMvc
         .perform(get(ROOT_PATH + "error"))
-        .andDo(print())
+        .andDo(log())
         .andExpect(status().is4xxClientError());
   }
 
@@ -109,7 +110,7 @@ public class ApplicationTest {
    */
   @Test
   public void cssTest() throws Exception {
-    this.mockMvc.perform(get(ROOT_PATH + "css/main.css")).andDo(print()).andExpect(status().isOk());
+    this.mockMvc.perform(get(ROOT_PATH + "css/main.css")).andDo(log()).andExpect(status().isOk());
   }
 
   /**

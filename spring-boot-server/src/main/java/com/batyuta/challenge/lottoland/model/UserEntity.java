@@ -23,7 +23,7 @@ import lombok.ToString;
 
 /** User entity. */
 @Entity
-@ToString
+@ToString(callSuper = true)
 public class UserEntity extends NamedEntity<UserEntity> {
 
   /** Default no-arguments constructor. */
@@ -58,8 +58,10 @@ public class UserEntity extends NamedEntity<UserEntity> {
    */
   @Override
   public int compareTo(final UserEntity o) {
-    Comparator<UserEntity> cmprtr = Comparator.comparing(BaseEntity::getId);
-    cmprtr = cmprtr.thenComparing(UserEntity::getName);
+    Comparator<UserEntity> cmprtr =
+        Comparator.comparing(BaseEntity::getId, Comparator.nullsFirst(Comparator.naturalOrder()));
+    cmprtr =
+        cmprtr.thenComparing(UserEntity::getName, Comparator.nullsFirst(Comparator.naturalOrder()));
     Comparator<UserEntity> comparator = Comparator.nullsFirst(cmprtr);
     return comparator.compare(this, o);
   }

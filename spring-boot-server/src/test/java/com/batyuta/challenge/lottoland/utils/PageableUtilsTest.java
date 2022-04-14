@@ -15,12 +15,11 @@
  * limitations under the License.
  */
 
-package com.batyuta.challenge.lottoland.test;
+package com.batyuta.challenge.lottoland.utils;
 
 import static org.springframework.test.util.AssertionErrors.assertEquals;
 import static org.springframework.test.util.AssertionErrors.assertNotNull;
 
-import com.batyuta.challenge.lottoland.utils.PageableUtils;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;

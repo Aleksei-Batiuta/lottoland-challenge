@@ -237,6 +237,7 @@
             <!-- Skips checkstyle for dev test -->
             <id>dev-test</id>
             <properties>
+                <maven.test.failure.ignore>true</maven.test.failure.ignore>
                 <maven.test.skip>false</maven.test.skip>
                 <checkstyle.skip>true</checkstyle.skip>
             </properties>

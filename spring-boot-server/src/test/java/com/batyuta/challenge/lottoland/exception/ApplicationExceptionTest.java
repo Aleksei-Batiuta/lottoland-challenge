@@ -27,9 +27,9 @@ import java.util.Objects;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-/** Data exception test. */
-@DisplayName("Data exception test")
-class DataExceptionTest {
+/** Application exception test. */
+@DisplayName("Application exception test")
+class ApplicationExceptionTest {
 
   /** Test Default Constructor. */
   @Test
@@ -37,20 +37,22 @@ class DataExceptionTest {
   void testDefaultConstructor() {
     String theFirstArgument = "the first argument";
     String msg = "error.unknown";
-    DataException dataException =
+    ApplicationException applicationException =
         assertThrows(
-            DataException.class,
+            ApplicationException.class,
             () -> {
-              throw new DataException(msg, theFirstArgument);
+              throw new ApplicationException(msg, theFirstArgument);
             });
-    assertNotNull("Exception is null", dataException);
-    assertEquals("Exception has different message", msg, dataException.getMessage());
-    assertEquals("Exception has different message and key", msg, dataException.getKey());
-    Object[] args = dataException.getArgs();
+    assertNotNull("Exception is null", applicationException);
+    assertEquals("Exception has different message", msg, applicationException.getMessage());
+    assertEquals("Exception has different message and key", msg, applicationException.getKey());
+    Object[] args = applicationException.getArgs();
     assertNotNull("Exception arguments is empty", args);
     assertFalse("Exception has another arguments", args.length != 1);
     assertEquals(
-        "Exception has another first argument", theFirstArgument, dataException.getArgs()[0]);
+        "Exception has another first argument",
+        theFirstArgument,
+        applicationException.getArgs()[0]);
   }
 
   /** Test Default Constructor. */
@@ -59,26 +61,26 @@ class DataExceptionTest {
   void testDefaultConstructorWithParent() {
     String theFirstArgument = "the first argument";
     String msg = "error.unknown";
-    DataException dataException =
+    ApplicationException applicationException =
         assertThrows(
-            DataException.class,
+            ApplicationException.class,
             () -> {
-              throw new DataException(msg, new RuntimeException(), theFirstArgument);
+              throw new ApplicationException(msg, new RuntimeException(), theFirstArgument);
             });
-    assertNotNull("Exception is null", dataException);
-    assertNotNull("Has empty message", dataException.getMessage());
+    assertNotNull("Exception is null", applicationException);
+    assertNotNull("Has empty message", applicationException.getMessage());
     assertTrue(
         "Exception has different message",
-        Objects.requireNonNull(dataException.getMessage()).contains(msg));
-    Object[] args = dataException.getArgs();
+        Objects.requireNonNull(applicationException.getMessage()).contains(msg));
+    Object[] args = applicationException.getArgs();
     assertNotNull("Exception arguments is empty", args);
     assertFalse("Exception has another arguments", args.length != 1);
-    assertNotNull("Has empty first message argument", dataException.getArgs()[0]);
+    assertNotNull("Has empty first message argument", applicationException.getArgs()[0]);
     assertTrue(
         "Exception has another first argument",
-        dataException.getArgs()[0].getClass() == String.class);
+        applicationException.getArgs()[0].getClass() == String.class);
     assertTrue(
         "Exception has another first argument value",
-        ((String) dataException.getArgs()[0]).contains(theFirstArgument));
+        ((String) applicationException.getArgs()[0]).contains(theFirstArgument));
   }
 }

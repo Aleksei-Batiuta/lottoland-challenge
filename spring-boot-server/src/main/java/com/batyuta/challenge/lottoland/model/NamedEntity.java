@@ -18,6 +18,7 @@
 package com.batyuta.challenge.lottoland.model;
 
 import javax.persistence.MappedSuperclass;
+import lombok.ToString;
 
 /**
  * Named entity base class.
@@ -25,6 +26,7 @@ import javax.persistence.MappedSuperclass;
  * @param <T> entity type class
  */
 @MappedSuperclass
+@ToString
 public abstract class NamedEntity<T> extends BaseEntity<T> {
 
   /** Name field. */
