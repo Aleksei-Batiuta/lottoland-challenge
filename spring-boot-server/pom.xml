@@ -41,7 +41,7 @@
         <site>
             <id>${my.artifactId}</id>
             <!-- Uses the local path to site deploy -->
-            <url>file://${basedir}/../docs/${project.artifactId}</url>
+            <url>file://${basedir}/../target/checkout/docs/${project.artifactId}</url>
         </site>
     </distributionManagement>
 

@@ -74,7 +74,7 @@
         <site>
             <id>lottoland-challenge</id>
             <!-- Uses the local path to site deploy -->
-            <url>file://${basedir}/docs</url>
+            <url>file://${basedir}/target/checkout/docs</url>
         </site>
     </distributionManagement>
     <!-- Libs Project Maven Repository -->
@@ -158,14 +158,26 @@
                             <version>${maven-scm-plugin.version}</version>
                             <!-- Commits the Project Site (HitHub Pages) -->
                             <configuration>
-                                <basedir>${project.basedir}</basedir>
+                                <basedir>${project.build.directory}/checkout/docs</basedir>
                                 <message>[maven-scm-plugin] update ${project.version} GitHub Pages</message>
-                                <includes>/docs/**</includes>
-                                <workingDirectory>${project.basedir}</workingDirectory>
-                                <branch>docs</branch>
-                                <!-- todo: it should push after commit only! -->
-                                <!--<pushChanges>true</pushChanges>-->
+                                <includes>*/**</includes>
+                                <checkoutDirectory>${project.build.directory}/checkout/docs</checkoutDirectory>
+                                <workingDirectory>${project.build.directory}/checkout/docs</workingDirectory>
+                                <scmVersion>docs</scmVersion>
+                                <scmVersionType>branch</scmVersionType>
+                                <pushChanges>false</pushChanges>
                             </configuration>
+                            <executions>
+                                <execution>
+                                    <id>scm-push</id>
+                                    <goals>
+                                        <goal>checkin</goal>
+                                    </goals>
+                                    <configuration>
+                                        <pushChanges>true</pushChanges>
+                                    </configuration>
+                                </execution>
+                            </executions>
                         </plugin>
                         <!-- Precesses the resources -->
                         <plugin>
@@ -547,9 +559,11 @@
                         Commits the test reports before thr release:prepare goal
                         will commit pom file with a new release version
                         -->
-                        <preparationGoals>-Prelease scm:remove site site-deploy scm:checkin verify spring-boot:build-image -P
+                        <preparationGoals>-Prelease scm:checkout scm:remove site site-deploy scm:add scm:checkin@scm-push verify spring-boot:build-image -P
                             lottoland-challenge
                         </preparationGoals>
+                        <workingDirectory>${project.build.directory}/checkout/master</workingDirectory>
+                        <pushChanges>true</pushChanges>
                     </configuration>
                 </plugin>
                 <!-- Project site plugins-->
