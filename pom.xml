@@ -159,8 +159,9 @@
                             <!-- Commits the Project Site (HitHub Pages) -->
                             <configuration>
                                 <basedir>${project.build.directory}/checkout/docs</basedir>
-                                <message>[maven-scm-plugin] update ${project.version} GitHub Pages</message>
+                                <message>[maven-scm-plugin] updates ${project.version} GitHub Pages</message>
                                 <includes>*/**</includes>
+                                <excludes>/docs/**</excludes>
                                 <checkoutDirectory>${project.build.directory}/checkout/docs</checkoutDirectory>
                                 <workingDirectory>${project.build.directory}/checkout/docs</workingDirectory>
                                 <scmVersion>docs</scmVersion>
