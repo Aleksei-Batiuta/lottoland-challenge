@@ -162,6 +162,7 @@
                                 <message>[maven-scm-plugin] update ${project.version} GitHub Pages</message>
                                 <includes>/docs/**</includes>
                                 <workingDirectory>${project.basedir}</workingDirectory>
+                                <branch>docs</branch>
                                 <!-- todo: it should push after commit only! -->
                                 <!--<pushChanges>true</pushChanges>-->
                             </configuration>
@@ -546,7 +547,7 @@
                         Commits the test reports before thr release:prepare goal
                         will commit pom file with a new release version
                         -->
-                        <preparationGoals>-Prelease site site-deploy scm:checkin verify spring-boot:build-image -P
+                        <preparationGoals>-Prelease scm:remove site site-deploy scm:checkin verify spring-boot:build-image -P
                             lottoland-challenge
                         </preparationGoals>
                     </configuration>
