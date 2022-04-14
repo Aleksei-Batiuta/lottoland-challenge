@@ -139,6 +139,7 @@
         <maven-project-info-reports-plugin.version>3.2.2</maven-project-info-reports-plugin.version>
         <maven-pmd-plugin.version>3.16.0</maven-pmd-plugin.version>
         <maven-resources-plugin.version>3.2.0</maven-resources-plugin.version>
+        <maven-scm-plugin.version>2.0.0-M1</maven-scm-plugin.version>
     </properties>
 
     <profiles>
@@ -152,11 +153,15 @@
                 <pluginManagement>
                     <plugins>
                         <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
                             <artifactId>maven-scm-plugin</artifactId>
+                            <version>${maven-scm-plugin.version}</version>
                             <!-- Commits the Project Site (HitHub Pages) -->
                             <configuration>
+                                <basedir>${project.basedir}</basedir>
                                 <message>[maven-scm-plugin] update ${project.version} GitHub Pages</message>
-                                <includes>docs</includes>
+                                <includes>/docs/**</includes>
+                                <workingDirectory>${project.basedir}</workingDirectory>
                                 <!-- todo: it should push after commit only! -->
                                 <!--<pushChanges>true</pushChanges>-->
                             </configuration>
