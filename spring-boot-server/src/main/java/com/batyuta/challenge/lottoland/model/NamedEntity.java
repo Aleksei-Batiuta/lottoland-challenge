@@ -23,32 +23,35 @@ import lombok.ToString;
 /**
  * Named entity base class.
  *
- * @param <T> entity type class
+ * @param <T>
+ *            entity type class
  */
 @MappedSuperclass
 @ToString
 public abstract class NamedEntity<T> extends BaseEntity<T> {
 
-  /** Name field. */
-  private String name;
+    /** Name field. */
+    private String name;
 
-  /**
-   * Default constructor.
-   *
-   * @param id entity ID
-   * @param entityName name field of entity
-   */
-  protected NamedEntity(final Long id, final String entityName) {
-    super(id);
-    this.name = entityName;
-  }
+    /**
+     * Default constructor.
+     *
+     * @param id
+     *            entity ID
+     * @param entityName
+     *            name field of entity
+     */
+    protected NamedEntity(final Long id, final String entityName) {
+        super(id);
+        this.name = entityName;
+    }
 
-  /**
-   * Getter of entity name.
-   *
-   * @return entity name
-   */
-  public String getName() {
-    return name;
-  }
+    /**
+     * Getter of entity name.
+     *
+     * @return entity name
+     */
+    public String getName() {
+        return name;
+    }
 }

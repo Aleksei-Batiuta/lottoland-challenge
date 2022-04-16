@@ -30,51 +30,57 @@ import org.springframework.data.domain.PageImpl;
 /**
  * Lightweight Service Interface.
  *
- * @param <T> entity class
- * @param <V> view class
+ * @param <T>
+ *            entity class
+ * @param <V>
+ *            view class
  */
 public interface LightweightService<T extends BaseEntity, V extends BaseVO> {
 
-  /**
-   * Converts view to entity.
-   *
-   * @param view view
-   * @return entity
-   */
-  T toEntity(V view);
+    /**
+     * Converts view to entity.
+     *
+     * @param view
+     *            view
+     *
+     * @return entity
+     */
+    T toEntity(V view);
 
-  /**
-   * Converts view to entity.
-   *
-   * @param entity entity
-   * @return view
-   */
-  V toView(T entity);
+    /**
+     * Converts view to entity.
+     *
+     * @param entity
+     *            entity
+     *
+     * @return view
+     */
+    V toView(T entity);
 
-  /**
-   * Converts collection of views to entity collection.
-   *
-   * @param views views
-   * @return entities
-   */
-  default Collection<T> getEntities(Collection<V> views) {
-    return views.stream()
-        .map(this::toEntity)
-        .collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
-  }
+    /**
+     * Converts collection of views to entity collection.
+     *
+     * @param views
+     *            views
+     *
+     * @return entities
+     */
+    default Collection<T> getEntities(Collection<V> views) {
+        return views.stream().map(this::toEntity)
+                .collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
+    }
 
-  /**
-   * Converts collection of views to entity collection.
-   *
-   * @param entities entities
-   * @return views
-   */
-  default Page<V> getViews(Page<T> entities) {
-    List<V> viewList =
-        StreamSupport.stream(entities.spliterator(), false)
-            .map(this::toView)
-            .collect(
-                Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
-    return new PageImpl<>(viewList, entities.getPageable(), entities.getTotalElements());
-  }
+    /**
+     * Converts collection of views to entity collection.
+     *
+     * @param entities
+     *            entities
+     *
+     * @return views
+     */
+    default Page<V> getViews(Page<T> entities) {
+        List<V> viewList = StreamSupport.stream(entities.spliterator(), false).map(this::toView)
+                .collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
+        return new PageImpl<>(viewList, entities.getPageable(), entities.getTotalElements());
+    }
 }

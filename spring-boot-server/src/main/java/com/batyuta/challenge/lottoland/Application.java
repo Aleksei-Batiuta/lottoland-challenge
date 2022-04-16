@@ -24,12 +24,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class Application {
 
-  /**
-   * The main method for run app.
-   *
-   * @param args arguments.
-   */
-  public static void main(final String[] args) {
-    SpringApplication.run(Application.class, args);
-  }
+    /**
+     * The main method for run app.
+     *
+     * @param args
+     *            arguments.
+     */
+    public static void main(final String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
 }

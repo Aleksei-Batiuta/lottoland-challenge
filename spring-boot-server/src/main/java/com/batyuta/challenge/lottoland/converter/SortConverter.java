@@ -26,24 +26,26 @@ import org.springframework.stereotype.Component;
 @Component
 public class SortConverter implements Converter<String, Sort> {
 
-  /**
-   * Parsing of {@link Sort}.
-   *
-   * @param sortString as string
-   * @return parsed sort
-   */
-  @Override
-  public Sort convert(final String sortString) {
-    Sort sort = null;
-    String[] split = sortString.split(",");
-    Sort.Direction direction = null;
-    if (split.length > 0) {
-      direction = Sort.Direction.valueOf(split[0].toUpperCase());
+    /**
+     * Parsing of {@link Sort}.
+     *
+     * @param sortString
+     *            as string
+     *
+     * @return parsed sort
+     */
+    @Override
+    public Sort convert(final String sortString) {
+        Sort sort = null;
+        String[] split = sortString.split(",");
+        Sort.Direction direction = null;
+        if (split.length > 0) {
+            direction = Sort.Direction.valueOf(split[0].toUpperCase());
+        }
+        if (split.length > 1) {
+            String[] fields = Arrays.copyOfRange(split, 1, split.length);
+            sort = Sort.by(direction, fields);
+        }
+        return sort;
     }
-    if (split.length > 1) {
-      String[] fields = Arrays.copyOfRange(split, 1, split.length);
-      sort = Sort.by(direction, fields);
-    }
-    return sort;
-  }
 }

@@ -22,40 +22,43 @@ import org.springframework.core.NestedRuntimeException;
 /** Base Application Exception class. It should be used for business logic errors. */
 public abstract class BaseException extends NestedRuntimeException {
 
-  /** Error i18n key. */
-  private final String key;
+    /** Error i18n key. */
+    private final String key;
 
-  /** Argument which can be used in format. */
-  private final Object[] args;
+    /** Argument which can be used in format. */
+    private final Object[] args;
 
-  /**
-   * Default Constructor.
-   *
-   * @param msg format message
-   * @param cause exception
-   * @param arguments arguments
-   */
-  public BaseException(final String msg, final Throwable cause, final Object... arguments) {
-    super(msg, cause);
-    this.key = msg;
-    this.args = arguments.length == 0 ? new Object[] {""} : arguments;
-  }
+    /**
+     * Default Constructor.
+     *
+     * @param msg
+     *            format message
+     * @param cause
+     *            exception
+     * @param arguments
+     *            arguments
+     */
+    public BaseException(final String msg, final Throwable cause, final Object... arguments) {
+        super(msg, cause);
+        this.key = msg;
+        this.args = arguments.length == 0 ? new Object[] { "" } : arguments;
+    }
 
-  /**
-   * Getter of exception message arguments.
-   *
-   * @return arguments
-   */
-  public Object[] getArgs() {
-    return args;
-  }
+    /**
+     * Getter of exception message arguments.
+     *
+     * @return arguments
+     */
+    public Object[] getArgs() {
+        return args;
+    }
 
-  /**
-   * Getter of i18n key.
-   *
-   * @return key
-   */
-  public String getKey() {
-    return key;
-  }
+    /**
+     * Getter of i18n key.
+     *
+     * @return key
+     */
+    public String getKey() {
+        return key;
+    }
 }

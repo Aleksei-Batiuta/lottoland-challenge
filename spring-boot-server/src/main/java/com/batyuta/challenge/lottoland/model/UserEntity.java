@@ -26,43 +26,47 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class UserEntity extends NamedEntity<UserEntity> {
 
-  /** Default no-arguments constructor. */
-  public UserEntity() {
-    this(NEW_ENTITY_ID, null);
-  }
+    /** Default no-arguments constructor. */
+    public UserEntity() {
+        this(NEW_ENTITY_ID, null);
+    }
 
-  /**
-   * Default Constructor.
-   *
-   * @param userName username
-   */
-  public UserEntity(final String userName) {
-    this(NEW_ENTITY_ID, userName);
-  }
+    /**
+     * Default Constructor.
+     *
+     * @param userName
+     *            username
+     */
+    public UserEntity(final String userName) {
+        this(NEW_ENTITY_ID, userName);
+    }
 
-  /**
-   * Default Constructor.
-   *
-   * @param userId user ID
-   * @param userName username
-   */
-  public UserEntity(final Long userId, final String userName) {
-    super(userId, userName);
-  }
+    /**
+     * Default Constructor.
+     *
+     * @param userId
+     *            user ID
+     * @param userName
+     *            username
+     */
+    public UserEntity(final Long userId, final String userName) {
+        super(userId, userName);
+    }
 
-  /**
-   * Entities comparator.
-   *
-   * @param o object to compare
-   * @return compare result
-   */
-  @Override
-  public int compareTo(final UserEntity o) {
-    Comparator<UserEntity> cmprtr =
-        Comparator.comparing(BaseEntity::getId, Comparator.nullsFirst(Comparator.naturalOrder()));
-    cmprtr =
-        cmprtr.thenComparing(UserEntity::getName, Comparator.nullsFirst(Comparator.naturalOrder()));
-    Comparator<UserEntity> comparator = Comparator.nullsFirst(cmprtr);
-    return comparator.compare(this, o);
-  }
+    /**
+     * Entities comparator.
+     *
+     * @param o
+     *            object to compare
+     *
+     * @return compare result
+     */
+    @Override
+    public int compareTo(final UserEntity o) {
+        Comparator<UserEntity> cmprtr = Comparator.comparing(BaseEntity::getId,
+                Comparator.nullsFirst(Comparator.naturalOrder()));
+        cmprtr = cmprtr.thenComparing(UserEntity::getName, Comparator.nullsFirst(Comparator.naturalOrder()));
+        Comparator<UserEntity> comparator = Comparator.nullsFirst(cmprtr);
+        return comparator.compare(this, o);
+    }
 }

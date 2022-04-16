@@ -29,31 +29,33 @@ import org.springframework.stereotype.Service;
 @Service
 public class MessageResolverService {
 
-  /** Message Source. */
-  private final MessageSource messageSource;
+    /** Message Source. */
+    private final MessageSource messageSource;
 
-  /**
-   * Default constructor.
-   *
-   * @param sources message source
-   */
-  public MessageResolverService(final MessageSource sources) {
-    this.messageSource = sources;
-  }
-
-  /**
-   * Gets all key-value pairs for locale.
-   *
-   * @param locale locale
-   * @return key-value pairs
-   */
-  public Map<String, String> getMessages(final Locale locale) {
-    Properties properties =
-        ((ExposedResourceMessageBundleSource) messageSource).getMessages(locale);
-    Map<String, String> messagesMap = new HashMap<>();
-    for (Map.Entry<Object, Object> entry : properties.entrySet()) {
-      messagesMap.put(entry.getKey().toString(), entry.getValue().toString());
+    /**
+     * Default constructor.
+     *
+     * @param sources
+     *            message source
+     */
+    public MessageResolverService(final MessageSource sources) {
+        this.messageSource = sources;
     }
-    return messagesMap;
-  }
+
+    /**
+     * Gets all key-value pairs for locale.
+     *
+     * @param locale
+     *            locale
+     *
+     * @return key-value pairs
+     */
+    public Map<String, String> getMessages(final Locale locale) {
+        Properties properties = ((ExposedResourceMessageBundleSource) messageSource).getMessages(locale);
+        Map<String, String> messagesMap = new HashMap<>();
+        for (Map.Entry<Object, Object> entry : properties.entrySet()) {
+            messagesMap.put(entry.getKey().toString(), entry.getValue().toString());
+        }
+        return messagesMap;
+    }
 }

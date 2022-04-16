@@ -31,41 +31,39 @@ import org.springframework.data.domain.Pageable;
 @DisplayName("Pageable Utils test cases")
 public class PageableUtilsTest {
 
-  /**
-   * Test data generator.
-   *
-   * @return test data
-   */
-  public static Stream<? extends Arguments> testData() {
-    return Stream.of(
-        Arguments.of(PageRequest.of(0, 10), 10, PageRequest.of(0, 10)),
-        Arguments.of((Pageable) null, 10, Pageable.unpaged()),
-        Arguments.of(PageRequest.of(10, 10), 10, PageRequest.of(0, 10)),
-        Arguments.of(PageRequest.of(0, 10), 0, PageRequest.of(0, 10)));
-  }
-
-  /**
-   * The test method.
-   *
-   * @param pageable the test pageable
-   * @param total the test pageable total
-   * @param expected expected result
-   */
-  @ParameterizedTest(name = "{index}: pageable={0}, total={1}, expected={2}")
-  @MethodSource("testData")
-  public void test(final Pageable pageable, int total, final Object expected) {
-    try {
-      Pageable actual = PageableUtils.fixPageable(pageable, total);
-      assertEquals(
-          String.format("Test case was failed: {data: {pageable: %s, total: %d}", pageable, total),
-          expected,
-          actual);
-    } catch (IllegalArgumentException actual) {
-      assertNotNull(
-          String.format(
-              "Expected result is null: {data: {pageable: %s, total: %d}", pageable, total),
-          expected);
-      assertEquals("Unexpected result!", expected.getClass(), actual.getClass());
+    /**
+     * Test data generator.
+     *
+     * @return test data
+     */
+    public static Stream<? extends Arguments> testData() {
+        return Stream.of(Arguments.of(PageRequest.of(0, 10), 10, PageRequest.of(0, 10)),
+                Arguments.of((Pageable) null, 10, Pageable.unpaged()),
+                Arguments.of(PageRequest.of(10, 10), 10, PageRequest.of(0, 10)),
+                Arguments.of(PageRequest.of(0, 10), 0, PageRequest.of(0, 10)));
     }
-  }
+
+    /**
+     * The test method.
+     *
+     * @param pageable
+     *            the test pageable
+     * @param total
+     *            the test pageable total
+     * @param expected
+     *            expected result
+     */
+    @ParameterizedTest(name = "{index}: pageable={0}, total={1}, expected={2}")
+    @MethodSource("testData")
+    public void test(final Pageable pageable, int total, final Object expected) {
+        try {
+            Pageable actual = PageableUtils.fixPageable(pageable, total);
+            assertEquals(String.format("Test case was failed: {data: {pageable: %s, total: %d}", pageable, total),
+                    expected, actual);
+        } catch (IllegalArgumentException actual) {
+            assertNotNull(String.format("Expected result is null: {data: {pageable: %s, total: %d}", pageable, total),
+                    expected);
+            assertEquals("Unexpected result!", expected.getClass(), actual.getClass());
+        }
+    }
 }

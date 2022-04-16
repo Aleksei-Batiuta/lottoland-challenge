@@ -27,13 +27,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class HomeController {
 
-  /**
-   * Mapping to index page.
-   *
-   * @return index page MVC (HTML-page)
-   */
-  @RequestMapping(value = "/")
-  public String index() {
-    return "index";
-  }
+    /**
+     * Mapping to index page.
+     *
+     * @return index page MVC (HTML-page)
+     */
+    @RequestMapping(value = "/")
+    public String index() {
+        return "index";
+    }
 }

@@ -31,56 +31,44 @@ import org.junit.jupiter.api.Test;
 @DisplayName("Application exception test")
 class ApplicationExceptionTest {
 
-  /** Test Default Constructor. */
-  @Test
-  @DisplayName("TC#01: Test Default Constructor")
-  void testDefaultConstructor() {
-    String theFirstArgument = "the first argument";
-    String msg = "error.unknown";
-    ApplicationException applicationException =
-        assertThrows(
-            ApplicationException.class,
-            () -> {
-              throw new ApplicationException(msg, theFirstArgument);
-            });
-    assertNotNull("Exception is null", applicationException);
-    assertEquals("Exception has different message", msg, applicationException.getMessage());
-    assertEquals("Exception has different message and key", msg, applicationException.getKey());
-    Object[] args = applicationException.getArgs();
-    assertNotNull("Exception arguments is empty", args);
-    assertFalse("Exception has another arguments", args.length != 1);
-    assertEquals(
-        "Exception has another first argument",
-        theFirstArgument,
-        applicationException.getArgs()[0]);
-  }
+    /** Test Default Constructor. */
+    @Test
+    @DisplayName("TC#01: Test Default Constructor")
+    void testDefaultConstructor() {
+        String theFirstArgument = "the first argument";
+        String msg = "error.unknown";
+        ApplicationException applicationException = assertThrows(ApplicationException.class, () -> {
+            throw new ApplicationException(msg, theFirstArgument);
+        });
+        assertNotNull("Exception is null", applicationException);
+        assertEquals("Exception has different message", msg, applicationException.getMessage());
+        assertEquals("Exception has different message and key", msg, applicationException.getKey());
+        Object[] args = applicationException.getArgs();
+        assertNotNull("Exception arguments is empty", args);
+        assertFalse("Exception has another arguments", args.length != 1);
+        assertEquals("Exception has another first argument", theFirstArgument, applicationException.getArgs()[0]);
+    }
 
-  /** Test Default Constructor. */
-  @Test
-  @DisplayName("TC#02: Test Default Constructor with parent")
-  void testDefaultConstructorWithParent() {
-    String theFirstArgument = "the first argument";
-    String msg = "error.unknown";
-    ApplicationException applicationException =
-        assertThrows(
-            ApplicationException.class,
-            () -> {
-              throw new ApplicationException(msg, new RuntimeException(), theFirstArgument);
-            });
-    assertNotNull("Exception is null", applicationException);
-    assertNotNull("Has empty message", applicationException.getMessage());
-    assertTrue(
-        "Exception has different message",
-        Objects.requireNonNull(applicationException.getMessage()).contains(msg));
-    Object[] args = applicationException.getArgs();
-    assertNotNull("Exception arguments is empty", args);
-    assertFalse("Exception has another arguments", args.length != 1);
-    assertNotNull("Has empty first message argument", applicationException.getArgs()[0]);
-    assertTrue(
-        "Exception has another first argument",
-        applicationException.getArgs()[0].getClass() == String.class);
-    assertTrue(
-        "Exception has another first argument value",
-        ((String) applicationException.getArgs()[0]).contains(theFirstArgument));
-  }
+    /** Test Default Constructor. */
+    @Test
+    @DisplayName("TC#02: Test Default Constructor with parent")
+    void testDefaultConstructorWithParent() {
+        String theFirstArgument = "the first argument";
+        String msg = "error.unknown";
+        ApplicationException applicationException = assertThrows(ApplicationException.class, () -> {
+            throw new ApplicationException(msg, new RuntimeException(), theFirstArgument);
+        });
+        assertNotNull("Exception is null", applicationException);
+        assertNotNull("Has empty message", applicationException.getMessage());
+        assertTrue("Exception has different message",
+                Objects.requireNonNull(applicationException.getMessage()).contains(msg));
+        Object[] args = applicationException.getArgs();
+        assertNotNull("Exception arguments is empty", args);
+        assertFalse("Exception has another arguments", args.length != 1);
+        assertNotNull("Has empty first message argument", applicationException.getArgs()[0]);
+        assertTrue("Exception has another first argument",
+                applicationException.getArgs()[0].getClass() == String.class);
+        assertTrue("Exception has another first argument value",
+                ((String) applicationException.getArgs()[0]).contains(theFirstArgument));
+    }
 }

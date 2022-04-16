@@ -20,24 +20,29 @@ package com.batyuta.challenge.lottoland.exception;
 /** Data Exception class. It should be used for all Data manipulation errors. */
 public class DataException extends BaseException {
 
-  /**
-   * Default Constructor.
-   *
-   * @param msg format message
-   * @param arguments arguments
-   */
-  public DataException(final String msg, final Object... arguments) {
-    this(msg, null, arguments);
-  }
+    /**
+     * Default Constructor.
+     *
+     * @param msg
+     *            format message
+     * @param arguments
+     *            arguments
+     */
+    public DataException(final String msg, final Object... arguments) {
+        this(msg, null, arguments);
+    }
 
-  /**
-   * Default Constructor.
-   *
-   * @param msg format message
-   * @param cause exception
-   * @param arguments arguments
-   */
-  public DataException(final String msg, final Throwable cause, final Object... arguments) {
-    super(msg, cause, arguments);
-  }
+    /**
+     * Default Constructor.
+     *
+     * @param msg
+     *            format message
+     * @param cause
+     *            exception
+     * @param arguments
+     *            arguments
+     */
+    public DataException(final String msg, final Throwable cause, final Object... arguments) {
+        super(msg, cause, arguments);
+    }
 }

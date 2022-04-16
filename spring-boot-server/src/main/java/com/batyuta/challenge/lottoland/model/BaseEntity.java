@@ -28,59 +28,61 @@ import javax.persistence.MappedSuperclass;
 /**
  * Base Entity class.
  *
- * @param <T> entity type class
+ * @param <T>
+ *            entity type class
  */
 @MappedSuperclass
 public abstract class BaseEntity<T> extends LockedData implements Serializable, Comparable<T> {
 
-  /** New Entity ID. */
-  public static final long NEW_ENTITY_ID = 0L;
+    /** New Entity ID. */
+    public static final long NEW_ENTITY_ID = 0L;
 
-  /** Entity ID. */
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+    /** Entity ID. */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  /** Default no arguments Constructor. */
-  protected BaseEntity() {
-    this(NEW_ENTITY_ID);
-  }
+    /** Default no arguments Constructor. */
+    protected BaseEntity() {
+        this(NEW_ENTITY_ID);
+    }
 
-  /**
-   * Default constructor.
-   *
-   * @param entityId entity ID.
-   */
-  protected BaseEntity(final Long entityId) {
-    this.setId(entityId);
-  }
+    /**
+     * Default constructor.
+     *
+     * @param entityId
+     *            entity ID.
+     */
+    protected BaseEntity(final Long entityId) {
+        this.setId(entityId);
+    }
 
-  /**
-   * Check the entity to new.
-   *
-   * @return <code>true</code> if {@link UserEntity#getId()} equals to {@link
-   *     UserEntity#NEW_ENTITY_ID}
-   */
-  @JsonIgnore
-  public boolean isNew() {
-    return this.id == NEW_ENTITY_ID;
-  }
+    /**
+     * Check the entity to new.
+     *
+     * @return <code>true</code> if {@link UserEntity#getId()} equals to {@link UserEntity#NEW_ENTITY_ID}
+     */
+    @JsonIgnore
+    public boolean isNew() {
+        return this.id == NEW_ENTITY_ID;
+    }
 
-  /**
-   * Getter of entity ID.
-   *
-   * @return entity ID
-   */
-  public Long getId() {
-    return read(() -> this.id);
-  }
+    /**
+     * Getter of entity ID.
+     *
+     * @return entity ID
+     */
+    public Long getId() {
+        return read(() -> this.id);
+    }
 
-  /**
-   * Getter of entity ID.
-   *
-   * @param entityId entity ID
-   */
-  public void setId(final Long entityId) {
-    write(() -> this.id = entityId);
-  }
+    /**
+     * Getter of entity ID.
+     *
+     * @param entityId
+     *            entity ID
+     */
+    public void setId(final Long entityId) {
+        write(() -> this.id = entityId);
+    }
 }

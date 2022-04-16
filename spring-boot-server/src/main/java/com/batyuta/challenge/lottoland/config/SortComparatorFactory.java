@@ -30,16 +30,19 @@ import org.springframework.data.domain.Sort;
 @EnableAutoConfiguration
 public class SortComparatorFactory {
 
-  /**
-   * Creates a new instance of comparator.
-   *
-   * @param sort sort type
-   * @param <T> type of compared objects
-   * @return comparator
-   */
-  @Bean(autowireCandidate = false)
-  @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-  public <T extends Comparable<? super T>> SortComparator<T> sortComparator(final Sort sort) {
-    return new SortComparator<>(sort);
-  }
+    /**
+     * Creates a new instance of comparator.
+     *
+     * @param sort
+     *            sort type
+     * @param <T>
+     *            type of compared objects
+     *
+     * @return comparator
+     */
+    @Bean(autowireCandidate = false)
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    public <T extends Comparable<? super T>> SortComparator<T> sortComparator(final Sort sort) {
+        return new SortComparator<>(sort);
+    }
 }

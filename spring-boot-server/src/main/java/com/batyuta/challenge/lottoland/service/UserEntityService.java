@@ -27,48 +27,54 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserEntityService extends AbstractEntityService<UserEntity> {
 
-  /** User Entity repository. */
-  private final UserEntityRepository userEntityRepository;
+    /** User Entity repository. */
+    private final UserEntityRepository userEntityRepository;
 
-  /**
-   * Default constructor.
-   *
-   * @param repository User Entity Repository
-   */
-  public UserEntityService(final UserEntityRepository repository) {
-    super(repository);
-    userEntityRepository = repository;
-  }
-
-  /**
-   * Update implementation.
-   *
-   * @param destination destination entity
-   * @param source source entity
-   * @return updated entity
-   */
-  @Override
-  protected UserEntity updateImpl(final UserEntity destination, final UserEntity source) {
-    return source;
-  }
-
-  /**
-   * Creates a new or gets existed {@link UserEntity} from repository.
-   *
-   * @param user user
-   * @return new or existed user
-   */
-  public UserEntity findByUserNameOrNew(final String user) {
-    UserEntity userEntity;
-    try {
-      userEntity = userEntityRepository.findByName(user);
-    } catch (DataException e) {
-      if (Objects.requireNonNull(e.getMessage()).contains("error.data.entity.not.found")) {
-        userEntity = save(new UserEntity(user));
-      } else {
-        throw e;
-      }
+    /**
+     * Default constructor.
+     *
+     * @param repository
+     *            User Entity Repository
+     */
+    public UserEntityService(final UserEntityRepository repository) {
+        super(repository);
+        userEntityRepository = repository;
     }
-    return userEntity;
-  }
+
+    /**
+     * Update implementation.
+     *
+     * @param destination
+     *            destination entity
+     * @param source
+     *            source entity
+     *
+     * @return updated entity
+     */
+    @Override
+    protected UserEntity updateImpl(final UserEntity destination, final UserEntity source) {
+        return source;
+    }
+
+    /**
+     * Creates a new or gets existed {@link UserEntity} from repository.
+     *
+     * @param user
+     *            user
+     *
+     * @return new or existed user
+     */
+    public UserEntity findByUserNameOrNew(final String user) {
+        UserEntity userEntity;
+        try {
+            userEntity = userEntityRepository.findByName(user);
+        } catch (DataException e) {
+            if (Objects.requireNonNull(e.getMessage()).contains("error.data.entity.not.found")) {
+                userEntity = save(new UserEntity(user));
+            } else {
+                throw e;
+            }
+        }
+        return userEntity;
+    }
 }

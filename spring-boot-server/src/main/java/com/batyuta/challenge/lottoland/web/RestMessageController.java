@@ -32,32 +32,36 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/messages")
 public class RestMessageController {
 
-  /** Message resolver service. */
-  private final MessageResolverService service;
+    /** Message resolver service. */
+    private final MessageResolverService service;
 
-  /**
-   * Default constructor.
-   *
-   * @param messageService Message resolver service.
-   */
-  public RestMessageController(final MessageResolverService messageService) {
-    this.service = messageService;
-  }
-
-  /**
-   * Gets all key-value pairs for locale.
-   *
-   * @param lang language, it's optional parameter
-   * @param msgLocale locale
-   * @return key-value pairs
-   */
-  @RequestMapping(value = "/", method = RequestMethod.GET)
-  public EntityModel<Map<String, String>> getLanguageMapJson(
-      final @RequestParam(name = "lang", required = false) String lang, final Locale msgLocale) {
-    Locale locale = msgLocale;
-    if (StringUtils.hasText(lang)) {
-      locale = Locale.forLanguageTag(lang);
+    /**
+     * Default constructor.
+     *
+     * @param messageService
+     *            Message resolver service.
+     */
+    public RestMessageController(final MessageResolverService messageService) {
+        this.service = messageService;
     }
-    return EntityModel.of(service.getMessages(locale));
-  }
+
+    /**
+     * Gets all key-value pairs for locale.
+     *
+     * @param lang
+     *            language, it's optional parameter
+     * @param msgLocale
+     *            locale
+     *
+     * @return key-value pairs
+     */
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public EntityModel<Map<String, String>> getLanguageMapJson(
+            final @RequestParam(name = "lang", required = false) String lang, final Locale msgLocale) {
+        Locale locale = msgLocale;
+        if (StringUtils.hasText(lang)) {
+            locale = Locale.forLanguageTag(lang);
+        }
+        return EntityModel.of(service.getMessages(locale));
+    }
 }

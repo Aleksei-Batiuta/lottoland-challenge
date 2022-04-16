@@ -22,24 +22,28 @@ import org.springframework.data.domain.Pageable;
 /** Pageable utils. */
 public final class PageableUtils {
 
-  /** Hide constructor. */
-  private PageableUtils() {}
+    /** Hide constructor. */
+    private PageableUtils() {
+    }
 
-  /**
-   * Fixes the page settings if page is not in list range.
-   *
-   * @param pageSetting page config
-   * @param total total elements in list
-   * @return the first page if page config was not valid.
-   */
-  public static Pageable fixPageable(final Pageable pageSetting, final int total) {
-    Pageable pageable = pageSetting;
-    if (pageable == null) {
-      pageable = Pageable.unpaged();
+    /**
+     * Fixes the page settings if page is not in list range.
+     *
+     * @param pageSetting
+     *            page config
+     * @param total
+     *            total elements in list
+     *
+     * @return the first page if page config was not valid.
+     */
+    public static Pageable fixPageable(final Pageable pageSetting, final int total) {
+        Pageable pageable = pageSetting;
+        if (pageable == null) {
+            pageable = Pageable.unpaged();
+        }
+        if (!pageable.isUnpaged() && total != 0 && pageable.getOffset() >= total) {
+            pageable = pageable.first();
+        }
+        return pageable;
     }
-    if (!pageable.isUnpaged() && total != 0 && pageable.getOffset() >= total) {
-      pageable = pageable.first();
-    }
-    return pageable;
-  }
 }

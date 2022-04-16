@@ -43,53 +43,54 @@ import org.junit.jupiter.params.provider.MethodSource;
 @DisplayName("Sign Enum test cases")
 public class SignEnumTest {
 
-  /**
-   * Test data generator.
-   *
-   * @return test data
-   */
-  public static Stream<? extends Arguments> testData() {
-    return Stream.of(
-        Arguments.of(ROCK, null, WIN),
-        Arguments.of(ROCK, ROCK, DRAW),
-        Arguments.of(ROCK, PAPER, LOSS),
-        Arguments.of(ROCK, SCISSORS, WIN),
-        Arguments.of(PAPER, null, WIN),
-        Arguments.of(PAPER, ROCK, WIN),
-        Arguments.of(PAPER, PAPER, DRAW),
-        Arguments.of(PAPER, SCISSORS, LOSS),
-        Arguments.of(SCISSORS, null, WIN),
-        Arguments.of(SCISSORS, ROCK, LOSS),
-        Arguments.of(SCISSORS, PAPER, WIN),
-        Arguments.of(SCISSORS, SCISSORS, DRAW));
-  }
+    /**
+     * Test data generator.
+     *
+     * @return test data
+     */
+    public static Stream<? extends Arguments> testData() {
+        return Stream.of(Arguments.of(ROCK, null, WIN), Arguments.of(ROCK, ROCK, DRAW), Arguments.of(ROCK, PAPER, LOSS),
+                Arguments.of(ROCK, SCISSORS, WIN), Arguments.of(PAPER, null, WIN), Arguments.of(PAPER, ROCK, WIN),
+                Arguments.of(PAPER, PAPER, DRAW), Arguments.of(PAPER, SCISSORS, LOSS),
+                Arguments.of(SCISSORS, null, WIN), Arguments.of(SCISSORS, ROCK, LOSS),
+                Arguments.of(SCISSORS, PAPER, WIN), Arguments.of(SCISSORS, SCISSORS, DRAW));
+    }
 
-  /**
-   * The test method.
-   *
-   * @param firstSign the first test data
-   * @param secondSign the second test data
-   * @param expected expected result
-   */
-  @ParameterizedTest(name = "{index}: first={0}, second={1}, expected={2}")
-  @MethodSource("testData")
-  public void test(final SignEnum firstSign, final SignEnum secondSign, final StatusEnum expected) {
+    /**
+     * The test method.
+     *
+     * @param firstSign
+     *            the first test data
+     * @param secondSign
+     *            the second test data
+     * @param expected
+     *            expected result
+     */
+    @ParameterizedTest(name = "{index}: first={0}, second={1}, expected={2}")
+    @MethodSource("testData")
+    public void test(final SignEnum firstSign, final SignEnum secondSign, final StatusEnum expected) {
 
-    assertNotNull("The first argument can't be as null", firstSign);
-    assertNotNull("Result can't be as null", expected);
+        assertNotNull("The first argument can't be as null", firstSign);
+        assertNotNull("Result can't be as null", expected);
 
-    StatusEnum actual = StatusEnum.valueOf(firstSign.compareToEnum(secondSign));
-    assertEquals(
-        String.format("Test case was failed: {first = %s, second = %s}", firstSign, secondSign),
-        expected,
-        actual);
-  }
+        StatusEnum actual = StatusEnum.valueOf(firstSign.compareToEnum(secondSign));
+        assertEquals(String.format("Test case was failed: {first = %s, second = %s}", firstSign, secondSign), expected,
+                actual);
+    }
 
-  @DisplayName("Constants tests")
-  @Test
-  void testSignConstants() {
-    assertEquals("Constant WIN was changed", 1, SignEnum.Const.WIN);
-    assertEquals("Constant DRAW was changed", 0, SignEnum.Const.DRAW);
-    assertEquals("Constant LOSS was changed", -1, SignEnum.Const.LOSS);
-  }
+    @DisplayName("Constants tests")
+    @Test
+    void testSignConstants() {
+        assertEquals("Constant WIN was changed", 1, SignEnum.Const.WIN);
+        assertEquals("Constant DRAW was changed", 0, SignEnum.Const.DRAW);
+        assertEquals("Constant LOSS was changed", -1, SignEnum.Const.LOSS);
+    }
+
+    @DisplayName("Status tests")
+    @Test
+    void testSignStatus() {
+        assertEquals("Constant WIN was changed", WIN.getStatus(), SignEnum.Const.WIN);
+        assertEquals("Constant DRAW was changed", DRAW.getStatus(), SignEnum.Const.DRAW);
+        assertEquals("Constant LOSS was changed", LOSS.getStatus(), SignEnum.Const.LOSS);
+    }
 }

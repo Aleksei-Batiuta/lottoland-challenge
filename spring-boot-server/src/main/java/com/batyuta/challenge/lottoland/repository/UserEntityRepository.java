@@ -27,31 +27,33 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class UserEntityRepository extends BaseEntityRepository<UserEntity> {
 
-  /**
-   * Check user to deleted state.
-   *
-   * @param entity user entity
-   * @return <code>true</code> if user already deleted
-   */
-  @Override
-  protected boolean isDeleted(final UserEntity entity) {
-    return entity == null;
-  }
+    /**
+     * Check user to deleted state.
+     *
+     * @param entity
+     *            user entity
+     *
+     * @return <code>true</code> if user already deleted
+     */
+    @Override
+    protected boolean isDeleted(final UserEntity entity) {
+        return entity == null;
+    }
 
-  /**
-   * Find user by username.
-   *
-   * @param userName username
-   * @return user
-   * @throws DataException if entity does not exist
-   */
-  public UserEntity findByName(final String userName) {
-    Optional<UserEntity> read =
-        read(
-            () ->
-                getEntities()
-                    .filter(entity -> Objects.equals(entity.getName(), userName))
-                    .findFirst());
-    return read.orElseThrow(() -> new DataException("error.data.entity.not.found", userName));
-  }
+    /**
+     * Find user by username.
+     *
+     * @param userName
+     *            username
+     *
+     * @return user
+     *
+     * @throws DataException
+     *             if entity does not exist
+     */
+    public UserEntity findByName(final String userName) {
+        Optional<UserEntity> read = read(
+                () -> getEntities().filter(entity -> Objects.equals(entity.getName(), userName)).findFirst());
+        return read.orElseThrow(() -> new DataException("error.data.entity.not.found", userName));
+    }
 }

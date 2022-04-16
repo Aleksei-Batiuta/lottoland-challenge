@@ -17,51 +17,57 @@
 
 package com.batyuta.challenge.lottoland.web;
 
+import com.batyuta.challenge.lottoland.annotation.LogEntry;
 import com.batyuta.challenge.lottoland.vo.ErrorBody;
 import com.batyuta.challenge.lottoland.vo.RestResponse;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
+import org.slf4j.event.Level;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /** Custom Error Controller. */
 @Controller
 @RequestMapping("${server.error.path:${error.path:/error}}")
 public class RestErrorController implements ErrorController {
 
-  /**
-   * Errors handling.
-   *
-   * @param request request
-   * @return error response
-   */
-  @RequestMapping
-  public RestResponse<ErrorBody> error(final HttpServletRequest request) {
-    HttpStatus status = getStatus(request);
-    if (status == HttpStatus.NO_CONTENT) {
-      return RestResponse.status(new ErrorBody("No Content"), status);
+    /**
+     * Errors handling.
+     *
+     * @param request
+     *            request
+     *
+     * @return error response
+     */
+    @RequestMapping
+    @LogEntry(Level.ERROR)
+    @ResponseBody
+    public RestResponse<ErrorBody> errorHandler(final HttpServletRequest request) {
+        HttpStatus status = getStatus(request);
+        if (status == HttpStatus.NO_CONTENT) {
+            return RestResponse.status(new ErrorBody("No Content"), status);
+        }
+        Object message = request.getAttribute("message");
+        return RestResponse.status(
+                new ErrorBody(
+                        message != null ? message.toString()
+                                : request.getServletPath()
+                                        + (request.getQueryString() != null ? "?" + request.getQueryString() : "")),
+                status);
     }
-    Object message = request.getAttribute("message");
-    return RestResponse.status(
-        new ErrorBody(
-            message != null
-                ? message.toString()
-                : request.getServletPath()
-                    + (request.getQueryString() != null ? "?" + request.getQueryString() : "")),
-        status);
-  }
 
-  private HttpStatus getStatus(final HttpServletRequest request) {
-    Integer statusCode = (Integer) request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
-    if (statusCode == null) {
-      return HttpStatus.INTERNAL_SERVER_ERROR;
+    private HttpStatus getStatus(final HttpServletRequest request) {
+        Integer statusCode = (Integer) request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
+        if (statusCode == null) {
+            return HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        try {
+            return HttpStatus.valueOf(statusCode);
+        } catch (Exception ex) {
+            return HttpStatus.INTERNAL_SERVER_ERROR;
+        }
     }
-    try {
-      return HttpStatus.valueOf(statusCode);
-    } catch (Exception ex) {
-      return HttpStatus.INTERNAL_SERVER_ERROR;
-    }
-  }
 }

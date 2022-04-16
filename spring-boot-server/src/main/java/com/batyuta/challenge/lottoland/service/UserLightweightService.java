@@ -25,19 +25,19 @@ import org.springframework.stereotype.Service;
 @Service
 public final class UserLightweightService implements LightweightService<UserEntity, UserVO> {
 
-  @Override
-  public UserEntity toEntity(final UserVO view) {
-    if (view == null) {
-      return null;
+    @Override
+    public UserEntity toEntity(final UserVO view) {
+        if (view == null) {
+            return null;
+        }
+        return new UserEntity(view.getId(), view.getEmail());
     }
-    return new UserEntity(view.getId(), view.getEmail());
-  }
 
-  @Override
-  public UserVO toView(final UserEntity entity) {
-    if (entity == null) {
-      return null;
+    @Override
+    public UserVO toView(final UserEntity entity) {
+        if (entity == null) {
+            return null;
+        }
+        return new UserVO(entity.getId(), entity.getName());
     }
-    return new UserVO(entity.getId(), entity.getName());
-  }
 }

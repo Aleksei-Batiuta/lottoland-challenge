@@ -24,109 +24,135 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.time.LocalDateTime;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 
 /**
  * Rest response wrapper.
  *
- * @param <T> body type
+ * @param <T>
+ *            body type
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({"status", "headers", "body", "timestamp"})
+@JsonPropertyOrder({ "status", "headers", "body", "timestamp" })
 @Data
 public final class RestResponse<T> {
 
-  /** Response timestamp. */
-  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
-  private final LocalDateTime timestamp;
+    /** Response timestamp. */
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS", timezone = "UTC")
+    private final LocalDateTime timestamp;
 
-  /** Response body. */
-  private final T body;
+    /** Response body. */
+    private final T body;
 
-  /** Response HTTP headers. */
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private final HttpHeaders headers;
+    /** Response HTTP headers. */
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private final HttpHeaders headers;
 
-  /** Response HTTP status. */
-  @JsonSerialize(using = HttpStatusSerializer.class)
-  private final HttpStatus status;
+    /** Response HTTP status. */
+    @JsonSerialize(using = HttpStatusSerializer.class)
+    private final HttpStatus status;
 
-  /**
-   * Default constructor.
-   *
-   * @param tBody response body
-   * @param httpStatus response HTTP status
-   */
-  private RestResponse(final T tBody, final HttpStatus httpStatus) {
-    this(tBody, null, httpStatus);
-  }
+    private RestResponse() {
+        this(null, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
-  /**
-   * Default constructor.
-   *
-   * @param tBody response body
-   * @param httpHeaders response HTTP headers
-   * @param httpStatus response HTTP status
-   */
-  private RestResponse(final T tBody, final HttpHeaders httpHeaders, final HttpStatus httpStatus) {
-    this.body = tBody;
-    this.headers = httpHeaders;
-    this.status = httpStatus;
-    this.timestamp = LocalDateTime.now();
-  }
+    /**
+     * Default constructor.
+     *
+     * @param tBody
+     *            response body
+     * @param httpStatus
+     *            response HTTP status
+     */
+    private RestResponse(final T tBody, final HttpStatus httpStatus) {
+        this(tBody, null, httpStatus);
+    }
 
-  /**
-   * Build response.
-   *
-   * @param body response body.
-   * @param status HTTP response status
-   * @param <T> body type
-   * @return response wrapper
-   */
-  public static <T> RestResponse<T> status(final T body, final HttpStatus status) {
-    return new RestResponse<>(body, status);
-  }
+    /**
+     * Default constructor.
+     *
+     * @param tBody
+     *            response body
+     * @param httpHeaders
+     *            response HTTP headers
+     * @param httpStatus
+     *            response HTTP status
+     */
+    private RestResponse(final T tBody, final HttpHeaders httpHeaders, final HttpStatus httpStatus) {
+        this.body = tBody;
+        this.headers = httpHeaders;
+        this.status = httpStatus;
+        this.timestamp = LocalDateTime.now();
+    }
 
-  /**
-   * Build {@link HttpStatus#OK} response.
-   *
-   * @param body response body
-   * @param <T> body type
-   * @return response wrapper
-   */
-  public static <T> RestResponse<T> ok(final T body) {
-    return new RestResponse<>(body, HttpStatus.OK);
-  }
+    /**
+     * Build response.
+     *
+     * @param body
+     *            response body.
+     * @param status
+     *            HTTP response status
+     * @param <T>
+     *            body type
+     *
+     * @return response wrapper
+     */
+    public static <T> RestResponse<T> status(final T body, final HttpStatus status) {
+        return new RestResponse<>(body, status);
+    }
 
-  /**
-   * Build {@link HttpStatus#INTERNAL_SERVER_ERROR} response.
-   *
-   * @param ex exception
-   * @return response wrapper
-   */
-  public static RestResponse<ErrorBody> internalServerError(final Throwable ex) {
-    return new RestResponse<>(new ErrorBody(ex), HttpStatus.INTERNAL_SERVER_ERROR);
-  }
+    /**
+     * Build {@link HttpStatus#OK} response.
+     *
+     * @param body
+     *            response body
+     * @param <T>
+     *            body type
+     *
+     * @return response wrapper
+     */
+    public static <T> RestResponse<T> ok(final T body) {
+        return new RestResponse<>(body, HttpStatus.OK);
+    }
 
-  /**
-   * Build {@link HttpStatus#FORBIDDEN} response.
-   *
-   * @param ex exception
-   * @return response wrapper
-   */
-  public static RestResponse<ErrorBody> forbidden(final Throwable ex) {
-    return new RestResponse<>(new ErrorBody(ex), HttpStatus.FORBIDDEN);
-  }
+    /**
+     * Build {@link HttpStatus#INTERNAL_SERVER_ERROR} response.
+     *
+     * @param ex
+     *            exception
+     *
+     * @return response wrapper
+     */
+    public static RestResponse<ErrorBody> internalServerError(final Throwable ex) {
+        return new RestResponse<>(new ErrorBody(ex), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
-  /**
-   * Build {@link HttpStatus#BAD_REQUEST} response.
-   *
-   * @param message message text.
-   * @param ex exception
-   * @return response wrapper
-   */
-  public static RestResponse<ErrorBody> badRequest(final String message, final Throwable ex) {
-    return new RestResponse<>(new ErrorBody(message, ex), HttpStatus.BAD_REQUEST);
-  }
+    /**
+     * Build {@link HttpStatus#FORBIDDEN} response.
+     *
+     * @param ex
+     *            exception
+     *
+     * @return response wrapper
+     */
+    public static RestResponse<ErrorBody> forbidden(final Throwable ex) {
+        return new RestResponse<>(new ErrorBody(ex), HttpStatus.FORBIDDEN);
+    }
+
+    /**
+     * Build {@link HttpStatus#BAD_REQUEST} response.
+     *
+     * @param message
+     *            message text.
+     * @param ex
+     *            exception
+     *
+     * @return response wrapper
+     */
+    public static RestResponse<ErrorBody> badRequest(final String message, final Throwable ex) {
+        return new RestResponse<>(new ErrorBody(message, ex), HttpStatus.BAD_REQUEST);
+    }
 }

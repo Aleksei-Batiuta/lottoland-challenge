@@ -30,18 +30,18 @@ import org.springframework.context.annotation.Configuration;
 @EnableAutoConfiguration
 public class LocaleConfiguration {
 
-  /**
-   * Custom configuration of {@link MessageSource}. Sets the localized message location,
-   * localization encoding and flag to show message key value if this message was not found.
-   *
-   * @return message source
-   */
-  @Bean
-  public MessageSource messageSource() {
-    ExposedResourceMessageBundleSource messageSource = new ExposedResourceMessageBundleSource();
-    messageSource.setBasename(CLASSPATH_MESSAGES);
-    messageSource.setDefaultEncoding(I18n.ENCODING_MESSAGES);
-    messageSource.setUseCodeAsDefaultMessage(true);
-    return messageSource;
-  }
+    /**
+     * Custom configuration of {@link MessageSource}. Sets the localized message location, localization encoding and
+     * flag to show message key value if this message was not found.
+     *
+     * @return message source
+     */
+    @Bean
+    public MessageSource messageSource() {
+        ExposedResourceMessageBundleSource messageSource = new ExposedResourceMessageBundleSource();
+        messageSource.setBasename(CLASSPATH_MESSAGES);
+        messageSource.setDefaultEncoding(I18n.ENCODING_MESSAGES);
+        messageSource.setUseCodeAsDefaultMessage(true);
+        return messageSource;
+    }
 }

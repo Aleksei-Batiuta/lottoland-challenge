@@ -29,27 +29,24 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-  /** Skip security for following paths. */
-  public static final String[] PERMIT_ALL_CONTEXT = {"/swagger-ui/**"};
+    /** Skip security for following paths. */
+    public static final String[] PERMIT_ALL_CONTEXT = { "/swagger-ui/**", "/error", "/exception" };
 
-  /**
-   * Configure WEB Security.
-   *
-   * @param http security
-   * @throws Exception it throws if error appears
-   */
-  @Override
-  protected void configure(final HttpSecurity http) throws Exception {
-    http.cors()
-        .and()
-        .authorizeRequests()
-        .antMatchers(PERMIT_ALL_CONTEXT)
-        .permitAll()
-        .and()
-        .sessionManagement()
-        .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
-        .and()
-        .csrf()
-        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
-  }
+    /**
+     * Configure WEB Security.
+     *
+     * @param http
+     *            security
+     *
+     * @throws Exception
+     *             it throws if error appears
+     */
+    @Override
+    protected void configure(final HttpSecurity http) throws Exception {
+        http
+                // .addFilterBefore(new FromFilter(), BasicAuthenticationFilter.class)
+                .cors().and().authorizeRequests().antMatchers(PERMIT_ALL_CONTEXT).permitAll().and().sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.ALWAYS).and().csrf()
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+    }
 }

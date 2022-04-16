@@ -2,6 +2,10 @@ application:
   title: '@project.name@'
   version: '@project.version@'
 logging:
+  file:
+    name: './target/site/logs/lottoland-challenge.log'
+#    path: '/tmp/log'
+#    path: './target/logs/'
   general:
     level: INFO
   level:
@@ -11,6 +15,10 @@ logging:
           lottoland: ${logging.general.level}
     org:
       springframework: ${logging.general.level}
+  pattern:
+    file: '%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}} ${LOG_LEVEL_PATTERN:-%5p} ${PID:- } --- [%t]%X{_from} %-40.40logger{39} : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}'
+    console: '%clr(%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) ${PID:- } --- [%t]%clr(%X{_from}){blue} %-40.40logger{39} : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}'
+
 management:
   endpoints:
     web:

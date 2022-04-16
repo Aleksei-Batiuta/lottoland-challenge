@@ -45,52 +45,49 @@ import org.springframework.util.StringUtils;
 @Component
 public class WebMvcEndpointHandler {
 
-  /**
-   * Handles events on WEB MVC.
-   *
-   * @param webEndpointsSupplier web endpoint
-   * @param servletEndpointsSupplier servlet endpoint
-   * @param controllerEndpointsSupplier controller endpoint
-   * @param endpointMediaTypes media data type
-   * @param corsProperties CORS configuration
-   * @param webEndpointProperties web configuration
-   * @param environment environment
-   * @return handler
-   */
-  @Bean
-  public WebMvcEndpointHandlerMapping webEndpointServletHandlerMapping(
-      final WebEndpointsSupplier webEndpointsSupplier,
-      final ServletEndpointsSupplier servletEndpointsSupplier,
-      final ControllerEndpointsSupplier controllerEndpointsSupplier,
-      final EndpointMediaTypes endpointMediaTypes,
-      final CorsEndpointProperties corsProperties,
-      final WebEndpointProperties webEndpointProperties,
-      final Environment environment) {
-    List<ExposableEndpoint<?>> allEndpoints = new ArrayList<>();
-    Collection<ExposableWebEndpoint> webEndpoints = webEndpointsSupplier.getEndpoints();
-    allEndpoints.addAll(webEndpoints);
-    allEndpoints.addAll(servletEndpointsSupplier.getEndpoints());
-    allEndpoints.addAll(controllerEndpointsSupplier.getEndpoints());
-    String basePath = webEndpointProperties.getBasePath();
-    EndpointMapping endpointMapping = new EndpointMapping(basePath);
-    boolean shouldRegisterLinksMapping =
-        this.shouldRegisterLinksMapping(webEndpointProperties, environment, basePath);
-    return new WebMvcEndpointHandlerMapping(
-        endpointMapping,
-        webEndpoints,
-        endpointMediaTypes,
-        corsProperties.toCorsConfiguration(),
-        new EndpointLinksResolver(allEndpoints, basePath),
-        shouldRegisterLinksMapping,
-        null);
-  }
+    /**
+     * Handles events on WEB MVC.
+     *
+     * @param webEndpointsSupplier
+     *            web endpoint
+     * @param servletEndpointsSupplier
+     *            servlet endpoint
+     * @param controllerEndpointsSupplier
+     *            controller endpoint
+     * @param endpointMediaTypes
+     *            media data type
+     * @param corsProperties
+     *            CORS configuration
+     * @param webEndpointProperties
+     *            web configuration
+     * @param environment
+     *            environment
+     *
+     * @return handler
+     */
+    @Bean
+    public WebMvcEndpointHandlerMapping webEndpointServletHandlerMapping(
+            final WebEndpointsSupplier webEndpointsSupplier, final ServletEndpointsSupplier servletEndpointsSupplier,
+            final ControllerEndpointsSupplier controllerEndpointsSupplier, final EndpointMediaTypes endpointMediaTypes,
+            final CorsEndpointProperties corsProperties, final WebEndpointProperties webEndpointProperties,
+            final Environment environment) {
+        List<ExposableEndpoint<?>> allEndpoints = new ArrayList<>();
+        Collection<ExposableWebEndpoint> webEndpoints = webEndpointsSupplier.getEndpoints();
+        allEndpoints.addAll(webEndpoints);
+        allEndpoints.addAll(servletEndpointsSupplier.getEndpoints());
+        allEndpoints.addAll(controllerEndpointsSupplier.getEndpoints());
+        String basePath = webEndpointProperties.getBasePath();
+        EndpointMapping endpointMapping = new EndpointMapping(basePath);
+        boolean shouldRegisterLinksMapping = this.shouldRegisterLinksMapping(webEndpointProperties, environment,
+                basePath);
+        return new WebMvcEndpointHandlerMapping(endpointMapping, webEndpoints, endpointMediaTypes,
+                corsProperties.toCorsConfiguration(), new EndpointLinksResolver(allEndpoints, basePath),
+                shouldRegisterLinksMapping, null);
+    }
 
-  private boolean shouldRegisterLinksMapping(
-      final WebEndpointProperties webEndpointProperties,
-      final Environment environment,
-      final String basePath) {
-    return webEndpointProperties.getDiscovery().isEnabled()
-        && (StringUtils.hasText(basePath)
-            || ManagementPortType.get(environment).equals(ManagementPortType.DIFFERENT));
-  }
+    private boolean shouldRegisterLinksMapping(final WebEndpointProperties webEndpointProperties,
+            final Environment environment, final String basePath) {
+        return webEndpointProperties.getDiscovery().isEnabled() && (StringUtils.hasText(basePath)
+                || ManagementPortType.get(environment).equals(ManagementPortType.DIFFERENT));
+    }
 }

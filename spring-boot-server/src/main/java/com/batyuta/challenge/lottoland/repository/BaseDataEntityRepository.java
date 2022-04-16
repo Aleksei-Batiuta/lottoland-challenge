@@ -32,92 +32,105 @@ import org.springframework.data.domain.Sort;
 /**
  * Thread safe abstractrepository implementation.
  *
- * @param <T> repository entities class
+ * @param <T>
+ *            repository entities class
  */
 public abstract class BaseDataEntityRepository<T extends BaseEntity<T>> extends LockedData {
 
-  /** This is entity table index. */
-  private final AtomicLong index = new AtomicLong(0L);
+    /** This is entity table index. */
+    private final AtomicLong index = new AtomicLong(0L);
 
-  /** This is entity table. */
-  private final List<T> entities = new ArrayList<>();
+    /** This is entity table. */
+    private final List<T> entities = new ArrayList<>();
 
-  /** Sort Comparator Factory. */
-  @Autowired private SortComparatorFactory sortComparatorFactory;
+    /** Sort Comparator Factory. */
+    @Autowired
+    private SortComparatorFactory sortComparatorFactory;
 
-  /**
-   * Getter of entities.
-   *
-   * @return entities
-   */
-  protected Stream<T> getEntities() {
-    return read(entities::stream);
-  }
-
-  /**
-   * Implementation of save operation.
-   *
-   * @param entity entity
-   * @param <S> entity type class
-   * @return saved entity
-   */
-  protected <S extends T> S saveImpl(final S entity) {
-    if (entity == null) {
-      return null;
+    /**
+     * Getter of entities.
+     *
+     * @return entities
+     */
+    protected Stream<T> getEntities() {
+        return read(entities::stream);
     }
-    if (entity.getId() == BaseEntity.NEW_ENTITY_ID) {
-      setId(entity);
-    }
-    entities.add(entity);
-    return entity;
-  }
 
-  /**
-   * Implementation of delete operation.
-   *
-   * @param entity entity
-   */
-  protected void deleteImpl(final T entity) {
-    write(
-        () -> {
-          entities.remove(entity);
-          return null;
+    /**
+     * Implementation of save operation.
+     *
+     * @param entity
+     *            entity
+     * @param <S>
+     *            entity type class
+     *
+     * @return saved entity
+     */
+    protected <S extends T> S saveImpl(final S entity) {
+        if (entity == null) {
+            return null;
+        }
+        if (entity.getId() == BaseEntity.NEW_ENTITY_ID) {
+            setId(entity);
+        }
+        entities.add(entity);
+        return entity;
+    }
+
+    /**
+     * Implementation of delete operation.
+     *
+     * @param entity
+     *            entity
+     */
+    protected void deleteImpl(final T entity) {
+        write(() -> {
+            entities.remove(entity);
+            return null;
         });
-  }
+    }
 
-  /**
-   * Updates Entity ID before save operation.
-   *
-   * @param entity entity
-   * @param <S> entity type class
-   */
-  private <S extends T> void setId(final S entity) {
-    entity.setId(index.incrementAndGet());
-  }
+    /**
+     * Updates Entity ID before save operation.
+     *
+     * @param entity
+     *            entity
+     * @param <S>
+     *            entity type class
+     */
+    private <S extends T> void setId(final S entity) {
+        entity.setId(index.incrementAndGet());
+    }
 
-  /**
-   * Sorts entities.
-   *
-   * @param entityList entities
-   * @param sort sort type.
-   * @return sorted entity list
-   */
-  protected List<T> sort(final Stream<T> entityList, final Sort sort) {
-    return entityList
-        .sorted((o1, o2) -> compare(sort, o1, o2))
-        .collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
-  }
+    /**
+     * Sorts entities.
+     *
+     * @param entityList
+     *            entities
+     * @param sort
+     *            sort type.
+     *
+     * @return sorted entity list
+     */
+    protected List<T> sort(final Stream<T> entityList, final Sort sort) {
+        return entityList.sorted((o1, o2) -> compare(sort, o1, o2))
+                .collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
+    }
 
-  /**
-   * Compares two entities by sort type.
-   *
-   * @param sort sort type
-   * @param o1 the first entity
-   * @param o2 the second entity
-   * @return compare result
-   */
-  private int compare(final Sort sort, final T o1, final T o2) {
-    SortComparator<T> comparator = sortComparatorFactory.sortComparator(sort);
-    return comparator.compare(o1, o2);
-  }
+    /**
+     * Compares two entities by sort type.
+     *
+     * @param sort
+     *            sort type
+     * @param o1
+     *            the first entity
+     * @param o2
+     *            the second entity
+     *
+     * @return compare result
+     */
+    private int compare(final Sort sort, final T o1, final T o2) {
+        SortComparator<T> comparator = sortComparatorFactory.sortComparator(sort);
+        return comparator.compare(o1, o2);
+    }
 }

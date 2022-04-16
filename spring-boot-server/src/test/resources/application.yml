@@ -1,0 +1,7 @@
+spring:
+  profiles:
+    # for testing, set default profile to 'test'
+    active: "debug"
+  config:
+    # and import the 'main' properties
+    import: file:src/main/resources/application.yml

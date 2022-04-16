@@ -26,30 +26,29 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserConverter implements Converter<String, UserEntity> {
 
-  /** User Entity Service. */
-  private final UserEntityService service;
+    /** User Entity Service. */
+    private final UserEntityService service;
 
-  /**
-   * Default constructor.
-   *
-   * @param userService User Entity service
-   */
-  public UserConverter(final UserEntityService userService) {
-    this.service = userService;
-  }
-
-  /**
-   * Parsing of {@link UserEntity}.
-   *
-   * @param userName as string
-   * @return parsed user
-   */
-  @Override
-  public UserEntity convert(final String userName) {
-    try {
-      return service.findByUserNameOrNew(userName);
-    } catch (Exception e) {
-      return null;
+    /**
+     * Default constructor.
+     *
+     * @param userService
+     *            User Entity service
+     */
+    public UserConverter(final UserEntityService userService) {
+        this.service = userService;
     }
-  }
+
+    /**
+     * Parsing of {@link UserEntity}.
+     *
+     * @param userName
+     *            as string
+     *
+     * @return parsed user
+     */
+    @Override
+    public UserEntity convert(final String userName) {
+        return service.findByUserNameOrNew(userName);
+    }
 }

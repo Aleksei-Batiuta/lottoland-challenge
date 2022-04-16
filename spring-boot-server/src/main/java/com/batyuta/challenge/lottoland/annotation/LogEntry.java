@@ -29,24 +29,24 @@ import org.slf4j.event.Level;
 @Target(ElementType.METHOD)
 public @interface LogEntry {
 
-  /**
-   * Logging Level.
-   *
-   * @return level
-   */
-  Level value() default Level.TRACE;
+    /**
+     * Logging Level.
+     *
+     * @return level
+     */
+    Level value() default Level.TRACE;
 
-  /**
-   * Duration time logging unit.
-   *
-   * @return time unit
-   */
-  ChronoUnit unit() default ChronoUnit.MILLIS;
+    /**
+     * Duration time logging unit.
+     *
+     * @return time unit
+     */
+    ChronoUnit unit() default ChronoUnit.MILLIS;
 
-  /**
-   * Sets the pretty output format.
-   *
-   * @return pretty output format flag
-   */
-  boolean prettyFormatted() default false;
+    /**
+     * Sets the pretty output format.
+     *
+     * @return pretty output format flag
+     */
+    boolean prettyFormatted() default false;
 }

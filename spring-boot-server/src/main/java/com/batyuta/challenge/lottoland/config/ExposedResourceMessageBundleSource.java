@@ -24,13 +24,15 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 /** Custom message bundle class to read all i18n keys. */
 public class ExposedResourceMessageBundleSource extends ReloadableResourceBundleMessageSource {
 
-  /**
-   * Gets all key-value pairs for locale.
-   *
-   * @param locale locale
-   * @return key-value pairs
-   */
-  public Properties getMessages(final Locale locale) {
-    return getMergedProperties(locale).getProperties();
-  }
+    /**
+     * Gets all key-value pairs for locale.
+     *
+     * @param locale
+     *            locale
+     *
+     * @return key-value pairs
+     */
+    public Properties getMessages(final Locale locale) {
+        return getMergedProperties(locale).getProperties();
+    }
 }

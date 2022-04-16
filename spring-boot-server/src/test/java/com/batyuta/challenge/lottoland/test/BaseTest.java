@@ -24,14 +24,17 @@ import java.util.stream.StreamSupport;
 /** The base Test Class. */
 public abstract class BaseTest {
 
-  /**
-   * Converts the {@link Iterable} to {@link List}.
-   *
-   * @param iterable input value
-   * @param <T> object type
-   * @return list of objects
-   */
-  protected <T> List<T> toList(final Iterable<T> iterable) {
-    return StreamSupport.stream(iterable.spliterator(), false).collect(Collectors.toList());
-  }
+    /**
+     * Converts the {@link Iterable} to {@link List}.
+     *
+     * @param iterable
+     *            input value
+     * @param <T>
+     *            object type
+     *
+     * @return list of objects
+     */
+    protected <T> List<T> toList(final Iterable<T> iterable) {
+        return StreamSupport.stream(iterable.spliterator(), false).collect(Collectors.toList());
+    }
 }

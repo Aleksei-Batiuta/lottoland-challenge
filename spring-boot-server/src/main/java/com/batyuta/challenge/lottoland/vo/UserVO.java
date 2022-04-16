@@ -23,26 +23,28 @@ import lombok.ToString;
 @ToString
 public class UserVO extends BaseVO {
 
-  /** User e-mail. */
-  private final String email;
+    /** User e-mail. */
+    private final String email;
 
-  /**
-   * Default constructor.
-   *
-   * @param userId user ID
-   * @param userEmail e-mail address
-   */
-  public UserVO(final long userId, final String userEmail) {
-    super(userId);
-    this.email = userEmail;
-  }
+    /**
+     * Default constructor.
+     *
+     * @param userId
+     *            user ID
+     * @param userEmail
+     *            e-mail address
+     */
+    public UserVO(final long userId, final String userEmail) {
+        super(userId);
+        this.email = userEmail;
+    }
 
-  /**
-   * Getter of user e-mail.
-   *
-   * @return e-mail
-   */
-  public String getEmail() {
-    return email;
-  }
+    /**
+     * Getter of user e-mail.
+     *
+     * @return e-mail
+     */
+    public String getEmail() {
+        return email;
+    }
 }

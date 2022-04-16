@@ -23,18 +23,23 @@ import org.junit.jupiter.api.Test;
 @DisplayName("User Entity Repository test cases")
 class UserEntityRepositoryTest {
 
-  @Test
-  void create() {}
+    @Test
+    void create() {
+    }
 
-  @Test
-  void update() {}
+    @Test
+    void update() {
+    }
 
-  @Test
-  void get() {}
+    @Test
+    void get() {
+    }
 
-  @Test
-  void getAll() {}
+    @Test
+    void getAll() {
+    }
 
-  @Test
-  void delete() {}
+    @Test
+    void delete() {
+    }
 }
