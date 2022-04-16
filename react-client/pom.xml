@@ -16,7 +16,8 @@
   ~ limitations under the License.
   -->
 
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>lottoland-challenge</artifactId>
@@ -36,13 +37,16 @@
             -->
             <id>${my.artifactId}</id>
             <name>GitHub ${github.owner} Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/Aleksei-Batiuta/${my.artifactId}</url>
+            <url>https://maven.pkg.github.com/Aleksei-Batiuta/${my.artifactId}
+            </url>
         </repository>
         <!-- Project Site Path -->
         <site>
             <id>${my.artifactId}</id>
             <!-- Uses the local path to site deploy -->
-            <url>file://${basedir}/../target/checkout/docs/${project.artifactId}</url>
+            <url>
+                file://${basedir}/../target/checkout/docs/${project.artifactId}
+            </url>
         </site>
     </distributionManagement>
 
@@ -55,7 +59,8 @@
            -->
             <id>${my.artifactId}</id>
             <name>GitHub ${github.owner} Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/${github.owner}/${my.artifactId}</url>
+            <url>https://maven.pkg.github.com/${github.owner}/${my.artifactId}
+            </url>
             <releases>
                 <enabled>true</enabled>
             </releases>
@@ -90,7 +95,8 @@
 
                     <language>javascript</language>
                     <rulesets>
-                        <ruleset>/category/ecmascript/bestpractices.xml</ruleset>
+                        <ruleset>/category/ecmascript/bestpractices.xml
+                        </ruleset>
                         <ruleset>/category/ecmascript/codestyle.xml</ruleset>
                         <ruleset>/category/ecmascript/errorprone.xml</ruleset>
                     </rulesets>
@@ -98,7 +104,9 @@
                         <include>**/*.js</include>
                     </includes>
                     <compileSourceRoots>
-                        <compileSourceRoot>${project.basedir}/src/main/javascript</compileSourceRoot>
+                        <compileSourceRoot>
+                            ${project.basedir}/src/main/javascript
+                        </compileSourceRoot>
                     </compileSourceRoots>
                 </configuration>
                 <reportSets>
@@ -128,11 +136,13 @@
         </plugins>
     </reporting>
     <properties>
-        <checkstyle.checkstyleDirectory>${project.basedir}/../checkstyle</checkstyle.checkstyleDirectory>
+        <checkstyle.checkstyleDirectory>${project.basedir}/../checkstyle
+        </checkstyle.checkstyleDirectory>
         <site.siteDirectory>${project.basedir}/../src/site</site.siteDirectory>
     </properties>
     <build>
-        <sourceDirectory>${project.basedir}/src/main/javascript</sourceDirectory>
+        <sourceDirectory>${project.basedir}/src/main/javascript
+        </sourceDirectory>
         <plugins>
             <!--            <plugin>-->
             <!--                <groupId>org.apache.maven.plugins</groupId>-->
@@ -175,8 +185,12 @@
                                 <goal>install-node-and-npm</goal>
                             </goals>
                             <configuration>
-                                <nodeVersion>${frontend-maven-plugin.nodeVersion}</nodeVersion>
-                                <npmVersion>${frontend-maven-plugin.npmVersion}</npmVersion>
+                                <nodeVersion>
+                                    ${frontend-maven-plugin.nodeVersion}
+                                </nodeVersion>
+                                <npmVersion>
+                                    ${frontend-maven-plugin.npmVersion}
+                                </npmVersion>
                             </configuration>
                         </execution>
                         <execution>
@@ -252,10 +266,14 @@
                                 <goal>copy-resources</goal>
                             </goals>
                             <configuration>
-                                <outputDirectory>${project.build.outputDirectory}</outputDirectory>
+                                <outputDirectory>
+                                    ${project.build.outputDirectory}
+                                </outputDirectory>
                                 <resources>
                                     <resource>
-                                        <directory>${project.build.directory}/generated-resources</directory>
+                                        <directory>
+                                            ${project.build.directory}/generated-resources
+                                        </directory>
                                     </resource>
                                 </resources>
                             </configuration>
@@ -293,15 +311,20 @@
 
                         <language>javascript</language>
                         <rulesets>
-                            <ruleset>/category/ecmascript/bestpractices.xml</ruleset>
-                            <ruleset>/category/ecmascript/codestyle.xml</ruleset>
-                            <ruleset>/category/ecmascript/errorprone.xml</ruleset>
+                            <ruleset>/category/ecmascript/bestpractices.xml
+                            </ruleset>
+                            <ruleset>/category/ecmascript/codestyle.xml
+                            </ruleset>
+                            <ruleset>/category/ecmascript/errorprone.xml
+                            </ruleset>
                         </rulesets>
                         <includes>
                             <include>**/*.js</include>
                         </includes>
                         <compileSourceRoots>
-                            <compileSourceRoot>${project.basedir}/src/main/javascript</compileSourceRoot>
+                            <compileSourceRoot>
+                                ${project.basedir}/src/main/javascript
+                            </compileSourceRoot>
                         </compileSourceRoots>
                     </configuration>
                 </plugin>

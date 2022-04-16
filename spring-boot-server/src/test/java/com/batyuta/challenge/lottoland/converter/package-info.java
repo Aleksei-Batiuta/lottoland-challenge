@@ -15,8 +15,8 @@
  */
 
 /**
- * The classes in this package implements the test cases of Custom Exceptions.
+ * The classes in this package implements the converters tests.
  *
  * @author Aleksei Batuita
  */
-package com.batyuta.challenge.lottoland.exception;
+package com.batyuta.challenge.lottoland.converter;

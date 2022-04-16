@@ -14,24 +14,27 @@
  * the License.
  */
 
-package com.batyuta.challenge.lottoland.test;
+package com.batyuta.challenge.lottoland;
 
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.server.LocalServerPort;
 
-/** The base Test Class. */
-public abstract class BaseTest {
+/** Abstract Base Spring Boot Test Case Class. */
+@SpringBootTest(classes = Application.class,
+    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+public class AbstractSpringBootTest {
+  /** ContentType header default value. */
+  public static final String HAL_JSON = "application/hal+json";
+  /** Test server port. */
+  @LocalServerPort
+  private int port;
 
   /**
-   * Converts the {@link Iterable} to {@link List}.
+   * Server port number.
    *
-   * @param iterable input value
-   * @param <T> object type
-   * @return list of objects
+   * @return port number
    */
-  protected <T> List<T> toList(final Iterable<T> iterable) {
-    return StreamSupport.stream(iterable.spliterator(), false)
-        .collect(Collectors.toList());
+  public int getPort() {
+    return port;
   }
 }

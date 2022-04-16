@@ -16,7 +16,8 @@
   ~ limitations under the License.
   -->
 
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <modules>
@@ -55,8 +56,12 @@
     </organization>
     <!-- subversion version control system settings-->
     <scm>
-        <connection>scm:git:https://github.com/Aleksei-Batiuta/lottoland-challenge.git</connection>
-        <developerConnection>scm:git:https://github.com/Aleksei-Batiuta/lottoland-challenge.git</developerConnection>
+        <connection>
+            scm:git:https://github.com/Aleksei-Batiuta/lottoland-challenge.git
+        </connection>
+        <developerConnection>
+            scm:git:https://github.com/Aleksei-Batiuta/lottoland-challenge.git
+        </developerConnection>
         <url>https://github.com/Aleksei-Batiuta/lottoland-challenge.git</url>
         <tag>HEAD</tag>
     </scm>
@@ -70,7 +75,9 @@
             -->
             <id>lottoland-challenge</id>
             <name>GitHub Aleksei-Batiuta Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/Aleksei-Batiuta/lottoland-challenge</url>
+            <url>
+                https://maven.pkg.github.com/Aleksei-Batiuta/lottoland-challenge
+            </url>
         </repository>
         <!-- Project Site Path -->
         <site>
@@ -88,7 +95,9 @@
            -->
             <id>lottoland-challenge</id>
             <name>GitHub Aleksei-Batiuta Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/Aleksei-Batiuta/lottoland-challenge</url>
+            <url>
+                https://maven.pkg.github.com/Aleksei-Batiuta/lottoland-challenge
+            </url>
             <releases>
                 <enabled>true</enabled>
             </releases>
@@ -136,9 +145,12 @@
         <spring-boot-maven-plugin.skip>true</spring-boot-maven-plugin.skip>
 
         <frontend-maven-plugin.version>1.9.1</frontend-maven-plugin.version>
-        <frontend-maven-plugin.nodeVersion>v16.14.1</frontend-maven-plugin.nodeVersion>
-        <frontend-maven-plugin.npmVersion>8.5.0</frontend-maven-plugin.npmVersion>
-        <maven-project-info-reports-plugin.version>3.2.2</maven-project-info-reports-plugin.version>
+        <frontend-maven-plugin.nodeVersion>v16.14.1
+        </frontend-maven-plugin.nodeVersion>
+        <frontend-maven-plugin.npmVersion>8.5.0
+        </frontend-maven-plugin.npmVersion>
+        <maven-project-info-reports-plugin.version>3.2.2
+        </maven-project-info-reports-plugin.version>
         <maven-pmd-plugin.version>3.16.0</maven-pmd-plugin.version>
         <maven-resources-plugin.version>3.2.0</maven-resources-plugin.version>
         <maven-scm-plugin.version>2.0.0-M1</maven-scm-plugin.version>
@@ -160,12 +172,20 @@
                             <version>${maven-scm-plugin.version}</version>
                             <!-- Commits the Project Site (HitHub Pages) -->
                             <configuration>
-                                <basedir>${project.build.directory}/checkout/docs</basedir>
-                                <message>[maven-scm-plugin] updates ${project.version} GitHub Pages</message>
+                                <basedir>
+                                    ${project.build.directory}/checkout/docs
+                                </basedir>
+                                <message>[maven-scm-plugin] updates
+                                    ${project.version} GitHub Pages
+                                </message>
                                 <includes>*/**</includes>
                                 <excludes>/docs/**</excludes>
-                                <checkoutDirectory>${project.build.directory}/checkout/docs</checkoutDirectory>
-                                <workingDirectory>${project.build.directory}/checkout/docs</workingDirectory>
+                                <checkoutDirectory>
+                                    ${project.build.directory}/checkout/docs
+                                </checkoutDirectory>
+                                <workingDirectory>
+                                    ${project.build.directory}/checkout/docs
+                                </workingDirectory>
                                 <scmVersion>docs</scmVersion>
                                 <scmVersionType>branch</scmVersionType>
                                 <pushChanges>false</pushChanges>
@@ -188,7 +208,8 @@
                             <artifactId>maven-resources-plugin</artifactId>
                             <version>${maven-resources-plugin.version}</version>
                             <configuration>
-                                <propertiesEncoding>ISO-8859-1</propertiesEncoding>
+                                <propertiesEncoding>ISO-8859-1
+                                </propertiesEncoding>
                             </configuration>
                             <executions>
                                 <!-- Copes the logo into site -->
@@ -199,12 +220,18 @@
                                         <goal>copy-resources</goal>
                                     </goals>
                                     <configuration>
-                                        <outputDirectory>${basedir}/target/site</outputDirectory>
+                                        <outputDirectory>
+                                            ${basedir}/target/site
+                                        </outputDirectory>
                                         <resources>
                                             <resource>
-                                                <directory>${site.siteDirectory}</directory>
+                                                <directory>
+                                                    ${site.siteDirectory}
+                                                </directory>
                                                 <includes>
-                                                    <include>**/${my.artifactId}.png</include>
+                                                    <include>
+                                                        **/${my.artifactId}.png
+                                                    </include>
                                                 </includes>
                                             </resource>
                                         </resources>
@@ -271,7 +298,8 @@
                 <reportSets>
                     <reportSet><!-- aggregate reportSet, to define in poms having modules -->
                         <id>aggregate</id>
-                        <inherited>false</inherited> <!-- don't run aggregate in child modules -->
+                        <inherited>false
+                        </inherited> <!-- don't run aggregate in child modules -->
                         <reports>
                             <report>aggregate-pmd</report>
                             <report>aggregate-cpd</report>
@@ -385,7 +413,8 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-project-info-reports-plugin</artifactId>
-                    <version>${maven-project-info-reports-plugin.version}</version>
+                    <version>${maven-project-info-reports-plugin.version}
+                    </version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -463,9 +492,12 @@
                         <statelessTestsetReporter
                                 implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5Xml30StatelessReporter">
                             <usePhrasedFileName>false</usePhrasedFileName>
-                            <usePhrasedTestSuiteClassName>true</usePhrasedTestSuiteClassName>
-                            <usePhrasedTestCaseClassName>true</usePhrasedTestCaseClassName>
-                            <usePhrasedTestCaseMethodName>true</usePhrasedTestCaseMethodName>
+                            <usePhrasedTestSuiteClassName>true
+                            </usePhrasedTestSuiteClassName>
+                            <usePhrasedTestCaseClassName>true
+                            </usePhrasedTestCaseClassName>
+                            <usePhrasedTestCaseMethodName>true
+                            </usePhrasedTestCaseMethodName>
                         </statelessTestsetReporter>
                         <consoleOutputReporter
                                 implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5ConsoleOutputReporter">
@@ -474,26 +506,14 @@
                         <statelessTestsetInfoReporter
                                 implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5StatelessTestsetInfoReporter">
                             <usePhrasedFileName>false</usePhrasedFileName>
-                            <usePhrasedClassNameInRunning>true</usePhrasedClassNameInRunning>
-                            <usePhrasedClassNameInTestCaseSummary>true</usePhrasedClassNameInTestCaseSummary>
+                            <usePhrasedClassNameInRunning>true
+                            </usePhrasedClassNameInRunning>
+                            <usePhrasedClassNameInTestCaseSummary>true
+                            </usePhrasedClassNameInTestCaseSummary>
                         </statelessTestsetInfoReporter>
                     </configuration>
                 </plugin>
                 <!-- Validates the source code style -->
-                <plugin>
-                    <groupId>io.spring.javaformat</groupId>
-                    <artifactId>spring-javaformat-maven-plugin</artifactId>
-                    <version>0.0.31</version>
-                    <executions>
-                        <execution>
-                            <phase>validate</phase>
-                            <inherited>true</inherited>
-                            <goals>
-                                <goal>validate</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-checkstyle-plugin</artifactId>
@@ -505,9 +525,9 @@
                             <version>8.45.1</version>
                         </dependency>
                         <dependency>
-                            <groupId>io.spring.javaformat</groupId>
-                            <artifactId>spring-javaformat-checkstyle</artifactId>
-                            <version>0.0.31</version>
+                            <groupId>com.batyuta.challenge</groupId>
+                            <artifactId>build-tools</artifactId>
+                            <version>${project.version}</version>
                         </dependency>
                     </dependencies>
                     <executions>
@@ -515,23 +535,16 @@
                             <id>google-checkstyle-validation</id>
                             <phase>validate</phase>
                             <configuration>
-                                <suppressionsLocation>src/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
+                                <suppressionsLocation>
+                                    src/checkstyle/checkstyle-suppressions.xml
+                                </suppressionsLocation>
                                 <encoding>UTF-8</encoding>
-                                <sourceDirectories>${basedir}</sourceDirectories>
+                                <sourceDirectories>${basedir}
+                                </sourceDirectories>
                                 <includes>**/*</includes>
-                                <excludes>**/.git/**/*,**/.idea/**/*,**/target/**/,**/*.class</excludes>
-                            </configuration>
-                            <goals>
-                                <goal>check</goal>
-                            </goals>
-                        </execution>
-                        <execution>
-                            <id>spring-checkstyle-validation</id>
-                            <phase>validate</phase>
-                            <inherited>true</inherited>
-                            <configuration>
-                                <configLocation>io/spring/javaformat/checkstyle/checkstyle.xml</configLocation>
-                                <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                                <excludes>
+                                    **/.git/**/*,**/.idea/**/*,**/target/**/,**/*.class
+                                </excludes>
                             </configuration>
                             <goals>
                                 <goal>check</goal>
@@ -556,10 +569,14 @@
                                 <goal>copy-resources</goal>
                             </goals>
                             <configuration>
-                                <outputDirectory>${basedir}/target/site/images/logos</outputDirectory>
+                                <outputDirectory>
+                                    ${basedir}/target/site/images/logos
+                                </outputDirectory>
                                 <resources>
                                     <resource>
-                                        <directory>${basedir}/src/site/images/logos</directory>
+                                        <directory>
+                                            ${basedir}/src/site/images/logos
+                                        </directory>
                                         <includes>
                                             <include>lottoland.png</include>
                                         </includes>
@@ -586,11 +603,15 @@
                         Commits the test reports before thr release:prepare goal
                         will commit pom file with a new release version
                         -->
-                        <preparationGoals>-Prelease scm:checkout scm:remove site site-deploy scm:add
-                            scm:checkin@scm-push verify spring-boot:build-image -P
+                        <preparationGoals>-Prelease scm:checkout scm:remove site
+                            site-deploy scm:add
+                            scm:checkin@scm-push verify spring-boot:build-image
+                            -P
                             lottoland-challenge
                         </preparationGoals>
-                        <workingDirectory>${project.build.directory}/checkout/master</workingDirectory>
+                        <workingDirectory>
+                            ${project.build.directory}/checkout/master
+                        </workingDirectory>
                         <pushChanges>true</pushChanges>
                     </configuration>
                 </plugin>
@@ -604,16 +625,16 @@
                     <groupId>net.revelc.code.formatter</groupId>
                     <artifactId>formatter-maven-plugin</artifactId>
                     <version>2.18.0</version>
-                    <executions>
-                        <execution>
-                            <goals>
-                                <goal>format</goal>
-                            </goals>
-                            <configuration>
-                                <configFile>formatter/java_google.xml</configFile>
-                            </configuration>
-                        </execution>
-                    </executions>
+                    <configuration>
+                        <configFile>formatter/java_google.xml</configFile>
+                    </configuration>
+                    <dependencies>
+                        <dependency>
+                            <groupId>com.batyuta.challenge</groupId>
+                            <artifactId>build-tools</artifactId>
+                            <version>${project.version}</version>
+                        </dependency>
+                    </dependencies>
                 </plugin>
                 <plugin>
                     <groupId>com.spotify.fmt</groupId>

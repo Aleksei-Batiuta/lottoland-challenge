@@ -15,8 +15,9 @@
  */
 
 /**
- * The classes in this package implements the test cases of Custom Exceptions.
+ * The classes in this package implements the test code of classes with related
+ * to WEB interface.
  *
  * @author Aleksei Batuita
  */
-package com.batyuta.challenge.lottoland.exception;
+package com.batyuta.challenge.lottoland.web;

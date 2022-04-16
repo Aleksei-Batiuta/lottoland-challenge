@@ -4,8 +4,8 @@ application:
 logging:
   file:
     name: './target/site/logs/lottoland-challenge.log'
-#    path: '/tmp/log'
-#    path: './target/logs/'
+  #    path: '/tmp/log'
+  #    path: './target/logs/'
   general:
     level: INFO
   level:

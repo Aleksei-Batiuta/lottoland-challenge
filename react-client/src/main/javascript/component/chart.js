@@ -61,5 +61,10 @@ export class Chart extends React.Component {
 
 // Specifies the value types for props:
 Chart.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.shape({ color: PropTypes.string, count: PropTypes.number }))
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      color: PropTypes.string,
+      count: PropTypes.number
+    })
+  )
 };

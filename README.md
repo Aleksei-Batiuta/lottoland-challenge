@@ -1,19 +1,24 @@
 # Lottoland
 
-The Test Challenge from Lottoland [The Latest Example](https://lottoland-challenge.herokuapp.com/)
+The Test Challenge from
+Lottoland [The Latest Example](https://lottoland-challenge.herokuapp.com/)
 ![](docs/images/web.gif)
 
 # Developer Guide
 
 1. Build and Start application: `mvn spring-boot:run`
-2. Run Test Report: `mvn site` and report should be in `../target/site/index.html`. The actual report of the last
-   release is on [Project Page](https://aleksei-batiuta.github.io/lottoland-challenge/) ![](docs/images/site.gif)
-3. Run Maven command with _tests_ but without _checkstyle_: `mvn spring-boot:run -Pdev-test`
-4. Run Maven command without _tests_ and _checkstyle_: `mvn spring-boot:run -Pdev`
+2. Run Test Report: `mvn site` and report should be
+   in `../target/site/index.html`. The actual report of the last release is
+   on [Project Page](https://aleksei-batiuta.github.io/lottoland-challenge/) ![](docs/images/site.gif)
+3. Run Maven command with _tests_ but without _
+   checkstyle_: `mvn spring-boot:run -Pdev-test`
+4. Run Maven command without _tests_ and _
+   checkstyle_: `mvn spring-boot:run -Pdev`
 
 > *Test Server starts on **8080** port!*
 
-5. Project has correct _maven_ `release:prepare` and `release:perform` goals since 'v1.10'
+5. Project has correct _maven_ `release:prepare` and `release:perform` goals
+   since 'v1.10'
 6. Docker
     * Example of User Maven settings `~/.m2/settings.xml`
         ```
@@ -83,8 +88,10 @@ The Test Challenge from Lottoland [The Latest Example](https://lottoland-challen
 
 # Test Cases
 
-1. Open 'http://localhost:8080/' to view the rounds' statistics, 'Play Round' and 'Restart Game'
-2. Open 'Statistics' page by click to corresponding menu item and verify the data for all users
+1. Open 'http://localhost:8080/' to view the rounds' statistics, 'Play Round'
+   and 'Restart Game'
+2. Open 'Statistics' page by click to corresponding menu item and verify the
+   data for all users
 
 # TODO
 
@@ -95,7 +102,8 @@ The Test Challenge from Lottoland [The Latest Example](https://lottoland-challen
 5. No Application Load Test
 6. No redirect to default page when URL/Path was not found
 7. The error page should be more informative
-8. After removing the @Data annotation from Entity/VO classes those Objects have not friendly `toString()` method
+8. After removing the @Data annotation from Entity/VO classes those Objects have
+   not friendly `toString()` method
 
 # Hub Docker (@Deprecated)
 

@@ -16,7 +16,8 @@
   ~ limitations under the License.
   -->
 
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>lottoland-challenge</artifactId>
@@ -36,13 +37,17 @@
             -->
             <id>lottoland-challenge</id>
             <name>GitHub Aleksei-Batiuta Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/Aleksei-Batiuta/lottoland-challenge</url>
+            <url>
+                https://maven.pkg.github.com/Aleksei-Batiuta/lottoland-challenge
+            </url>
         </repository>
         <!-- Project Site Path -->
         <site>
             <id>${my.artifactId}</id>
             <!-- Uses the local path to site deploy -->
-            <url>file://${basedir}/../target/checkout/docs/${project.artifactId}</url>
+            <url>
+                file://${basedir}/../target/checkout/docs/${project.artifactId}
+            </url>
         </site>
     </distributionManagement>
 
@@ -55,7 +60,8 @@
            -->
             <id>${my.artifactId}</id>
             <name>GitHub ${github.owner} Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/${github.owner}/${my.artifactId}</url>
+            <url>https://maven.pkg.github.com/${github.owner}/${my.artifactId}
+            </url>
             <releases>
                 <enabled>true</enabled>
             </releases>
@@ -77,7 +83,8 @@
         </repository>
     </repositories>
     <properties>
-        <checkstyle.checkstyleDirectory>${project.basedir}/../checkstyle</checkstyle.checkstyleDirectory>
+        <checkstyle.checkstyleDirectory>${project.basedir}/../checkstyle
+        </checkstyle.checkstyleDirectory>
         <site.siteDirectory>${basedir}/../src/site</site.siteDirectory>
         <spring-boot-maven-plugin.skip>false</spring-boot-maven-plugin.skip>
     </properties>
@@ -93,7 +100,8 @@
                     <printFailingErrors>true</printFailingErrors>
 
                     <language>java</language>
-                    <sourceEncoding>${project.build.sourceEncoding}</sourceEncoding>
+                    <sourceEncoding>${project.build.sourceEncoding}
+                    </sourceEncoding>
                     <rulesets>
                         <ruleset>/category/java/bestpractices.xml</ruleset>
                         <ruleset>/category/java/codestyle.xml</ruleset>
@@ -162,7 +170,8 @@
             <resource>
                 <directory>src/main/resources/static/messages</directory>
                 <filtering>true</filtering>
-                <targetPath>${project.build.outputDirectory}/messages</targetPath>
+                <targetPath>${project.build.outputDirectory}/messages
+                </targetPath>
             </resource>
             <!-- Resources for App message localization -->
             <resource>
@@ -198,7 +207,8 @@
                                     <groupId>com.heroku</groupId>
                                     <artifactId>webapp-runner</artifactId>
                                     <version>9.0.52.1</version>
-                                    <destFileName>webapp-runner.jar</destFileName>
+                                    <destFileName>webapp-runner.jar
+                                    </destFileName>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>com.batyuta.challenge</groupId>
@@ -222,7 +232,9 @@
                                     <version>${project.version}</version>
                                     <type>jar</type>
                                     <!--                                    <includes>static/built/**.*</includes>-->
-                                    <outputDirectory>${project.build.directory}/classes</outputDirectory>
+                                    <outputDirectory>
+                                        ${project.build.directory}/classes
+                                    </outputDirectory>
                                 </artifactItem>
                             </artifactItems>
                         </configuration>
@@ -232,9 +244,6 @@
             <plugin>
                 <groupId>net.revelc.code.formatter</groupId>
                 <artifactId>formatter-maven-plugin</artifactId>
-                <configuration>
-
-                </configuration>
                 <dependencies>
                     <dependency>
                         <groupId>com.batyuta.challenge</groupId>
@@ -261,16 +270,11 @@
                         <goals>
                             <goal>check</goal>
                         </goals>
+                        <configuration>
+                            <skip>true</skip>
+                        </configuration>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>io.spring.javaformat</groupId>
-                <artifactId>spring-javaformat-maven-plugin</artifactId>
-                <configuration>
-                    <!-- don't like that style -->
-                    <skip>true</skip>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -278,7 +282,9 @@
                 <configuration>
                     <skip>${spring-boot-maven-plugin.skip}</skip>
                     <image>
-                        <name>${dockerhub.owner}/${my.artifactId}:${project.version}</name>
+                        <name>
+                            ${dockerhub.owner}/${my.artifactId}:${project.version}
+                        </name>
                     </image>
                     <pullPolicy>IF_NOT_PRESENT</pullPolicy>
                     <publish>${dockerhub.publish}</publish>
