@@ -22,13 +22,14 @@ import static org.springframework.test.util.AssertionErrors.assertFalse;
 import static org.springframework.test.util.AssertionErrors.assertNotNull;
 import static org.springframework.test.util.AssertionErrors.assertTrue;
 
+import com.batyuta.challenge.lottoland.AbstractTest;
 import java.util.Objects;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 /** Data exception test. */
 @DisplayName("Data exception test")
-class DataExceptionTest {
+public class DataExceptionTest extends AbstractTest {
 
   /** Test Default Constructor. */
   @Test

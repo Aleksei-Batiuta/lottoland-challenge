@@ -172,3 +172,7 @@ public class ServletInitializer extends SpringBootServletInitializer {
 	}
 }
 ```
+## Java reformat source code
+```
+mvn com.spotify.fmt:fmt-maven-plugin:format && mvn install -pl build-tools && mvn formatter:format
+```

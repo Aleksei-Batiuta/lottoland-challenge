@@ -14,24 +14,8 @@
  * the License.
  */
 
-package com.batyuta.challenge.lottoland.test;
+package com.batyuta.challenge.lottoland;
 
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-/** The base Test Class. */
-public abstract class BaseTest {
-
-  /**
-   * Converts the {@link Iterable} to {@link List}.
-   *
-   * @param iterable input value
-   * @param <T> object type
-   * @return list of objects
-   */
-  protected <T> List<T> toList(final Iterable<T> iterable) {
-    return StreamSupport.stream(iterable.spliterator(), false)
-        .collect(Collectors.toList());
-  }
+/** Abstract Base Test Case Class. */
+public abstract class AbstractTest {
 }

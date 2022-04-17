@@ -25,6 +25,7 @@ import static com.batyuta.challenge.lottoland.enums.StatusEnum.WIN;
 import static org.springframework.test.util.AssertionErrors.assertEquals;
 import static org.springframework.test.util.AssertionErrors.assertNotNull;
 
+import com.batyuta.challenge.lottoland.AbstractTest;
 import com.batyuta.challenge.lottoland.enums.SignEnum;
 import com.batyuta.challenge.lottoland.enums.StatusEnum;
 import java.util.stream.Stream;
@@ -40,7 +41,7 @@ import org.junit.jupiter.params.provider.MethodSource;
  * @author Aleksei Batiuta
  */
 @DisplayName("Sign Enum test cases")
-public class SignEnumTest {
+public class SignEnumTest extends AbstractTest {
 
   /**
    * Test data generator.

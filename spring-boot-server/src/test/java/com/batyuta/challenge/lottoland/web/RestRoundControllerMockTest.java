@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.batyuta.challenge.lottoland.AbstractSpringBootTest;
+import com.batyuta.challenge.lottoland.AbstractSpringBootMockMvcTest;
 import com.batyuta.challenge.lottoland.model.UserEntity;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -43,19 +43,15 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 /** REST Rounds Mock test cases. */
 @DisplayName("Round REST test cases")
-@AutoConfigureMockMvc
-public class RestRoundControllerMockTest extends AbstractSpringBootTest {
+public class RestRoundControllerMockTest extends AbstractSpringBootMockMvcTest {
 
   /** Root path. */
   public static final String ROOT_PATH = "/api/rounds/";
@@ -75,9 +71,6 @@ public class RestRoundControllerMockTest extends AbstractSpringBootTest {
   /** User ID which will be set into 'From' HTTP Header. */
   private final ThreadLocal<AtomicReference<String>> id =
       ThreadLocal.withInitial(() -> new AtomicReference<>(null));
-  /** Mock Model View Controller. */
-  @Autowired
-  private MockMvc mockMvc;
 
   /**
    * Test data generator.
@@ -170,11 +163,11 @@ public class RestRoundControllerMockTest extends AbstractSpringBootTest {
       if (user != null) {
         requestBuilder = requestBuilder.header(XSRF_TOKEN, user.getName());
       }
-      MvcResult resultActions = this.mockMvc.perform(requestBuilder)
-          .andDo(log()).andExpect(status().isOk())
-          .andExpect(header().string(HttpHeaders.CONTENT_TYPE, HAL_JSON))
-          .andExpect(header().exists(HttpHeaders.SET_COOKIE))
-          .andExpect(cookie().exists(XSRF_TOKEN)).andReturn();
+      MvcResult resultActions =
+          perform(requestBuilder).andDo(log()).andExpect(status().isOk())
+              .andExpect(header().string(HttpHeaders.CONTENT_TYPE, HAL_JSON))
+              .andExpect(header().exists(HttpHeaders.SET_COOKIE))
+              .andExpect(cookie().exists(XSRF_TOKEN)).andReturn();
       setCsrf(resultActions);
       String actual = resultActions.getResponse().getContentAsString();
       if (expected != null) {
@@ -235,9 +228,8 @@ public class RestRoundControllerMockTest extends AbstractSpringBootTest {
             setBaseHeaders(post(ROOT_PATH + "generate"));
         requestBuilder =
             setCsrfHeader(user, sendGetRequestBefore, requestBuilder);
-        MvcResult resultActions =
-            this.mockMvc.perform(requestBuilder).andDo(log())
-                .andExpect(status().is((Integer) expected)).andReturn();
+        MvcResult resultActions = perform(requestBuilder).andDo(log())
+            .andExpect(status().is((Integer) expected)).andReturn();
       } catch (Exception actual) {
         assertNotNull(
             String.format("Expected result is null: {exception = %s}", actual),
@@ -267,8 +259,8 @@ public class RestRoundControllerMockTest extends AbstractSpringBootTest {
           setBaseHeaders(delete(ROOT_PATH));
       requestBuilder =
           setCsrfHeader(user, sendGetRequestBefore, requestBuilder);
-      MvcResult resultActions = this.mockMvc.perform(requestBuilder)
-          .andDo(log()).andExpect(status().is((Integer) expected)).andReturn();
+      MvcResult resultActions = perform(requestBuilder).andDo(log())
+          .andExpect(status().is((Integer) expected)).andReturn();
     } catch (Exception actual) {
       assertNotNull(
           String.format("Expected result is null: {exception = %s}", actual),
@@ -305,10 +297,10 @@ public class RestRoundControllerMockTest extends AbstractSpringBootTest {
     try {
       MockHttpServletRequestBuilder requestBuilder =
           setBaseHeaders(get(ROOT_PATH + "statistics"));
-      MvcResult resultActions = this.mockMvc.perform(requestBuilder)
-          .andDo(log()).andExpect(status().isOk())
-          .andExpect(header().string(HttpHeaders.CONTENT_TYPE, HAL_JSON))
-          .andReturn();
+      MvcResult resultActions =
+          perform(requestBuilder).andDo(log()).andExpect(status().isOk())
+              .andExpect(header().string(HttpHeaders.CONTENT_TYPE, HAL_JSON))
+              .andReturn();
       String actual = resultActions.getResponse().getContentAsString();
 
       if (expected != null) {

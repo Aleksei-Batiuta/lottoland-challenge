@@ -23,35 +23,26 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.batyuta.challenge.lottoland.AbstractSpringBootMockMvcTest;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 /** REST Message test cases. */
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureMockMvc
 @DisplayName("REST Message test cases")
-public class RestMessageControllerTest {
+public class RestMessageControllerTest extends AbstractSpringBootMockMvcTest {
 
   /** Root path. */
   public static final String ROOT_PATH = "/api/messages/";
 
   /** Root path with parameters. */
   public static final String ROOT_PATH_WITH_PARAMS = ROOT_PATH + "?lang={lang}";
-
-  /** Mock Model View Controller. */
-  @Autowired
-  private MockMvc mockMvc;
 
   /**
    * Test data generator.
@@ -81,8 +72,8 @@ public class RestMessageControllerTest {
         requestBuilder = get(ROOT_PATH_WITH_PARAMS, language);
       }
       requestBuilder = requestBuilder.characterEncoding(StandardCharsets.UTF_8);
-      MvcResult resultActions = this.mockMvc.perform(requestBuilder)
-          .andDo(log()).andExpect(status().isOk())
+      MvcResult resultActions = perform(requestBuilder).andDo(log())
+          .andExpect(status().isOk())
           .andExpect(
               header().string(HttpHeaders.CONTENT_TYPE, "application/hal+json"))
           .andReturn();

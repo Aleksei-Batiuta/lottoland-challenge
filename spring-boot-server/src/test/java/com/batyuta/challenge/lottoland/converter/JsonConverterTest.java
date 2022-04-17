@@ -19,21 +19,18 @@ package com.batyuta.challenge.lottoland.converter;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import com.batyuta.challenge.lottoland.Application;
+import com.batyuta.challenge.lottoland.AbstractSpringBootTest;
 import com.batyuta.challenge.lottoland.vo.ErrorBody;
 import com.batyuta.challenge.lottoland.vo.RestResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 
 /** JSON Converter Test Case. */
-@SpringBootTest(classes = Application.class,
-    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DisplayName("JSON Converter Test Case")
-public class JsonConverterTest {
+public class JsonConverterTest extends AbstractSpringBootTest {
   /** JSON Converter. */
   @Autowired
   private JsonConverter jsonConverter;

@@ -19,6 +19,7 @@ package com.batyuta.challenge.lottoland.utils;
 import static org.springframework.test.util.AssertionErrors.assertEquals;
 import static org.springframework.test.util.AssertionErrors.assertNotNull;
 
+import com.batyuta.challenge.lottoland.AbstractTest;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -29,7 +30,7 @@ import org.springframework.data.domain.Pageable;
 
 /** Pageable Utils test cases. */
 @DisplayName("Pageable Utils test cases")
-public class PageableUtilsTest {
+public class PageableUtilsTest extends AbstractTest {
 
   /**
    * Test data generator.

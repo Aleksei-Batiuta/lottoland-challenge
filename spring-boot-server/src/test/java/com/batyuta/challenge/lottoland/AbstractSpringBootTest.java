@@ -22,9 +22,13 @@ import org.springframework.boot.web.server.LocalServerPort;
 /** Abstract Base Spring Boot Test Case Class. */
 @SpringBootTest(classes = Application.class,
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class AbstractSpringBootTest {
+public abstract class AbstractSpringBootTest extends AbstractTest {
   /** ContentType header default value. */
   public static final String HAL_JSON = "application/hal+json";
+  /** Root path. */
+  public static final String ROOT_PATH = "/";
+  /** Local Host Name. */
+  public static final String HOST_NAME = "localhost";
   /** Test server port. */
   @LocalServerPort
   private int port;
@@ -35,6 +39,24 @@ public class AbstractSpringBootTest {
    * @return port number
    */
   public int getPort() {
-    return port;
+    return this.port;
+  }
+
+  /**
+   * Server host.
+   *
+   * @return host
+   */
+  public String getHostName() {
+    return HOST_NAME;
+  }
+
+  /**
+   * Builds the root server URL.
+   *
+   * @return root server URL
+   */
+  public String getRootUrl() {
+    return "http://" + getHostName() + ":" + getPort() + ROOT_PATH;
   }
 }

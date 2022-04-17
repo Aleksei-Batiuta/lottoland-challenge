@@ -16,11 +16,12 @@
 
 package com.batyuta.challenge.lottoland.test;
 
+import com.batyuta.challenge.lottoland.AbstractSpringBootTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 @DisplayName("User Entity Repository test cases")
-class UserEntityRepositoryTest {
+public class UserEntityRepositoryTest extends AbstractSpringBootTest {
 
   @Test
   void create() {}

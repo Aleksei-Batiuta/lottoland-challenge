@@ -56,7 +56,7 @@ public class RestResponseAdviseTest extends AbstractSpringBootTest {
 
     TestRestTemplate restTemplate = new TestRestTemplate();
     ResponseEntity<String> response = restTemplate.exchange(
-        "http://localhost:" + getPort() + "/api/rounds/generate",
+        getRootUrl()+ "api/rounds/generate",
         HttpMethod.POST, entity, String.class);
 
     assertEquals(expectedStatusCode, response.getStatusCode());

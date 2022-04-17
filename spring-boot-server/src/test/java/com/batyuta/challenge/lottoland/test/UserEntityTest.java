@@ -22,6 +22,7 @@ import static org.springframework.test.util.AssertionErrors.assertNotNull;
 import static org.springframework.test.util.AssertionErrors.assertNull;
 import static org.springframework.test.util.AssertionErrors.assertTrue;
 
+import com.batyuta.challenge.lottoland.AbstractTest;
 import com.batyuta.challenge.lottoland.model.UserEntity;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
@@ -32,7 +33,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 /** Test of modifying entity properties. */
 @DisplayName("User Entity Concurrency modification test")
-class UserEntityTest {
+public class UserEntityTest extends AbstractTest {
 
   /**
    * Test data generator.

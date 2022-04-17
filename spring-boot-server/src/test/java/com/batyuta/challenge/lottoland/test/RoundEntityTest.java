@@ -20,6 +20,7 @@ import static org.junit.jupiter.api.parallel.ExecutionMode.CONCURRENT;
 import static org.springframework.test.util.AssertionErrors.assertNotNull;
 import static org.springframework.test.util.AssertionErrors.assertTrue;
 
+import com.batyuta.challenge.lottoland.AbstractTest;
 import com.batyuta.challenge.lottoland.model.RoundEntity;
 import java.util.Random;
 import org.junit.jupiter.api.DisplayName;
@@ -29,7 +30,7 @@ import org.junit.jupiter.api.parallel.Execution;
 
 /** Test of modifying entity properties. */
 @DisplayName("Round Entity Concurrency modification test")
-class RoundEntityTest {
+public class RoundEntityTest extends AbstractTest {
 
   /**
    * Counts of retry to broke system. todo: maybe it should be reviewed to use

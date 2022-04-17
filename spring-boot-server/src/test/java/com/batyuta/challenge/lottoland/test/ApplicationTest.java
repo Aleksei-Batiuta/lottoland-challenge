@@ -23,6 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.batyuta.challenge.lottoland.AbstractSpringBootMockMvcTest;
 import java.io.IOException;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -30,34 +31,15 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.web.servlet.MockMvc;
 
 /**
  * Unit test for Application.
  *
  * @author Aleksei Batyuta aleksei.batiuta@gmail.com
  */
-@Order(3)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-@AutoConfigureMockMvc
 @DisplayName("Simple HTTP request test cases")
-public class ApplicationTest {
-
-  /** Root path. */
-  public static final String ROOT_PATH = "/";
-
-  /** Test Server port. */
-  // @LocalServerPort
-  private static final int SERVER_PORT = 8080;
-
-  /** Mock Model View Controller. */
-  @Autowired
-  private MockMvc mockMvc;
+public class ApplicationTest extends AbstractSpringBootMockMvcTest {
 
   /**
    * Test access to main game page.
@@ -66,21 +48,19 @@ public class ApplicationTest {
    */
   @Test
   public void root() throws Exception {
-    this.mockMvc.perform(get(ROOT_PATH)).andDo(print())
-        .andExpect(status().isOk());
+    perform(get(ROOT_PATH)).andDo(print()).andExpect(status().isOk());
   }
 
   /**
-   * Test root JSP page.
+   * Test root Http page.
    *
    * @throws IOException if error appears
    */
   @Test
-  public void rootJsp() throws IOException {
+  public void rootHttp() throws IOException {
 
     // Given
-    HttpUriRequest request =
-        new HttpGet("http://localhost:" + SERVER_PORT + ROOT_PATH);
+    HttpUriRequest request = new HttpGet(getRootUrl());
 
     // When
     HttpResponse httpResponse =
@@ -99,7 +79,7 @@ public class ApplicationTest {
    */
   @Test
   public void error() throws Exception {
-    this.mockMvc.perform(get(ROOT_PATH + "error")).andDo(log())
+    perform(get(ROOT_PATH + "error")).andDo(log())
         .andExpect(status().is4xxClientError());
   }
 
@@ -110,7 +90,7 @@ public class ApplicationTest {
    */
   @Test
   public void cssTest() throws Exception {
-    this.mockMvc.perform(get(ROOT_PATH + "css/main.css")).andDo(log())
+    perform(get(ROOT_PATH + "css/main.css")).andDo(log())
         .andExpect(status().isOk());
   }
 
@@ -122,8 +102,7 @@ public class ApplicationTest {
   @Test
   public void logoTest() throws Exception {
 
-    this.mockMvc.perform(get(ROOT_PATH + "image/lottoland.png"))
-        .andExpect(status().isOk());
+    perform(get(ROOT_PATH + "image/lottoland.png")).andExpect(status().isOk());
   }
 
   /**
@@ -134,7 +113,6 @@ public class ApplicationTest {
   @Test
   public void faviconTest() throws Exception {
 
-    this.mockMvc.perform(get(ROOT_PATH + "favicon.ico"))
-        .andExpect(status().isOk());
+    perform(get(ROOT_PATH + "favicon.ico")).andExpect(status().isOk());
   }
 }

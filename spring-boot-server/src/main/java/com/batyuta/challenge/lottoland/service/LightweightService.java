@@ -32,7 +32,7 @@ import org.springframework.data.domain.PageImpl;
  * @param <T> entity class
  * @param <V> view class
  */
-public interface LightweightService<T extends BaseEntity, V extends BaseVO> {
+public interface LightweightService<T extends BaseEntity<T>, V extends BaseVO> {
 
   /**
    * Converts view to entity.
@@ -74,5 +74,17 @@ public interface LightweightService<T extends BaseEntity, V extends BaseVO> {
                 Collections::unmodifiableList));
     return new PageImpl<>(viewList, entities.getPageable(),
         entities.getTotalElements());
+  }
+
+  /**
+   * Converts the {@link Iterable} to {@link List}.
+   *
+   * @param iterable input value
+   * @param <P> object type
+   * @return list of objects
+   */
+  static <P> List<P> toList(final Iterable<P> iterable) {
+    return StreamSupport.stream(iterable.spliterator(), false)
+        .collect(Collectors.toList());
   }
 }
