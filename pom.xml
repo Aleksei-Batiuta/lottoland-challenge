@@ -31,7 +31,7 @@
     </parent>
     <groupId>com.batyuta.challenge</groupId>
     <artifactId>lottoland-challenge</artifactId>
-    <version>0.59</version>
+    <version>0.60-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Lottoland Challenge</name>
     <description>The Test Challenge from Lottoland</description>
@@ -61,7 +61,7 @@
             scm:git:https://github.com/Aleksei-Batiuta/lottoland-challenge.git
         </developerConnection>
         <url>https://github.com/Aleksei-Batiuta/lottoland-challenge.git</url>
-        <tag>lottoland-challenge-0.59</tag>
+        <tag>HEAD</tag>
     </scm>
     <!-- Deployment Settings -->
     <distributionManagement>
