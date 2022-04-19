@@ -163,6 +163,8 @@
         <profile>
             <id>release</id>
             <properties>
+                <maven.test.skip>false</maven.test.skip>
+                <checkstyle.skip>false</checkstyle.skip>
                 <dockerhub.publish>true</dockerhub.publish>
                 <fmt-maven-plugin.skip>true</fmt-maven-plugin.skip>
             </properties>
