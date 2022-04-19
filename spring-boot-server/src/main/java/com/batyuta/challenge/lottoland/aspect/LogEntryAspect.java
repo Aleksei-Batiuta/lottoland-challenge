@@ -44,8 +44,17 @@ public class LogEntryAspect {
    *
    * @param converter JSON data Converter service
    */
-  public LogEntryAspect(JsonConverter converter) {
+  public LogEntryAspect(final JsonConverter converter) {
     this.jsonConverter = converter;
+  }
+
+  /**
+   * Getter of JSON converter instance.
+   *
+   * @return JSON converter
+   */
+  public JsonConverter getJsonConverter() {
+    return jsonConverter;
   }
 
   /**
@@ -55,24 +64,24 @@ public class LogEntryAspect {
    * @param level logging level
    * @param message message
    */
-  static void log(final Logger logger, final Level level,
+  private static void log(final Logger logger, final Level level,
       final String message) {
+    //@formatter:off
     switch (level) {
-      case DEBUG:
-        logger.debug(message);
-        break;
-      case TRACE:
-        logger.trace(message);
-        break;
-      case WARN:
-        logger.warn(message);
-        break;
-      case ERROR:
-        logger.error(message);
-        break;
-      default:
-        logger.info(message);
+      case DEBUG: logger.debug(message);
+                  break;
+      case TRACE: logger.trace(message);
+                  break;
+      case WARN : logger.warn(message);
+                  break;
+      case ERROR: logger.error(message);
+                  break;
+      case INFO : logger.info(message);
+                  break;
+      default   : logger.info(message);
+                  break;
     }
+    //@formatter:on
   }
 
   /**

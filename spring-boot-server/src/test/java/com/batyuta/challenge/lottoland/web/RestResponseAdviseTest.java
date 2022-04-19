@@ -55,9 +55,9 @@ public class RestResponseAdviseTest extends AbstractSpringBootTest {
     HttpEntity<String> entity = new HttpEntity<>(null, headers);
 
     TestRestTemplate restTemplate = new TestRestTemplate();
-    ResponseEntity<String> response = restTemplate.exchange(
-        getRootUrl()+ "api/rounds/generate",
-        HttpMethod.POST, entity, String.class);
+    ResponseEntity<String> response =
+        restTemplate.exchange(getRootUrl() + "api/rounds/generate",
+            HttpMethod.POST, entity, String.class);
 
     assertEquals(expectedStatusCode, response.getStatusCode());
     RestResponse<ErrorBody> restResponse = jsonConverter.toObject(
