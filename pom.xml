@@ -21,9 +21,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <modules>
+        <module>build-tools</module>
         <module>react-client</module>
         <module>spring-boot-server</module>
-        <module>build-tools</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -360,7 +360,10 @@
             <dependency>
                 <groupId>com.batyuta.challenge</groupId>
                 <artifactId>react-client</artifactId>
-                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.batyuta.challenge</groupId>
+                <artifactId>build-tools</artifactId>
             </dependency>
             <dependency>
                 <groupId>io.springfox</groupId>
@@ -533,7 +536,6 @@
                         <dependency>
                             <groupId>com.batyuta.challenge</groupId>
                             <artifactId>build-tools</artifactId>
-                            <version>${project.version}</version>
                         </dependency>
                     </dependencies>
                     <executions>
@@ -638,7 +640,6 @@
                         <dependency>
                             <groupId>com.batyuta.challenge</groupId>
                             <artifactId>build-tools</artifactId>
-                            <version>${project.version}</version>
                         </dependency>
                     </dependencies>
                 </plugin>

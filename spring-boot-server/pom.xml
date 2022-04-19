@@ -248,7 +248,6 @@
                     <dependency>
                         <groupId>com.batyuta.challenge</groupId>
                         <artifactId>build-tools</artifactId>
-                        <version>${project.version}</version>
                     </dependency>
                 </dependencies>
             </plugin>
