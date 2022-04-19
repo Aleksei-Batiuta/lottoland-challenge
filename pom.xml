@@ -155,7 +155,9 @@
         <maven-resources-plugin.version>3.2.0</maven-resources-plugin.version>
         <maven-scm-plugin.version>2.0.0-M1</maven-scm-plugin.version>
         <maven-failsafe-plugin.version>3.0.0-M6</maven-failsafe-plugin.version>
-        <fmt-maven-plugin.version>2.18</fmt-maven-plugin.version>
+        <fmt-maven-plugin.version>2.18.0</fmt-maven-plugin.version>
+        <maven-checkstyle-plugin.skip>false</maven-checkstyle-plugin.skip>
+        <fmt-maven-plugin.skip>false</fmt-maven-plugin.skip>
     </properties>
 
     <profiles>
@@ -164,6 +166,8 @@
             <id>release</id>
             <properties>
                 <dockerhub.publish>true</dockerhub.publish>
+                <maven-checkstyle-plugin.skip>true</maven-checkstyle-plugin.skip>
+                <fmt-maven-plugin.skip>true</fmt-maven-plugin.skip>
             </properties>
             <build>
                 <pluginManagement>
@@ -525,6 +529,9 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-checkstyle-plugin</artifactId>
                     <version>3.1.2</version>
+                    <configuration>
+                        <skip>${maven-checkstyle-plugin.skip}</skip>
+                    </configuration>
                     <dependencies>
                         <dependency>
                             <groupId>com.puppycrawl.tools</groupId>
@@ -632,8 +639,9 @@
                 <plugin>
                     <groupId>net.revelc.code.formatter</groupId>
                     <artifactId>formatter-maven-plugin</artifactId>
-                    <version>${fmt-maven-plugin.version}.0</version>
+                    <version>${fmt-maven-plugin.version}</version>
                     <configuration>
+                        <skip>${fmt-maven-plugin.skip}</skip>
                         <configFile>formatter/java_google.xml</configFile>
                     </configuration>
                     <dependencies>
