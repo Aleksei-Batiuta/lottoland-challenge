@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BaseEntityRepository.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">spring-boot-server</a> &gt; <a href="index.source.html" class="el_package">com.batyuta.challenge.lottoland.repository</a> &gt; <span class="el_source">BaseEntityRepository.java</span></div><h1>BaseEntityRepository.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2022 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
+
+package com.batyuta.challenge.lottoland.repository;
+
+import com.batyuta.challenge.lottoland.exception.DataException;
+import com.batyuta.challenge.lottoland.model.BaseEntity;
+import com.batyuta.challenge.lottoland.utils.PageableUtils;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.PagingAndSortingRepository;
+
+/**
+ * Abstract Repository Implementation.
+ *
+ * @param &lt;T&gt; Entity Class
+ */
+<span class="fc" id="L41">public abstract class BaseEntityRepository&lt;T extends BaseEntity&lt;T&gt;&gt; extends</span>
+    BaseDataEntityRepository&lt;T&gt; implements PagingAndSortingRepository&lt;T, Long&gt; {
+
+  /**
+   * Gets all entities from repository which have been sorted.
+   *
+   * @param sort sort type, if it's &lt;code&gt;null&lt;/code&gt; then returns natural
+   *        object sorted list
+   * @return entities
+   */
+  @Override
+  public Iterable&lt;T&gt; findAll(final Sort sort) {
+<span class="nc bnc" id="L53" title="All 2 branches missed.">    Stream&lt;T&gt; entities = getEntities().filter(entity -&gt; !isDeleted(entity));</span>
+<span class="nc" id="L54">    return sort(entities, sort);</span>
+  }
+
+  /**
+   * Gets entity page from repository.
+   *
+   * @param pageSettings page config
+   * @return entities
+   */
+  @Override
+  public Page&lt;T&gt; findAll(final Pageable pageSettings) {
+<span class="nc" id="L65">    Pageable pageable = pageSettings;</span>
+<span class="nc bnc" id="L66" title="All 2 branches missed.">    if (pageable == null) {</span>
+<span class="nc" id="L67">      pageable = Pageable.unpaged();</span>
+    }
+<span class="nc bnc" id="L69" title="All 2 branches missed.">    List&lt;T&gt; list = sort(getEntities().filter(entity -&gt; !isDeleted(entity)),</span>
+<span class="nc" id="L70">        pageable.getSort());</span>
+<span class="nc" id="L71">    int total = list.size();</span>
+<span class="nc" id="L72">    pageable = PageableUtils.fixPageable(pageable, total);</span>
+<span class="nc" id="L73">    return subList(list, pageable, total);</span>
+  }
+
+  /**
+   * Cutting list to necessary size.
+   *
+   * @param inputList input
+   * @param pageSettings page settings
+   * @param total total elements in DB
+   * @return sub list
+   */
+  protected Page&lt;T&gt; subList(final List&lt;T&gt; inputList,
+      final Pageable pageSettings, final int total) {
+<span class="fc" id="L86">    Pageable pageable = pageSettings;</span>
+<span class="fc" id="L87">    List&lt;T&gt; list = inputList;</span>
+<span class="pc bpc" id="L88" title="1 of 2 branches missed.">    if (pageable == null) {</span>
+<span class="nc" id="L89">      pageable = Pageable.unpaged();</span>
+    }
+<span class="pc bpc" id="L91" title="1 of 2 branches missed.">    if (!pageable.isUnpaged()) {</span>
+<span class="nc" id="L92">      list = list.subList((int) pageable.getOffset(), Math</span>
+<span class="nc" id="L93">          .min((int) (pageable.getPageSize() + pageable.getOffset()), total));</span>
+    }
+
+<span class="fc" id="L96">    return new PageImpl&lt;&gt;(Collections.unmodifiableList(list), pageable, total);</span>
+  }
+
+  /**
+   * Getter of the deleted flag.
+   *
+   * @param entity entity
+   * @return {@code true} if entity was deleted
+   */
+  protected abstract boolean isDeleted(T entity);
+
+  /**
+   * Gets all entities form repository as is.
+   *
+   * @return all entities
+   */
+  @Override
+  public Iterable&lt;T&gt; findAll() {
+<span class="fc bfc" id="L114" title="All 2 branches covered.">    return getEntities().filter(entity -&gt; !isDeleted(entity))</span>
+<span class="fc" id="L115">        .collect(Collectors.toList());</span>
+  }
+
+  /**
+   * Creates a new entity.
+   *
+   * @param entity entity
+   * @param &lt;S&gt; entity class
+   * @return saved entity
+   */
+  @Override
+  public &lt;S extends T&gt; S save(final S entity) {
+<span class="fc" id="L127">    return write(() -&gt; saveImpl(entity));</span>
+  }
+
+  /**
+   * Creates new entities.
+   *
+   * @param entities entities
+   * @param &lt;S&gt; entity class
+   * @return saved entities
+   */
+  @Override
+  public &lt;S extends T&gt; Iterable&lt;S&gt; saveAll(final Iterable&lt;S&gt; entities) {
+<span class="nc" id="L139">    return write(() -&gt; {</span>
+<span class="nc" id="L140">      ArrayList&lt;S&gt; result = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L141">      getEntities().forEach(s -&gt; result.add((S) saveImpl(s)));</span>
+<span class="nc" id="L142">      return Collections.unmodifiableList(result);</span>
+    });
+  }
+
+  /**
+   * Find entity by ID.
+   *
+   * @param id entity ID
+   * @return entity
+   * @throws DataException if entity does not exist
+   */
+  @Override
+  public Optional&lt;T&gt; findById(final Long id) {
+<span class="fc" id="L155">    Optional&lt;T&gt; read = read(() -&gt; getEntities()</span>
+<span class="fc" id="L156">        .filter(entity -&gt; Objects.equals(entity.getId(), id)).findFirst());</span>
+<span class="fc bfc" id="L157" title="All 2 branches covered.">    if (!read.isPresent()) {</span>
+<span class="fc" id="L158">      throw new DataException(&quot;error.data.entity.not.found&quot;, id);</span>
+    }
+<span class="fc" id="L160">    return read;</span>
+  }
+
+  /**
+   * Checks entity to exist in repository.
+   *
+   * @param id entity ID
+   * @return &lt;code&gt;true&lt;/code&gt; if it exists
+   */
+  @Override
+  public boolean existsById(final Long id) {
+<span class="nc" id="L171">    return read(() -&gt; getEntities()</span>
+<span class="nc" id="L172">        .anyMatch(entity -&gt; Objects.equals(entity.getId(), id)));</span>
+  }
+
+  /**
+   * Looks out the entities by IDs.
+   *
+   * @param entityIds entity IDs
+   * @return entities
+   */
+  @Override
+  public Iterable&lt;T&gt; findAllById(final Iterable&lt;Long&gt; entityIds) {
+<span class="nc" id="L183">    return read(() -&gt; findByIdImpl(entityIds));</span>
+  }
+
+  /**
+   * Implementation of {@link this#findAllById(Iterable)}.
+   *
+   * @param entityIds entity IDs
+   * @return entities
+   */
+  private List&lt;T&gt; findByIdImpl(final Iterable&lt;Long&gt; entityIds) {
+<span class="nc" id="L193">    Stream&lt;Long&gt; ids = StreamSupport.stream(entityIds.spliterator(), false);</span>
+<span class="nc" id="L194">    return getEntities()</span>
+<span class="nc" id="L195">        .filter(</span>
+<span class="nc" id="L196">            entity -&gt; ids.anyMatch(id -&gt; Objects.equals(entity.getId(), id)))</span>
+<span class="nc" id="L197">        .collect(Collectors.collectingAndThen(Collectors.toList(),</span>
+            Collections::unmodifiableList));
+  }
+
+  /**
+   * Gets count of entities in repository.
+   *
+   * @return count of entities
+   */
+  @Override
+  public long count() {
+<span class="fc" id="L208">    return read(() -&gt; getEntities().count());</span>
+  }
+
+  /**
+   * Deletes entity by its ID from repository.
+   *
+   * @param id entity ID
+   */
+  @Override
+  public void deleteById(final Long id) {
+<span class="nc" id="L218">    findById(id).ifPresent(this::deleteImpl);</span>
+<span class="nc" id="L219">  }</span>
+
+  /**
+   * Deletes entity from repository.
+   *
+   * @param entity entity
+   */
+  @Override
+  public void delete(final T entity) {
+<span class="fc bfc" id="L228" title="All 2 branches covered.">    if (entity == null) {</span>
+<span class="fc" id="L229">      throw new DataException(&quot;error.data.entity.null&quot;);</span>
+    }
+<span class="fc" id="L231">    write(() -&gt; {</span>
+<span class="fc" id="L232">      deleteImpl(entity);</span>
+<span class="fc" id="L233">      return null;</span>
+    });
+<span class="fc" id="L235">  }</span>
+
+  /**
+   * Deletes entities by IDs from repository.
+   *
+   * @param entityIds entities IDs
+   */
+  @Override
+  public void deleteAllById(final Iterable&lt;? extends Long&gt; entityIds) {
+<span class="nc" id="L244">    write(() -&gt; {</span>
+<span class="nc" id="L245">      Stream&lt;? extends Long&gt; ids =</span>
+<span class="nc" id="L246">          StreamSupport.stream(entityIds.spliterator(), false);</span>
+
+<span class="nc" id="L248">      getEntities()</span>
+<span class="nc" id="L249">          .filter(</span>
+<span class="nc" id="L250">              entity -&gt; ids.anyMatch(id -&gt; Objects.equals(entity.getId(), id)))</span>
+<span class="nc" id="L251">          .forEach(this::deleteImpl);</span>
+<span class="nc" id="L252">      return null;</span>
+    });
+<span class="nc" id="L254">  }</span>
+
+  /**
+   * Deletes entities from repository.
+   *
+   * @param entities entities
+   */
+  @Override
+  public void deleteAll(final Iterable&lt;? extends T&gt; entities) {
+<span class="fc" id="L263">    write(() -&gt; {</span>
+<span class="fc bfc" id="L264" title="All 2 branches covered.">      for (T entity : entities) {</span>
+<span class="fc" id="L265">        deleteImpl(entity);</span>
+<span class="fc" id="L266">      }</span>
+<span class="fc" id="L267">      return null;</span>
+    });
+<span class="fc" id="L269">  }</span>
+
+  /** Fresh repository. */
+  @Override
+  public void deleteAll() {
+<span class="nc" id="L274">    write(() -&gt; {</span>
+<span class="nc" id="L275">      getEntities().forEach(this::deleteImpl);</span>
+<span class="nc" id="L276">      return null;</span>
+    });
+<span class="nc" id="L278">  }</span>
+
+  /**
+   * todo: It should be reviewed by CRUD concept.
+   *
+   * @param entity entity
+   */
+  public void update(final T entity) {
+<span class="fc" id="L286">    throw new DataException(&quot;error.unsupported.operation&quot;);</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

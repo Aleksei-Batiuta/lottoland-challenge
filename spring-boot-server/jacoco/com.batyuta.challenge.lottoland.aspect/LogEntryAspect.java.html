@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LogEntryAspect.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">spring-boot-server</a> &gt; <a href="index.source.html" class="el_package">com.batyuta.challenge.lottoland.aspect</a> &gt; <span class="el_source">LogEntryAspect.java</span></div><h1>LogEntryAspect.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2022 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
+
+package com.batyuta.challenge.lottoland.aspect;
+
+import com.batyuta.challenge.lottoland.annotation.LogEntry;
+import com.batyuta.challenge.lottoland.converter.JsonConverter;
+import com.batyuta.challenge.lottoland.vo.LogEntryData;
+import java.lang.reflect.Method;
+import java.time.Instant;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.reflect.CodeSignature;
+import org.aspectj.lang.reflect.MethodSignature;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.event.Level;
+import org.springframework.stereotype.Component;
+
+/** AspectJ method call logging. */
+@Aspect
+@Component
+public class LogEntryAspect {
+  /** JSON data Converter service. */
+  private final JsonConverter jsonConverter;
+
+  /**
+   * Default constructor.
+   *
+   * @param converter JSON data Converter service
+   */
+<span class="fc" id="L47">  public LogEntryAspect(final JsonConverter converter) {</span>
+<span class="fc" id="L48">    this.jsonConverter = converter;</span>
+<span class="fc" id="L49">  }</span>
+
+  /**
+   * Getter of JSON converter instance.
+   *
+   * @return JSON converter
+   */
+  public JsonConverter getJsonConverter() {
+<span class="nc" id="L57">    return jsonConverter;</span>
+  }
+
+  /**
+   * Log message.
+   *
+   * @param logger logger
+   * @param level logging level
+   * @param message message
+   */
+  private static void log(final Logger logger, final Level level,
+      final String message) {
+    //@formatter:off
+<span class="pc bpc" id="L70" title="3 of 6 branches missed.">    switch (level) {</span>
+<span class="nc" id="L71">      case DEBUG: logger.debug(message);</span>
+<span class="nc" id="L72">                  break;</span>
+<span class="fc" id="L73">      case TRACE: logger.trace(message);</span>
+<span class="fc" id="L74">                  break;</span>
+<span class="nc" id="L75">      case WARN : logger.warn(message);</span>
+<span class="nc" id="L76">                  break;</span>
+<span class="fc" id="L77">      case ERROR: logger.error(message);</span>
+<span class="fc" id="L78">                  break;</span>
+<span class="fc" id="L79">      case INFO : logger.info(message);</span>
+<span class="fc" id="L80">                  break;</span>
+<span class="nc" id="L81">      default   : logger.info(message);</span>
+                  break;
+    }
+    //@formatter:on
+<span class="fc" id="L85">  }</span>
+
+  /**
+   * Log Message to JSON serialization.
+   *
+   * @param message message
+   * @param pretty output JSON pretty format flag
+   * @return String view of message
+   */
+  private String toString(final LogEntryData message, final boolean pretty) {
+<span class="fc" id="L95">    return jsonConverter.toString(message, pretty);</span>
+  }
+
+  /** AspectJ entry point. */
+  @Pointcut(&quot;@annotation(com.batyuta.challenge.lottoland.annotation.LogEntry)&quot;)
+<span class="nc" id="L100">  public void methodsToBeProfiled() {}</span>
+
+  /**
+   * AspectJ around pointcut.
+   *
+   * @param point point
+   * @return result
+   * @throws Throwable if exception was appeared
+   */
+  @Around(&quot;methodsToBeProfiled()&quot;)
+  public Object log(final ProceedingJoinPoint point) throws Throwable {
+<span class="fc" id="L111">    CodeSignature codeSignature = (CodeSignature) point.getSignature();</span>
+<span class="fc" id="L112">    MethodSignature methodSignature = (MethodSignature) point.getSignature();</span>
+<span class="fc" id="L113">    Method method = methodSignature.getMethod();</span>
+<span class="fc" id="L114">    LogEntry annotation = method.getAnnotation(LogEntry.class);</span>
+<span class="fc" id="L115">    Logger logger = LoggerFactory.getLogger(method.getDeclaringClass());</span>
+
+<span class="fc" id="L117">    LogEntryData logEntryMessage =</span>
+<span class="fc" id="L118">        new LogEntryData(method.getName(), codeSignature.getParameterNames(),</span>
+<span class="fc" id="L119">            point.getArgs(), Instant.now(), annotation.unit());</span>
+    Object response;
+    try {
+<span class="fc" id="L122">      response = point.proceed();</span>
+<span class="fc" id="L123">      logEntryMessage.setResult(response);</span>
+<span class="nc" id="L124">    } catch (Throwable throwable) {</span>
+<span class="nc" id="L125">      logEntryMessage.setResult(throwable);</span>
+<span class="nc" id="L126">      throw throwable;</span>
+    } finally {
+<span class="fc" id="L128">      logEntryMessage.setEnd(Instant.now());</span>
+<span class="fc" id="L129">      log(logger, annotation.value(),</span>
+<span class="fc" id="L130">          toString(logEntryMessage, annotation.prettyFormatted()));</span>
+    }
+<span class="fc" id="L132">    return response;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

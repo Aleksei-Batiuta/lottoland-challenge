@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JsonConverter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">spring-boot-server</a> &gt; <a href="index.source.html" class="el_package">com.batyuta.challenge.lottoland.converter</a> &gt; <span class="el_source">JsonConverter.java</span></div><h1>JsonConverter.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2022 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
+
+package com.batyuta.challenge.lottoland.converter;
+
+import com.batyuta.challenge.lottoland.exception.DataException;
+import com.batyuta.challenge.lottoland.vo.LogEntryData;
+import com.fasterxml.jackson.core.JacksonException;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.node.IntNode;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+
+/** Json data converter. */
+@Service
+<span class="fc" id="L41">public class JsonConverter {</span>
+  /** The module for {@link HttpStatus} custom deserialization. */
+<span class="fc" id="L43">  private static final SimpleModule MODULE = new SimpleModule() {</span>
+    {
+<span class="fc" id="L45">      addDeserializer(HttpStatus.class, new HttpStatusDeserializer());</span>
+<span class="fc" id="L46">    }</span>
+  };
+  /** JSON mapper. */
+<span class="fc" id="L49">  private static final ObjectMapper JSON_MAPPER =</span>
+<span class="fc" id="L50">      new ObjectMapper().findAndRegisterModules().registerModule(MODULE);</span>
+
+  /**
+   * Parses the source string into object.
+   *
+   * @param source source string
+   * @param aClass output object class type
+   * @param &lt;T&gt; output object type
+   * @return parsed object from JSON string
+   */
+  public &lt;T&gt; T toObject(final String source, final Class&lt;T&gt; aClass) {
+    try {
+<span class="fc" id="L62">      return JSON_MAPPER.readValue(source, aClass);</span>
+<span class="nc" id="L63">    } catch (JsonProcessingException e) {</span>
+<span class="nc" id="L64">      throw new DataException(&quot;error.unsupported.operation&quot;, e.getMessage(), e);</span>
+    }
+  }
+
+  /**
+   * Parses the source string into object.
+   *
+   * @param source source string
+   * @param typeReference output object source type
+   * @param &lt;T&gt; output object type
+   * @return parsed object from JSON string
+   */
+  public &lt;T&gt; T toObject(final String source,
+      final TypeReference&lt;T&gt; typeReference) {
+    try {
+<span class="fc" id="L79">      return JSON_MAPPER.readValue(source, typeReference);</span>
+<span class="nc" id="L80">    } catch (JsonProcessingException e) {</span>
+<span class="nc" id="L81">      throw new DataException(&quot;error.unsupported.operation&quot;, e.getMessage(), e);</span>
+    }
+  }
+
+  /**
+   * Log Object to JSON serialization.
+   *
+   * @param object object
+   * @param pretty output JSON pretty format flag
+   * @return String view of message
+   */
+  public String toString(final Object object, final boolean pretty) {
+<span class="fc" id="L93">    return this.toString(object, pretty, 0);</span>
+  }
+
+  /**
+   * Log Object to JSON serialization.
+   *
+   * @param object object
+   * @param pretty output JSON pretty format flag
+   * @param depth depth of call
+   * @return String view of message
+   */
+  private String toString(final Object object, final boolean pretty,
+      final int depth) {
+<span class="pc bpc" id="L106" title="1 of 2 branches missed.">    if (object != null) {</span>
+      try {
+<span class="pc bpc" id="L108" title="1 of 4 branches missed.">        if (object instanceof ServletResponse</span>
+            || object instanceof ServletRequest) {
+          // Skips getters of Writer and Reader!
+<span class="fc" id="L111">          return object.toString();</span>
+        }
+<span class="pc bpc" id="L113" title="1 of 2 branches missed.">        if (pretty) {</span>
+<span class="nc" id="L114">          return JSON_MAPPER.writerWithDefaultPrettyPrinter()</span>
+<span class="nc" id="L115">              .writeValueAsString(object);</span>
+        }
+<span class="fc" id="L117">        return JSON_MAPPER.writeValueAsString(object);</span>
+<span class="fc" id="L118">      } catch (JsonProcessingException e) {</span>
+<span class="pc bpc" id="L119" title="1 of 4 branches missed.">        if (object instanceof LogEntryData &amp;&amp; depth == 0) {</span>
+<span class="fc" id="L120">          LogEntryData message = (LogEntryData) object;</span>
+<span class="fc" id="L121">          Map&lt;String, Object&gt; args = message.getArgs();</span>
+<span class="fc" id="L122">          Map&lt;String, String&gt; result = new HashMap&lt;&gt;();</span>
+<span class="pc bpc" id="L123" title="1 of 2 branches missed.">          if (args != null) {</span>
+<span class="fc" id="L124">            args.forEach(</span>
+<span class="fc" id="L125">                (key, value) -&gt; result.put(key, toString(value, pretty, 1)));</span>
+<span class="fc" id="L126">            args.putAll(result);</span>
+          }
+<span class="fc" id="L128">          message.setResult(toString(message.getResult(), pretty, 1));</span>
+<span class="fc" id="L129">          return toString(message, pretty, 1);</span>
+        } else {
+<span class="fc" id="L131">          return object.toString();</span>
+        }
+      }
+    }
+<span class="nc" id="L135">    return null;</span>
+  }
+
+  /** Deserializer implementation for {@link HttpStatus} class. */
+  static class HttpStatusDeserializer extends StdDeserializer&lt;HttpStatus&gt; {
+    /** Default constructor. */
+    protected HttpStatusDeserializer() {
+<span class="fc" id="L142">      super(HttpStatus.class);</span>
+<span class="fc" id="L143">    }</span>
+
+    @Override
+    public HttpStatus deserialize(final JsonParser p,
+        final DeserializationContext ctxt)
+        throws IOException, JacksonException {
+<span class="fc" id="L149">      JsonNode node = p.getCodec().readTree(p);</span>
+<span class="fc" id="L150">      int id =</span>
+<span class="fc" id="L151">          (Integer) ((IntNode) node.get(HttpStatusSerializer.FIELD_CODE_VALUE))</span>
+<span class="fc" id="L152">              .numberValue();</span>
+<span class="fc" id="L153">      return HttpStatus.resolve(id);</span>
+    }
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

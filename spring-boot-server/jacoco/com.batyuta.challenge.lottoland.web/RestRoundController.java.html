@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RestRoundController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">spring-boot-server</a> &gt; <a href="index.source.html" class="el_package">com.batyuta.challenge.lottoland.web</a> &gt; <span class="el_source">RestRoundController.java</span></div><h1>RestRoundController.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2022 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
+
+package com.batyuta.challenge.lottoland.web;
+
+import com.batyuta.challenge.lottoland.annotation.ApplyResponseBinding;
+import com.batyuta.challenge.lottoland.annotation.LogEntry;
+import com.batyuta.challenge.lottoland.model.RoundEntity;
+import com.batyuta.challenge.lottoland.model.UserEntity;
+import com.batyuta.challenge.lottoland.service.RoundEntityService;
+import com.batyuta.challenge.lottoland.service.RoundLightweightService;
+import com.batyuta.challenge.lottoland.utils.PageableUtils;
+import com.batyuta.challenge.lottoland.vo.RoundVO;
+import com.batyuta.challenge.lottoland.vo.StatisticsVO;
+import java.util.Collections;
+import org.slf4j.event.Level;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+/** REST Round Controller. */
+@RestController(&quot;REST Round Controller&quot;)
+@RequestMapping(&quot;/api/rounds&quot;)
+@ApplyResponseBinding
+public class RestRoundController
+    extends AbstractController&lt;RoundEntity, RoundVO&gt; {
+
+  /** Round Service. */
+  private final RoundEntityService roundService;
+
+  /**
+   * Default constructor.
+   *
+   * @param entityService round service
+   * @param lightweightService round lightweight service
+   */
+  public RestRoundController(final RoundEntityService entityService,
+      final RoundLightweightService lightweightService) {
+<span class="fc" id="L61">    super(entityService, lightweightService);</span>
+<span class="fc" id="L62">    this.roundService = entityService;</span>
+<span class="fc" id="L63">  }</span>
+
+  /**
+   * Find all active user's rounds.
+   *
+   * @param user user
+   * @param page page number
+   * @param size page size
+   * @param sort sort type
+   * @return rounds
+   */
+  @Override
+  @ResponseStatus(HttpStatus.OK)
+  public Page&lt;RoundVO&gt; findAll(
+      final @RequestHeader(value = CSRF, required = false) UserEntity user,
+      final @RequestParam(required = false) Integer page,
+      final @RequestParam(required = false) Integer size,
+      final @RequestParam(required = false) Sort sort) {
+<span class="fc" id="L81">    Pageable pageable = buildPageable(page, size, sort);</span>
+<span class="pc bpc" id="L82" title="1 of 2 branches missed.">    if (user == null) {</span>
+<span class="fc" id="L83">      return new PageImpl&lt;&gt;(Collections.emptyList(),</span>
+<span class="fc" id="L84">          PageableUtils.fixPageable(pageable, 0), 0L);</span>
+    }
+<span class="nc" id="L86">    Page&lt;RoundEntity&gt; allByUserId =</span>
+<span class="nc" id="L87">        roundService.findAllByUserId(user.getId(), pageable);</span>
+<span class="nc" id="L88">    return getLightweightService().getViews(allByUserId);</span>
+  }
+
+  /**
+   * Creates a new round.
+   *
+   * @param user round's user
+   * @return a new user's round
+   */
+  @RequestMapping(value = &quot;/generate&quot;, method = RequestMethod.POST)
+  @ResponseStatus(HttpStatus.CREATED)
+  @LogEntry(Level.INFO)
+  public RoundVO generate(final @RequestHeader(value = CSRF) UserEntity user) {
+<span class="fc" id="L101">    RoundEntity roundEntity = roundService.generate(user.getId());</span>
+    ServletUriComponentsBuilder builder =
+<span class="fc" id="L103">        ServletUriComponentsBuilder.fromCurrentRequestUri();</span>
+<span class="fc" id="L104">    builder.path(&quot;/api/rounds/&quot; + roundEntity.getId());</span>
+<span class="fc" id="L105">    return getLightweightService().toView(roundEntity);</span>
+  }
+
+  /**
+   * Clean user rounds.
+   *
+   * @param user round's user
+   * @return count of deleted user's rounds
+   */
+  @RequestMapping(value = &quot;/&quot;, method = RequestMethod.DELETE)
+  @ResponseStatus(HttpStatus.ACCEPTED)
+  public Long deleteByUserName(
+      final @RequestHeader(value = CSRF) UserEntity user) {
+<span class="fc" id="L118">    return roundService.deleteByUserId(user.getId());</span>
+  }
+
+  /**
+   * Statistics getter.
+   *
+   * @return statistics data
+   */
+  @RequestMapping(value = &quot;/statistics&quot;, method = RequestMethod.GET)
+  @ResponseStatus(HttpStatus.OK)
+  public StatisticsVO statistics() {
+<span class="fc" id="L129">    long totalRounds = roundService.getTotalRounds();</span>
+<span class="fc" id="L130">    long firstRounds = roundService.getFirstRounds();</span>
+<span class="fc" id="L131">    long secondRounds = roundService.getSecondRounds();</span>
+<span class="fc" id="L132">    long totalDraws = roundService.getDraws();</span>
+
+<span class="fc" id="L134">    return new StatisticsVO(totalRounds, firstRounds, secondRounds, totalDraws);</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

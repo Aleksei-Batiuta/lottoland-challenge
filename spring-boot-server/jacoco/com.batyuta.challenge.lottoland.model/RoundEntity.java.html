@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RoundEntity.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">spring-boot-server</a> &gt; <a href="index.source.html" class="el_package">com.batyuta.challenge.lottoland.model</a> &gt; <span class="el_source">RoundEntity.java</span></div><h1>RoundEntity.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2022 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
+
+package com.batyuta.challenge.lottoland.model;
+
+import com.batyuta.challenge.lottoland.enums.SignEnum;
+import com.batyuta.challenge.lottoland.enums.StatusEnum;
+import java.text.MessageFormat;
+import java.util.Comparator;
+import javax.persistence.Entity;
+import lombok.ToString;
+
+/** Round entity. */
+@Entity
+@ToString
+public class RoundEntity extends BaseEntity&lt;RoundEntity&gt; {
+
+  /** User ID. */
+  private Long userid;
+
+  /** Choice of first player. */
+  private SignEnum player1;
+
+  /** Choice of second player. */
+  private SignEnum player2;
+
+  /** Result of round for the first player. */
+  private StatusEnum status;
+
+  /** Deleted flag. */
+<span class="fc" id="L44">  private boolean deleted = false;</span>
+
+  /** Default no-arguments constructor. */
+  public RoundEntity() {
+<span class="fc" id="L48">    super();</span>
+<span class="fc" id="L49">  }</span>
+
+  /**
+   * Default Constructor.
+   *
+   * @param user user ID
+   * @param player1Enum choice of player 1
+   * @param player2Enum choice of player 2
+   * @param statusEnum status
+   */
+  public RoundEntity(final Long user, final SignEnum player1Enum,
+      final SignEnum player2Enum, final StatusEnum statusEnum) {
+<span class="fc" id="L61">    this(NEW_ENTITY_ID, user, player1Enum, player2Enum, statusEnum);</span>
+<span class="fc" id="L62">  }</span>
+
+  /**
+   * Default Constructor.
+   *
+   * @param roundId round ID
+   * @param user user ID
+   * @param player1Enum choice of player 1
+   * @param player2Enum choice of player 2
+   * @param statusEnum status
+   */
+  public RoundEntity(final Long roundId, final Long user,
+      final SignEnum player1Enum, final SignEnum player2Enum,
+      final StatusEnum statusEnum) {
+<span class="fc" id="L76">    super(roundId);</span>
+<span class="fc" id="L77">    this.userid = user;</span>
+<span class="fc" id="L78">    this.player1 = player1Enum;</span>
+<span class="fc" id="L79">    this.player2 = player2Enum;</span>
+<span class="fc" id="L80">    this.status = statusEnum;</span>
+<span class="fc" id="L81">  }</span>
+
+  /**
+   * Getter of user ID.
+   *
+   * @return user ID
+   */
+  public Long getUserid() {
+<span class="fc" id="L89">    return userid;</span>
+  }
+
+  /**
+   * Getter of first player choice.
+   *
+   * @return first player choice
+   */
+  public SignEnum getPlayer1() {
+<span class="fc" id="L98">    return player1;</span>
+  }
+
+  /**
+   * Getter of second player choice.
+   *
+   * @return second player choice
+   */
+  public SignEnum getPlayer2() {
+<span class="fc" id="L107">    return player2;</span>
+  }
+
+  /**
+   * Getter of round result.
+   *
+   * @return round result
+   */
+  public StatusEnum getStatus() {
+<span class="fc" id="L116">    return status;</span>
+  }
+
+  /**
+   * Getter of round delete flag.
+   *
+   * @return delete flag
+   */
+  public boolean isDeleted() {
+<span class="fc" id="L125">    return read(() -&gt; deleted);</span>
+  }
+
+  /**
+   * Setter of round delete flag.
+   *
+   * @param isDeleted delete flag
+   */
+  public void setDeleted(final boolean isDeleted) {
+<span class="fc" id="L134">    write(() -&gt; this.deleted = isDeleted);</span>
+<span class="fc" id="L135">  }</span>
+
+  /**
+   * Returns a string representation of the object.
+   *
+   * @return string
+   */
+  @Override
+  public String toString() {
+<span class="fc" id="L144">    return MessageFormat.format(</span>
+        &quot;RoundEntity'{'id={0}, userid={1}, player1={2}, player2={3}, &quot;
+            + &quot;status={4}, deleted={5}'}'&quot;,
+<span class="fc" id="L147">        getId(), userid, player1, player2, status, deleted);</span>
+  }
+
+  /**
+   * Entities comparator.
+   *
+   * @param o object to compare
+   * @return compare result
+   */
+  @Override
+  public int compareTo(final RoundEntity o) {
+<span class="fc" id="L158">    Comparator&lt;RoundEntity&gt; comparator =</span>
+<span class="fc" id="L159">        Comparator.nullsFirst(Comparator.comparing(BaseEntity::getId));</span>
+<span class="fc" id="L160">    return comparator.compare(this, o);</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
