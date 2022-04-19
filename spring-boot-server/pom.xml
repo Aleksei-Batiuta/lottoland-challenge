@@ -297,7 +297,45 @@
                     </docker>
                 </configuration>
             </plugin>
-
+            <!-- Validates the source code style -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>3.1.2</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.puppycrawl.tools</groupId>
+                        <artifactId>checkstyle</artifactId>
+                        <version>8.45.1</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>com.batyuta.challenge</groupId>
+                        <artifactId>build-tools</artifactId>
+                        <version>${project.version}</version>
+                    </dependency>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <id>google-checkstyle-validation</id>
+                        <phase>validate</phase>
+                        <configuration>
+                            <suppressionsLocation>
+                                src/checkstyle/checkstyle-suppressions.xml
+                            </suppressionsLocation>
+                            <encoding>UTF-8</encoding>
+                            <sourceDirectories>${basedir}
+                            </sourceDirectories>
+                            <includes>**/*</includes>
+                            <excludes>
+                                **/.git/**/*,**/.idea/**/*,**/target/**/,**/*.class
+                            </excludes>
+                        </configuration>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
