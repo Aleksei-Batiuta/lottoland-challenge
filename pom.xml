@@ -360,10 +360,12 @@
             <dependency>
                 <groupId>com.batyuta.challenge</groupId>
                 <artifactId>react-client</artifactId>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.batyuta.challenge</groupId>
                 <artifactId>build-tools</artifactId>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.springfox</groupId>
